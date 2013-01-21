@@ -1,0 +1,8 @@
+/.idea
+/nbproject
+
+/debug.php
+DevController.php
+DevCommand.php
+
+*.local

@@ -1,0 +1,19 @@
+php_value upload_max_filesize "512M"
+php_value post_max_size "512M"
+php_value max_file_uploads 256
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} ^/admin
+RewriteRule . ../admin/index.php [L]
+
+# if a directory or a file exists, use it directly
+
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} /\..*$
+RewriteCond %{REQUEST_FILENAME} !-d [OR]
+RewriteCond %{REQUEST_FILENAME} /\..*$
+
+# otherwise forward it to index.php
+RewriteRule . index.php
+
