@@ -8,6 +8,10 @@ return [
     ],
 
     'components' => [
+        'geoip' => [
+            'class' => 'site\components\GeoIp',
+        ],
+
         'clientScript' => [
             'packages' => [
                 'main'       => [

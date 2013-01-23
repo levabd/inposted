@@ -2,7 +2,7 @@
 /** @var $this \site\controllers\AuthController */
 /** @var $model \site\models\User */
 
-$countries = CHtml::listData(site\models\Country::model()->findAll(), 'id', 'name');
+$countries = CHtml::listData(site\models\Country::model()->sort()->findAll(), 'id', 'name');
 ?>
 <div class="span5 well signupForm">
     <?php
