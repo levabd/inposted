@@ -12,7 +12,9 @@ class Controller extends \shared\components\Controller
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
-    public $layout = '//layouts/column1';
+//    public $layout = '//layouts/column1';
+    public $layout = '//layouts/columns';
+
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
@@ -25,14 +27,6 @@ class Controller extends \shared\components\Controller
     public $breadcrumbs = array();
 
     public $showTopMenu = true;
-
-    public function init() {
-        parent::init();
-
-        if(!Yii()->getRequest()->getIsAjaxRequest()){
-            Yii()->clientScript->registerPackage('main');
-        }
-    }
 
     public function getStaticUrl() {
         return Yii()->getBaseUrl() . '/static';

@@ -18,10 +18,6 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionIndex() {
-        if(!User()->isGuest && !Yii()->getRequest()->getUrlReferrer()){
-            $this->redirect(array('/account/index','#'=>'/posts'));
-        }
-
         $this->render('index');
     }
 

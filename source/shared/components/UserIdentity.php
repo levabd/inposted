@@ -18,6 +18,6 @@ class UserIdentity extends \CUserIdentity
     }
 
     public function getName() {
-        return $this->account->getFullname();
+        return $this->account->name;
     }
 }

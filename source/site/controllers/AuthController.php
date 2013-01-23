@@ -4,9 +4,21 @@ namespace site\controllers;
 use site\models;
 use site\components;
 use site\components\InpostedUser;
+use CHttpException;
+use CUploadedFile;
+use site\models\User;
+use site\models\forms\Signin;
+use site\models\forms\Restore;
 
+/**
+ * @method string createSignedUrl($route, $policyParams = array(), $schema = '')
+ * @method array  decryptPolicy($message)
+ * @method void   fsDir($target);
+ */
 class AuthController extends components\Controller
 {
+    public $defaultAction = 'signin';
+
     /**
      * @var InpostedUser
      */
@@ -15,6 +27,7 @@ class AuthController extends components\Controller
     public function filters() {
         return array(
             'accessControl + signout, verify',
+            'guest + signin, signup',
         );
     }
 
@@ -30,21 +43,15 @@ class AuthController extends components\Controller
         );
     }
 
-//
-//    public function actions() {
-//        return array(
-//            'captcha' => array(
-//                'class' => 'CCaptchaAction',
-//                'backColor' => 0xFFFFFF,
-//                'foreColor' => 0x8DBB10,
-//                'testLimit' => 1,
-//                ),
-//        );
-//    }
+    public function filterGuest(\CFilterChain $filterChain) {
+        !$this->user->isGuest && $this->goHome();
+        $filterChain->run();
+    }
 
     public function behaviors() {
         return array(
-            array('class' => 'shared\behaviors\SignedUrlBehavior')
+            array('class' => 'shared\behaviors\SignedUrlBehavior'),
+            array('class' => 'shared\behaviors\FsBehavior'),
         );
     }
 
@@ -52,10 +59,6 @@ class AuthController extends components\Controller
         parent::init();
 
         $this->user = Yii()->user;
-    }
-
-    public function actionIndex() {
-        $this->render('index');
     }
 
     protected function goSignIn() {
@@ -66,62 +69,70 @@ class AuthController extends components\Controller
         $this->redirect(array('signup'));
     }
 
-    public function actionSignup($type = 'account') {
-        $action = 'signup';
-
-//        if ($this->user->isGuest) {
-        $action .= 'Guest';
-//        } else {
-//            $action .= 'User';
-//        }
-
-        if (in_array($type, array('account'))) {
-            $action .= ucfirst($type);
+    public function actionSignup($step = null) {
+        !$step && $this->redirect(['', 'step' => 1]);
+        if ($step > 2) {
+            throw new CHttpException(404);
         }
 
-        if (method_exists($this, $action)) {
-            return $this->$action();
-        } else {
-            $this->goHome();
-        }
-    }
+        $scenario = "signup-$step";
 
-    protected function signupGuestAccount() {
-        $model = new models\User('signup');
-        if ($data = $model->getPost()) {
-            $model->attributes = $data;
-            $transaction = $model->getDbConnection()->beginTransaction();
-
-            if ($model->validate()) {
-                try {
-                    $model->saveOrThrow(false);
-
-                    $profile = new models\Profile;
-                    $profile->accountId = $model->id;
-                    $profile->saveOrThrow(false);
-
-                    $model->createDemoSpins();
-
-                    $transaction->commit();
-                    $this->signUp($model);
-
-                } catch (\Exception $e) {
-                    $transaction->rollback();
-
-                    throw $e;
-                }
+        $model = null;
+        if ($currentId = User()->getState('signup.user.id')) {
+            if ($model = models\User::model()->findByPk($currentId)) {
+                $model->scenario = $scenario;
+            } else {
+                User()->setState('signup.user.id', null);
             }
         }
 
-        $model->password = $model->passwordRepeat = null;
+        if (!$model) {
+            if (1 == $step) {
+                $model = new models\User($scenario);
+            } else {
+                $this->redirect(['', 'step' => 1]);
+            }
+        }
 
-        $this->render('signup-guest-account', array('model' => $model));
+        if ($model->attributes = $model->getPost()) {
+            $model->avatarUpload = CUploadedFile::getInstance($model, 'avatarUpload');
+            if ($model->save()) {
+                if (1 == $step) {
+                    User()->setState('signup.user.id', $model->id);
+                    $this->redirect(['', 'step' => 2]);
+                } else {
+                    if ($model->avatarUpload) {
+                        $model->generateAvatarName($model->avatarUpload->extensionName);
+                        $file = $model->getAvatarFile();
+                        $this->fsDir(dirname($file));
+                        $model->avatarUpload->saveAs($file);
+                    }
+                    InpostedUser::makeUser($model->id);
+
+                    $this->sendVerificationLink($model);
+
+                    User()->login(new \shared\components\UserIdentity($model));
+                    User()->setState('signup.user.id', null);
+                    $this->goHome();
+                }
+            }
+
+        }
+        $model->password = null;
+
+        $this->render("signup-$step", compact('model'));
     }
 
+    /**
+     * @param string $policy
+     *
+     * @throws \CHttpException
+     */
     public function actionVerify($policy = null) {
+        $user = User();
+        $account = $user->getAccount();
         if (!$policy) {
-            $account = User()->getAccount();
-            $this->sendVerifictionLink($account);
+            $this->sendVerificationLink($account);
             $this->goBack();
 
         } else {
@@ -130,47 +141,46 @@ class AuthController extends components\Controller
                 throw new CHttpException(403);
             }
 
-            list($route, $params, $time) = $policy;
+            list(, $params, $time) = $policy;
 
             $email = array_path($params, 'email');
 
             if (time() - $time > 1800) {
-                User()->setError('Unable to verify email. Signature expired');
-            } else
-            if ($email != User()->getAccount()->email) {
-                User()->setError('Unable to verify email. Emails don\'t match.');
+                $user->setError('Unable to verify email. Signature expired');
             } else {
-                User()->getAccount()->setVerified();
-                User()->setSuccess('Your email was successfully verified.');
+                if ($email != $account->email) {
+                    $user->setError('Unable to verify email. Emails don\'t match.');
+                } else {
+                    $account->markVerified();
+                    $user->setSuccess('Your email was successfully verified.');
+                }
             }
             $this->goHome();
         }
     }
 
     public function actionSignin() {
-        if (!$this->user->isGuest) {
-            $this->goHome();
-        }
-
-        $model = new Signin('login');
-        if ($data = Yii()->getRequest()->getPost(get_class($model))) {
-            // collects user input data
-            $model->attributes = $data;
+        $model = new models\forms\Signin('login');
+        if ($model->attributes = Yii()->getRequest()->getPost(get_class($model))) {
             // validates user input and redirect to previous page if validated
             $this->signIn($model);
         }
 
-        Yii()->clientScript->registerPackage('angular');
         // displays the login form
         $this->render('signin', array('model' => $model));
     }
 
+    /**
+     * @param string $policy
+     *
+     * @throws \CHttpException
+     */
     public function actionRestore($policy = null) {
         if (!$this->user->isGuest) {
             $this->goHome();
         }
 
-        if(!$policy){
+        if (!$policy) {
             $model = new Restore('request');
             $model->username = Yii()->getRequest()->getQuery('user');
             if ($data = Yii()->getRequest()->getPost(get_class($model))) {
@@ -185,7 +195,7 @@ class AuthController extends components\Controller
                 throw new CHttpException(403, 'Invalid signature');
             }
 
-            list($route, $params, $time) = $policy;
+            list(, $params, $time) = $policy;
 
             $username = array_path($params, 'username');
 
@@ -204,20 +214,8 @@ class AuthController extends components\Controller
         }
     }
 
-    protected function signUp(models\User $account) {
-        if ($account->validate()) {
-            InpostedUser::makeUser($account->id);
-
-            $this->sendVerifictionLink($account);
-
-            User()->login(new shared\components\UserIdentity($account));
-            $this->goHome();
-        }
-    }
-
     protected function signIn(Signin $form) {
         if ($form->validate() && $form->login()) {
-            //            $this->user->logout();
             $returnUrl = $this->user->getReturnUrl() ? : $this->user->getHomeUrl();
             $this->redirect($returnUrl);
         }
@@ -225,7 +223,7 @@ class AuthController extends components\Controller
 
     protected function restoreRequest(Restore $form) {
         sleep(1);
-        /** @var $model Account */
+        /** @var $model User */
         if ($form->validate()) {
             $this->sendRestorePasswordLink($form);
             $this->goSignIn();
@@ -235,7 +233,6 @@ class AuthController extends components\Controller
     }
 
     protected function restoreSetPassword(Restore $form, $email) {
-        /** @var $model Account */
         if ($form->validate()) {
             /** @var $account \site\models\User */
             $account = \site\models\User::model()->findByEmail($email);
@@ -243,7 +240,7 @@ class AuthController extends components\Controller
             $account->save();
 
             User()->setSuccess('Your password was successfully changed');
-            User()->login(new shared\components\UserIdentity($account));
+            User()->login(new \shared\components\UserIdentity($account));
             $this->goHome();
         }
     }
@@ -254,28 +251,28 @@ class AuthController extends components\Controller
         $this->goSignIn();
     }
 
-    protected function sendVerifictionLink(models\User $account) {
-        $verificationLink = $this->createSignedUrl('/auth/verify', array('email' => $account->email));
+    protected function sendVerificationLink(\shared\models\User $user) {
+        $verificationLink = $this->createSignedUrl('site:/auth/verify', array('email' => $user->email));
         Messenger()->send(
             'email-verification',
-            $account->email,
+            $user->email,
             array(
-                 'firstName' => $account->firstName,
-                 'link' => $verificationLink
+                 'firstName' => $user->firstName,
+                 'link'      => $verificationLink
             )
         );
-        User()->setSuccess("Verification link was sent to {$account->email}.");
+        User()->setSuccess("Verification link was sent to {$user->email}.");
     }
 
     protected function sendRestorePasswordLink(Restore $form) {
-        $restorePasswordLink = $this->createSignedUrl('/auth/restore', array('username' => $form->username));
+        $restorePasswordLink = $this->createSignedUrl('site:/auth/restore', array('username' => $form->username));
 
         Messenger()->send(
             'password-reset',
             $form->username,
             array(
                  'firstName' => $form->account->firstName,
-                 'link' => $restorePasswordLink
+                 'link'      => $restorePasswordLink
             )
         );
         User()->setSuccess("Password restore link was sent to <strong>{$form->username}</strong>");

@@ -11,6 +11,7 @@ namespace base;
 
 class ActiveRecord extends \CActiveRecord
 {
+    use ModelTrait;
     /**
      * Returns the static model of the specified AR class.
      * The model returned is a static instance of the AR class.
@@ -96,10 +97,5 @@ class ActiveRecord extends \CActiveRecord
                 array('{class}' => get_called_class(), '{errors}' => \CJSON::encode($this->errors))
             )
         );
-    }
-
-
-    public static function getPost(){
-        return \Yii::app()->getRequest()->getPost(get_called_class(), array());
     }
 }

@@ -8,15 +8,17 @@ namespace shared\models;
  *
  * @property integer $id
  * @property string  $email
- * @property string  $password
+ * @property string  $hashedPassword
  * @property string  $name
  * @property integer $active
  * @property string  $dateCreated
  * @property string  $dateAccessed
  * @property string  $note
  * @property bool    $verified
+ * @property string  $avatar
  *
  * @property string  $EID
+ * @property string  $firstName
  */
 use base\Randomizr;
 use base\ActiveRecord;
@@ -24,7 +26,6 @@ use base\ActiveRecord;
 class User extends ActiveRecord
 {
     public $active = 1;
-    public $passwordRepeat;
 
     /**
      * Returns behaviors configuration.
@@ -34,14 +35,13 @@ class User extends ActiveRecord
 
     public function behaviors() {
         return array(
-            'timestamp' => array(
+            'timestamp' => [
                 'class'           => 'zii.behaviors.CTimestampBehavior',
                 'createAttribute' => 'dateCreated',
                 'updateAttribute' => null,
-            ),
-            'encodedid' => array(
-                'class' => '\shared\behaviors\EncodedIdBehavior',
-            )
+            ],
+            'encodedid' => ['class' => '\shared\behaviors\EncodedIdBehavior'],
+
         );
     }
 
@@ -49,26 +49,33 @@ class User extends ActiveRecord
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        return array(
-            array('password, name', 'required', 'on' => 'signup'),
-            array('email', 'email', 'on' => 'signup'),
-            array('email', 'unique', 'on' => 'signup'),
-            array('email, name', 'length', 'max' => 255, 'on' => 'signup'),
-        );
+        return [
+            ['nickname, email', 'required'],
+            [
+                'nickname', 'in', 'not' => true,
+                'range'                 => ['restore', 'register', 'profile', 'settings'],
+                'message'               => '{attribute} not allowed'
+            ],
+
+            ['email, nickname', 'unique'],
+            ['email', 'email'],
+            ['email, name, nickname', 'length', 'max' => 255],
+            ['homepage', 'length', 'max' => 1024],
+        ];
     }
 
     /**
      * @return array relational rules.
      */
     public function relations() {
-        return array();
+        return [];
     }
 
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
-        return array(
+        return [
             'id'             => 'ID',
             'email'          => 'Email',
             'password'       => 'Password',
@@ -77,32 +84,20 @@ class User extends ActiveRecord
             'dateCreated'    => 'Date Created',
             'dateAccessed'   => 'Date Accessed',
             'note'           => 'Note',
-        );
+            'Country_id'     => 'Country'
+        ];
     }
 
-    public function beforeSave() {
-        switch ($this->scenario) {
-            case 'signup':
-                $this->password = Randomizr::hashPassword($this->password);
-                break;
-            case 'profile':
-                if ($this->newPassword) {
-                    $this->password = Randomizr::hashPassword($this->newPassword);
-                }
-                break;
-        }
-        return parent::beforeSave();
-    }
 
     public function validatePassword($password) {
-        return $this->password === Randomizr::hashPassword($password, $this->password);
+        return $this->hashedPassword === Randomizr::hashPassword($password, $this->hashedPassword);
     }
 
     public function resetPassword($password = null) {
         if (!$password) {
             $password = Randomizr::generateRandomString(8);
         }
-        $this->password = Randomizr::hashPassword($password);
+        $this->hashedPassword = Randomizr::hashPassword($password);
         return $password;
     }
 
@@ -117,13 +112,46 @@ class User extends ActiveRecord
         return parent::findByAttributes(compact('email'), $condition, $params);
     }
 
-    public function setAccessed() {
+    public function markAccessed() {
         $this->dateAccessed = new \CDbExpression('NOW()');
-        return $this->update('dateAccessed');
+        return $this->update(['dateAccessed']);
     }
 
-    public function setVerified() {
+    public function markVerified() {
         $this->verified = true;
-        return $this->update('verified');
+        return $this->update(['verified']);
+    }
+
+    public function getAvatarFile() {
+        $storage = Yii()->params->itemAt('avatars-storage');
+        return path($storage, $this->formatIdPath(), $this->avatar);
+    }
+
+    public function getAvatarUrl() {
+        $baseUrl = Yii()->params->itemAt('avatars-baseUrl');
+        return Yii()->createAbsoluteUrl($baseUrl) . "/{$this->formatIdPath()}/$this->avatar";
+    }
+
+    protected function formatIdPath() {
+        return number_format($this->id, 0, null, '/');
+    }
+
+    protected function getFirstName(){
+        extract($this->parseName());
+        /** @var $first string */
+        return $first;
+    }
+
+    protected function getLastName(){
+        extract($this->parseName());
+        /** @var $last string */
+        return $last;
+    }
+
+    protected function parseName(){
+        $parts = array_filter(explode(' ', $this->name));
+
+        return ['first' => array_path($parts, 0), 'last' => array_path($parts, 1)];
+
     }
 }

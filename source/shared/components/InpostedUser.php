@@ -65,7 +65,7 @@ class InpostedUser extends \CWebUser
      */
     public function getAccount() {
         if (!$this->_account) {
-            $class = sprintf('%s\models\Account', Yii()->id);
+            $class = Yii()->id . '\models\User';
             $this->_account = $class::model()->findByPk($this->getId());
         }
 
@@ -74,15 +74,15 @@ class InpostedUser extends \CWebUser
 
     public function getHomeUrl() {
         if ($this->getIsAdmin()) {
-            $home = array('admin:admin/index');
+            $home = ['admin:admin/index'];
         } else {
-            $home = array('site:account/index');
+            $home = ['site:site/index'];
         }
 
         return $this->getState('__homeUrl', $home);
     }
 
-    public function getReturnUrl($default = false) {
+    public function getReturnUrl($default = ['site:site/index']) {
         return parent::getReturnUrl($default);
     }
 
@@ -97,7 +97,7 @@ class InpostedUser extends \CWebUser
     protected function afterLogin($fromCookie) {
         $this->_roles = null;
 
-        $this->getAccount()->setAccessed();
+        $this->getAccount()->markAccessed();
 
         parent::afterLogin($fromCookie);
     }

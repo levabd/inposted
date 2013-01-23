@@ -1,5 +1,7 @@
 <?php
-class Contact extends \CFormModel
+namespace site\models\forms;
+
+class Contact extends \base\FormModel
 {
     public $name;
     public $email;

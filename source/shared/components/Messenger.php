@@ -5,6 +5,11 @@
  * @author Dima Chukhai (dipp.dc@gmail.com, dipp@luckyteam.co.uk)
  */
 namespace shared\components;
+use shared\extensions\mail\Mailer;
+
+/**
+ * @property Mailer $mailer;
+ */
 class Messenger extends \CBaseController implements \IApplicationComponent
 {
     private $_initialized = false;
@@ -31,7 +36,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
     }
 
     /**
-     * @return \shared\extensions\mail\Mailer
+     * @return Mailer
      */
     public function getMailer() {
         return Yii()->getComponent($this->mailerId);
@@ -42,8 +47,8 @@ class Messenger extends \CBaseController implements \IApplicationComponent
         if ($msgOptions) {
             $view = array_path($msgOptions, 'view', $name);
             /**
-             * @var $html
-             * @var $txt
+             * @var $html string
+             * @var $txt  string
              */
             extract($this->render($view, $data));
 
@@ -100,7 +105,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
      * Since version 1.0.2, the view name can also refer to a path alias
      * if it contains dot characters.
      *
-     * @param string name of the view (without file extension)
+     * @param string $viewName name of the view (without file extension)
      *
      * @return string the view file path. False if the view file does not exist
      * @see CApplication::findLocalizedFile

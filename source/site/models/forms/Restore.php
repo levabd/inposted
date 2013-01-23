@@ -1,13 +1,7 @@
 <?php
-//namespace site\models\forms;
+namespace site\models\forms;
 
-/**
- * LoginForm class.
- * LoginForm is the data structure for keeping user login form data.
- *
- * @property Identity $identity
- */
-class Restore extends CFormModel
+class Restore extends \base\FormModel
 {
     public $account;
     public $username;

@@ -1,7 +1,7 @@
 <?php
-//namespace site\models\forms;
+namespace site\models\forms;
 
-use \site\components\EmailUserIdentity as Identity;
+use site\components\EmailUserIdentity as Identity;
 
 /**
  * LoginForm class.
@@ -9,7 +9,7 @@ use \site\components\EmailUserIdentity as Identity;
  *
  * @property Identity $identity
  */
-class Signin extends CFormModel
+class Signin extends \base\FormModel
 {
     public $username;
     public $password;

@@ -11,6 +11,8 @@ return [
     'runtimePath' => path(ROOT, 'runtime', $name),
     'preload'     => ['log'],
 
+    'import'      => ['shared.extensions.base.CHtml'],
+
     'components'  => [
         'messenger'      => [
             'class'     => 'shared\components\Messenger',
@@ -28,7 +30,7 @@ return [
                 'password'   => null,
             ],
             'message'   => [
-                'from' => []
+                'from' => ['info@inposted.com' => 'Inposted'],
             ]
         ],
 
@@ -87,9 +89,11 @@ return [
                     'urlSuffix'      => '/',
                     'showScriptName' => false,
                     'rules'          => [
-                        '<view:null>'     => 'site/page',
-                        'account'                           => 'account/index',
-                        'account/<view>.html'               => 'account/page',
+                        'register/step<step>' => array('auth/signup'),
+                        'register'            => array('auth/signup'),
+                        '<view:null>'         => 'site/page',
+                        'account'             => 'account/index',
+                        'account/<view>.html' => 'account/page',
                     ]
                 ],
                 'admin' => [
@@ -115,30 +119,36 @@ return [
             'class'  => 'CLogRouter',
             'routes' => [
                 'email'       => [
-                    'class'       => 'CFileLogRoute',
-                    'categories'  => 'email',
-                    'logFile'     => 'email.log',
+                    'class'      => 'CFileLogRoute',
+                    'categories' => 'email',
+                    'logFile'    => 'email.log',
                 ],
                 'application' => [
-                    'class'       => 'CFileLogRoute',
-                    'levels'      => 'error, warning, info',
+                    'class'  => 'CFileLogRoute',
+                    'levels' => 'error, warning, info',
                 ],
                 'error'       => [
-                    'class'       => 'CFileLogRoute',
-                    'levels'      => 'error, warning',
-                    'logFile'     => 'error.log',
+                    'class'   => 'CFileLogRoute',
+                    'levels'  => 'error, warning',
+                    'logFile' => 'error.log',
                 ],
                 'info'        => [
-                    'class'       => 'CFileLogRoute',
-                    'levels'      => 'info',
-                    'logFile'     => 'info.log',
+                    'class'   => 'CFileLogRoute',
+                    'levels'  => 'info',
+                    'logFile' => 'info.log',
                 ],
                 'trace'       => [
-                    'class'       => 'CFileLogRoute',
-                    'levels'      => 'trace',
-                    'logFile'     => 'trace.log',
+                    'class'   => 'CFileLogRoute',
+                    'levels'  => 'trace',
+                    'logFile' => 'trace.log',
                 ],
             ],
         ],
     ],
+
+    'params'      => [
+        'avatars-storage' => ROOT . '/web/site/avatars',
+        'avatars-baseUrl' => 'site:avatars',
+        'safeLocations'   => [ROOT . '/web/site/avatars']
+    ]
 ];
