@@ -89,11 +89,14 @@ return [
                     'urlSuffix'      => '/',
                     'showScriptName' => false,
                     'rules'          => [
-                        'register/step<step>' => array('auth/signup'),
-                        'register'            => array('auth/signup'),
-                        '<view:null>'         => 'site/page',
-                        'account'             => 'account/index',
-                        'account/<view>.html' => 'account/page',
+                        'register/step<step>'      => 'auth/signup',
+                        'register'                 => 'auth/signup',
+                        'register/verify/<policy>' => 'auth/verify',
+                        'register/verify'          => 'auth/verify',
+
+                        '<view:null>'              => 'site/page',
+                        'account'                  => 'account/index',
+                        'account/<view>.html'      => 'account/page',
                     ]
                 ],
                 'admin' => [
