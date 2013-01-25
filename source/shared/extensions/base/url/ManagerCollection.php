@@ -218,9 +218,10 @@ class ManagerCollection extends CApplicationComponent
      * Do not call this method. This is a PHP magic method that we override
      * to mimic currently running sub-application url manager and proxy calls to it.
      *
-     * @param string $method      the method name
-     * @param array $params       method parameters
+     * @param string $method       the method name
+     * @param array  $params       method parameters
      *
+     * @throws \CException|\Exception
      * @return mixed the method return value
      */
 
@@ -236,6 +237,16 @@ class ManagerCollection extends CApplicationComponent
             else {
                 throw $e;
             }
+        }
+    }
+
+    public function getBaseUrl($absolute = false) {
+        if($absolute){
+            $manager = true === $absolute ? $this->getCurrentManager() : $this->getManager($absolute);
+            return $manager->getBaseUrl(true);
+        }
+        else{
+            return $this->getCurrentManager()->getBaseUrl(false);
         }
     }
 

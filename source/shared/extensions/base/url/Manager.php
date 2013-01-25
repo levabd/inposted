@@ -72,11 +72,12 @@ class Manager extends \CUrlManager
     }
 
     /**
-     * Henerates host info. Uses info, that was passed to $host property.
+     * Generates host info. Uses info, that was passed to $host property.
      * If Manager::$host of current object was not cdonfigured will fallback to standart api if this is not alien url manager.
      *
      * @param string|null $schema Which schema to use. http/https
      *
+     * @throws \CException
      * @return string host info
      */
     public function getHostInfo($schema = '') {
@@ -118,11 +119,20 @@ class Manager extends \CUrlManager
      * Getter for base url. If Manager::$host was passed in configuration will use this information.
      * If not and it is not alien url manager will fallback to default value
      *
+     * @param bool $absolute
+     *
      * @return string
      */
-    public function getBaseUrl() {
+    public function getBaseUrl($absolute = false) {
         if ($this->getIsAlien() || is_array($this->_host)) {
-            return (is_array($this->_host) && isset($this->_host['path']) ? $this->_host['path'] : '');
+            if(is_array($this->_host)){
+                $baseUrl = isset($this->_host['path']) ? $this->_host['path'] : '';
+                if($absolute){
+                    $baseUrl = "$this->hostInfo/$baseUrl";
+                }
+                return $baseUrl;
+            }
+            return '';
         }
 
         return parent::getBaseUrl();
