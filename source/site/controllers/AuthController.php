@@ -130,9 +130,9 @@ class AuthController extends components\Controller
      */
     public function actionVerify($policy = null) {
         $user = User();
-        $account = $user->getAccount();
+        $userModel = $user->getModel();
         if (!$policy) {
-            $this->sendVerificationLink($account);
+            $this->sendVerificationLink($userModel);
             $this->goBack();
 
         } else {
@@ -148,10 +148,10 @@ class AuthController extends components\Controller
             if (time() - $time > 1800) {
                 $user->setError('Unable to verify email. Signature expired');
             } else {
-                if ($email != $account->email) {
+                if ($email != $userModel->email) {
                     $user->setError('Unable to verify email. Emails don\'t match.');
                 } else {
-                    $account->markVerified();
+                    $userModel->markVerified();
                     $user->setSuccess('Your email was successfully verified.');
                 }
             }
@@ -234,13 +234,13 @@ class AuthController extends components\Controller
 
     protected function restoreSetPassword(Restore $form, $email) {
         if ($form->validate()) {
-            /** @var $account \site\models\User */
-            $account = \site\models\User::model()->findByEmail($email);
-            $account->resetPassword($form->password);
-            $account->save();
+            /** @var $user \site\models\User */
+            $user = \site\models\User::model()->findByEmail($email);
+            $user->resetPassword($form->password);
+            $user->save();
 
             User()->setSuccess('Your password was successfully changed');
-            User()->login(new \shared\components\UserIdentity($account));
+            User()->login(new \shared\components\UserIdentity($user));
             $this->goHome();
         }
     }
@@ -271,7 +271,7 @@ class AuthController extends components\Controller
             'password-reset',
             $form->username,
             array(
-                 'firstName' => $form->account->firstName,
+                 'firstName' => $form->user->firstName,
                  'link'      => $restorePasswordLink
             )
         );

@@ -3,10 +3,10 @@ namespace shared\components;
 
 class UserIdentity extends \CUserIdentity
 {
-    private $account;
+    private $user;
 
-    public function  __construct(\shared\models\User $account) {
-        $this->account = $account;
+    public function  __construct(\shared\models\User $user) {
+        $this->user = $user;
     }
 
     public function authenticate() {
@@ -14,10 +14,10 @@ class UserIdentity extends \CUserIdentity
     }
 
     public function getId() {
-        return $this->account->getPrimaryKey();
+        return $this->user->getPrimaryKey();
     }
 
     public function getName() {
-        return $this->account->name;
+        return $this->user->name;
     }
 }

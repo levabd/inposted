@@ -47,8 +47,9 @@ class AdminController extends \admin\components\Controller
 
     public function login($id) {
         if (User()->id != $id) {
-            if ($account = models\User::model()->findByPk($id)) {
-                User()->login(new components\UserIdentity($account));
+            /** @var $user \shared\models\User */
+            if ($user = models\User::model()->findByPk($id)) {
+                User()->login(new components\UserIdentity($user));
                 return true;
             }
         }

@@ -1,13 +1,17 @@
 <?php
 namespace shared\components;
 use Yii;
+use shared\models\User;
 
+/**
+ * @property User $model
+ */
 class InpostedUser extends \CWebUser
 {
     const ROLE_USER = 'User';
     const ROLE_ADMIN = 'Admin';
 
-    private $_account;
+    private $_model;
     private $_roles;
 
     public $loginRequiredAjaxResponse = '401';
@@ -61,15 +65,15 @@ class InpostedUser extends \CWebUser
     }
 
     /**
-     * @return \shared\models\User
+     * @return User
      */
-    public function getAccount() {
-        if (!$this->_account) {
+    public function getModel() {
+        if (!$this->_model) {
             $class = Yii()->id . '\models\User';
-            $this->_account = $class::model()->findByPk($this->getId());
+            $this->_model = $class::model()->findByPk($this->getId());
         }
 
-        return $this->_account;
+        return $this->_model;
     }
 
     public function getHomeUrl() {
@@ -97,7 +101,7 @@ class InpostedUser extends \CWebUser
     protected function afterLogin($fromCookie) {
         $this->_roles = null;
 
-        $this->getAccount()->markAccessed();
+        $this->getModel()->markAccessed();
 
         parent::afterLogin($fromCookie);
     }

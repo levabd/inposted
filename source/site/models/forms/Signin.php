@@ -35,7 +35,7 @@ class Signin extends \base\FormModel
             array('password', 'authenticate', 'on' => 'login'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
-            array('username', 'exist', 'className' => '\site\models\Account', 'attributeName' => 'email', 'message' => 'Account doesn\'t exist', 'on' => 'restore'),
+            array('username', 'exist', 'className' => 'site\models\User', 'attributeName' => 'email', 'message' => 'Account doesn\'t exist', 'on' => 'restore'),
         );
     }
 

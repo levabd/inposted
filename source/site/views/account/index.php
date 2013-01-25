@@ -1,9 +1,9 @@
 <?php
 $baseurl = Yii()->getBaseUrl();
-$apiId = User()->getAccount()->apiId;
+$apiId = User()->getModel()->apiId;
 $apiUrl = $this->createUrl('http(s):api:/') . "/{$apiId}/inposted.js";
 
-if(!User()->getAccount()->verified){
+if(!User()->getModel()->verified){
     User()->setFlash('email-not-verified',"<strong>Warning!</strong><br>Your email is not verified. <a href='{$this->createUrl('/auth/verify')}'>Send me verification link</a>");
 }
 

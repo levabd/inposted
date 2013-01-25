@@ -5,7 +5,7 @@ use shared\interfaces\RestRecord;
 
 abstract class ActiveRestController extends RestController
 {
-    public $modelHasAccountConstraint = true;
+    public $modelHasUserConstraint = true;
 
     abstract public function modelName();
 
@@ -19,11 +19,11 @@ abstract class ActiveRestController extends RestController
             throw new \CException("$class should implement \\shared\\interfaces\\RestRecord interface");
         }
 
-        if(null === $this->modelHasAccountConstraint){
-            $this->modelHasAccountConstraint = array_key_exists('account', $model->relations());
+        if(null === $this->modelHasUserConstraint){
+            $this->modelHasUserConstraint = array_key_exists('user', $model->relations());
         }
-        if($this->modelHasAccountConstraint){
-            if(!method_exists($model,'account')){
+        if($this->modelHasUserConstraint){
+            if(!method_exists($model,'user')){
                 throw new \CException("$class has Account constraint and should have account() scope definition");
             }
         }
@@ -36,8 +36,8 @@ abstract class ActiveRestController extends RestController
         $class = $this->modelName();
 
         $model = $class::model();
-        if($this->modelHasAccountConstraint){
-            $model->account(User()->getAccount()->getPrimaryKey());
+        if($this->modelHasUserConstraint){
+            $model->user(User()->getModel()->getPrimaryKey());
         }
 
         return $model;
@@ -78,8 +78,8 @@ abstract class ActiveRestController extends RestController
         /** @var $model \CActiveRecord */
         $model = new $class;
 
-        if($model->hasAttribute('accountId')){
-            $model->accountId = User()->getAccount()->getPrimaryKey();
+        if($model->hasAttribute('User_id')){
+            $model->User_id = User()->getModel()->getPrimaryKey();
         }
 
         return $model;

@@ -8,23 +8,18 @@ class EmailUserIdentity extends \CUserIdentity
     private $_id;
     public $password;
 
-    const ERROR_ACCOUNT_NOT_VERIFIED = 3;
-
     public function  __construct($email, $password) {
         $this->username = $email;
         $this->password = $password;
     }
 
     public function authenticate() {
-        /** @var $account  \site\models\User*/
-        if ($account = User::model()->findByAttributes(array('email' => $this->username))) {
-//            if(!$user->verified){
-//                $this->errorCode = self::ERROR_ACCOUNT_NOT_VERIFIED;
-//            } else
-            if (!$account->validatePassword($this->password)) {
+        /** @var $user  \site\models\User*/
+        if ($user = User::model()->findByAttributes(array('email' => $this->username))) {
+            if (!$user->validatePassword($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
-                $this->_id = $account->id;
+                $this->_id = $user->id;
                 $this->errorCode = self::ERROR_NONE;
             }
         } else {

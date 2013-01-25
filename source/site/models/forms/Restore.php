@@ -3,7 +3,7 @@ namespace site\models\forms;
 
 class Restore extends \base\FormModel
 {
-    public $account;
+    public $user;
     public $username;
     public $password;
 
@@ -20,7 +20,7 @@ class Restore extends \base\FormModel
             array('username', 'unsafe', 'on' => 'set-password'),
             array('password', 'required', 'on' => 'set-password'),
 
-            array('username', 'validateAccount'),
+            array('username', 'validateUser'),
         );
     }
 
@@ -34,15 +34,15 @@ class Restore extends \base\FormModel
         );
     }
 
-    public function validateAccount($attribute, $params) {
-        $this->account = $account = \site\models\User::model()->findByEmail($this->username);
-        if(!$account){
+    public function validateUser($attribute, $params) {
+        $this->user = $user = \site\models\User::model()->findByEmail($this->username);
+        if(!$user){
             $this->addError($attribute, 'Account doesn\'t exist');
         } else
-        if(!$account->active){
+        if(!$user->active){
             $this->addError($attribute, 'Account is inactive, contact us');
         } else
-        if(!$account->verified){
+        if(!$user->verified){
             $this->addError($attribute, 'Account email not verified, contact us');
         }
     }
