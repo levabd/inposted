@@ -10,12 +10,16 @@ namespace shared\models;
  * @property string  $email
  * @property string  $hashedPassword
  * @property string  $name
+ * @property string  $nickname
  * @property integer $active
  * @property string  $dateCreated
  * @property string  $dateAccessed
  * @property string  $note
  * @property bool    $verified
  * @property string  $avatar
+ * @property string  $avatarUrl
+ * @property string  $reputation
+ * @property string  $level
  *
  * @property string  $EID
  * @property string  $firstName
@@ -61,6 +65,7 @@ class User extends ActiveRecord
             ['email', 'email'],
             ['email, name, nickname', 'length', 'max' => 255],
             ['homepage', 'length', 'max' => 1024],
+            ['Country_id', 'exist', 'className' => $this->ns('Country')]
         ];
     }
 
@@ -68,7 +73,9 @@ class User extends ActiveRecord
      * @return array relational rules.
      */
     public function relations() {
-        return [];
+        return [
+            'country' => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
+        ];
     }
 
     /**
@@ -128,27 +135,28 @@ class User extends ActiveRecord
     }
 
     public function getAvatarUrl() {
-        $baseUrl = Yii()->params->itemAt('avatars-baseUrl');
-        return Yii()->createAbsoluteUrl($baseUrl) . "/{$this->formatIdPath()}/$this->avatar";
+        $config = Yii()->params->itemAt('avatars-baseUrl');
+        list($appId, $baseUrl) = explode(':', $config);
+        return Yii()->urlManager->getBaseUrl($appId) . "/$baseUrl/{$this->formatIdPath()}/$this->avatar";
     }
 
     protected function formatIdPath() {
         return number_format($this->id, 0, null, '/');
     }
 
-    protected function getFirstName(){
+    protected function getFirstName() {
         extract($this->parseName());
         /** @var $first string */
-        return $first;
+        return $first ? : $this->nickname;
     }
 
-    protected function getLastName(){
+    protected function getLastName() {
         extract($this->parseName());
         /** @var $last string */
         return $last;
     }
 
-    protected function parseName(){
+    protected function parseName() {
         $parts = array_filter(explode(' ', $this->name));
 
         return ['first' => array_path($parts, 0), 'last' => array_path($parts, 1)];

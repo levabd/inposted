@@ -12,23 +12,7 @@ $this->beginContent('//layouts/main');
 </div><!-- конец левая часть контента-->
 
 <div class="span3"> <!--правая часть контента-->
-    <div class="well" style="background:#ffffff;">
-        <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-            <a href=""style="color:#54211d;font-size:18px;text-decoration: underline;"><b>bender</b></a>
-        </div><br/>
-        <div class="row-fluid">
-            <div class="span5">
-                <div class="avat">
-                    <img alt="bender" src="<?=$baseUrl?>/img/avatar.png" title="bender"align="middle">
-                </div>
-            </div>
-            <div class="span7">
-                Reputation: 34<br/>
-                Level: 4<br/>
-                <a href=""><img alt="bender"  src="<?=$baseUrl?>/img/uk.jpg" title="Ukraine"></a><br/>
-            </div>
-        </div>
-    </div>
+    <?php $this->widget('site\widgets\user\User')?>
 
 
     <div class="well"style="background:#ffffff;">
