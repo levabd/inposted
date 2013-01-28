@@ -32,7 +32,7 @@ class ActiveRecord extends \CActiveRecord
      * @return string the table name
      */
     public function tableName() {
-        return array_pop(explode('\\', get_class($this)));
+        return array_slice(explode('\\', get_class($this)), -1, 1)[0];
     }
 
     public function ns($classname = null){

@@ -5,7 +5,7 @@
 namespace base;
 trait ModelTrait{
     public function formName(){
-        return array_pop(explode('\\', get_class($this)));
+        return array_slice(explode('\\', get_class($this)), -1, 1)[0];
     }
 
     public function getPost(){
