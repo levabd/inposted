@@ -12,10 +12,15 @@ return [
             'class' => 'site\components\GeoIp',
         ],
 
+        'urlShorten' => [
+            'class' => 'site\components\UrlShorten',
+        ],
+
         'clientScript' => [
             'packages' => [
                 'main'       => [
                     'baseUrl' => '',
+                    'js' => ['js/inposted.js'],
                     'css'     => ['css/new.css'],
                     'depends' => ['bootstrap'],
                 ],

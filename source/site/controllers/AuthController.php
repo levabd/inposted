@@ -248,7 +248,7 @@ class AuthController extends components\Controller
     public function actionSignout() {
         $this->user->logout();
 
-        $this->goSignIn();
+        $this->goHome();
     }
 
     protected function sendVerificationLink(\shared\models\User $user) {

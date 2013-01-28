@@ -21,6 +21,8 @@ namespace shared\models;
  * @property string  $reputation
  * @property string  $level
  *
+ * @property Interest[] $interests
+ *
  * @property string  $EID
  * @property string  $firstName
  */
@@ -75,6 +77,7 @@ class User extends ActiveRecord
     public function relations() {
         return [
             'country' => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
+            'interests' => [self::MANY_MANY, $this->ns('Interest'), 'Interest_User(User_id, Interest_id)'],
         ];
     }
 

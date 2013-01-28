@@ -31,7 +31,7 @@ Yii()->clientScript->registerPackage('main');
                     </ul>
                 </div>
                 <div class="instum">
-                    <div class="ins"><a href=""><i class="icon-1share"></i></a></div>
+                    <div class="ins"><a href="<?=$this->createUrl('/auth/signout')?>"><i class="icon-1share"></i></a></div>
                     <div class="ins"><a href=""><i class="icon-1star-empty"></i></a></div>
                     <div class="ins"><a href=""><i class="icon-1pencil"></i></a></div>
                 </div>

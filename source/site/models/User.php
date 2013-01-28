@@ -25,7 +25,7 @@ class User extends \shared\models\User
     }
 
     public function passwordValidator($attribute) {
-        if(!$this->$attribute){
+        if (!$this->$attribute) {
             return true;
         }
 
@@ -93,5 +93,33 @@ class User extends \shared\models\User
 
             $this->update(['avatar']);
         }
+    }
+
+    public function addInterest(Interest $interest) {
+        $result = true;
+        $transaction = $this->dbConnection->beginTransaction();
+        if (!$this->hasInterest($interest)) {
+            $result = $this->dbConnection->createCommand(
+                "INSERT INTO `Interest_User`
+                SET `User_id` = :userId, `Interest_id` = :interestId"
+            )->execute(['userId' => $this->id, 'interestId' => $interest->id]);
+        }
+        $transaction->commit();
+        return $result;
+    }
+
+    public function hasInterest(Interest $interest) {
+        return (bool)$this->dbConnection->createCommand(
+            "SELECT COUNT(*)
+            FROM `Interest_User`
+            WHERE `User_id` = :userId AND `Interest_id` = :interestId"
+        )->queryScalar(['userId' => $this->id, 'interestId' => $interest->id]);
+    }
+
+    public function removeInterest($interest) {
+        return $this->dbConnection->createCommand(
+            "DELETE FROM `Interest_User`
+            WHERE `User_id` = :userId AND `Interest_id` = :interestId"
+        )->query(['userId' => $this->id, 'interestId' => $interest->id]);
     }
 }
