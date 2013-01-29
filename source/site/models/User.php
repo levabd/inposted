@@ -14,14 +14,27 @@ class User extends \shared\models\User
         return array_merge(
             parent::rules(),
             [
+            ['nickname', 'validateNickname'],
             ['password', 'required', 'on' => 'signup-1'],
             ['password', 'length', 'min' => 6],
             ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
             ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
             ['password', 'passwordValidator'],
-            ['avatarUpload', 'file', 'types' => 'jpg, gif, png', 'allowEmpty' => true],
+            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png', 'allowEmpty' => true],
             ]
         );
+    }
+
+    public function validateNickname($attribute) {
+        if (is_numeric(mb_substr($this->$attribute, 0, 1, Yii()->charset))) {
+            $this->addError(
+                $attribute,
+                \Yii::t(
+                    'inposted', '{attribute} can not start with digit',
+                    ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
+                )
+            );
+        }
     }
 
     public function passwordValidator($attribute) {

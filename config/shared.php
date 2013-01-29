@@ -89,6 +89,7 @@ return [
                     'urlSuffix'      => '/',
                     'showScriptName' => false,
                     'rules'          => [
+                        '' => 'site/index',
                         'register/step<step>'      => 'auth/signup',
                         'register'                 => 'auth/signup',
                         'register/verify/<policy>' => 'auth/verify',

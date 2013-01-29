@@ -26,7 +26,10 @@ Yii()->clientScript->registerPackage('main');
 
                 <div class="nav-collapse">
                     <ul class="nav" >
-                        <li class="active"><a href="" style="text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;"><i class="icon-1home"></i>Home </a></li>
+                        <li class="active">
+                            <a href="<?=$this->createUrl('/site/index')?>" style="text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;">
+                                <i class="icon-1home"></i>Home </a>
+                        </li>
                         <li><a href="" style="text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;">Title</li>
                     </ul>
                 </div>

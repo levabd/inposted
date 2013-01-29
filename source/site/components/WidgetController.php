@@ -111,7 +111,9 @@ class WidgetController extends Controller
         throw new \CException(\Yii::t('inposted', 'Invalid params for action {action}', ['{action}' => $action->id]));
     }
 
-    public function getViewPath() { return parent::getViewPath(); }
+    public function getIsWidget() {
+        return $this->_mode == 'widget';
+    }
 
 
 }

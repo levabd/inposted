@@ -15,7 +15,7 @@ use site\models\forms\Restore;
  * @method array  decryptPolicy($message)
  * @method void   fsDir($target);
  */
-class AuthController extends components\Controller
+class AuthController extends components\WidgetController
 {
     public $defaultAction = 'signin';
 
@@ -69,37 +69,42 @@ class AuthController extends components\Controller
         $this->redirect(array('signup'));
     }
 
-    public function actionSignup($step = null) {
-        !$step && $this->redirect(['', 'step' => 1]);
+    public function actionSignup($step = 1) {
+        $controller = Yii()->controller;
+        if ($this->isWidget && $controller->id == 'auth' && $controller->getAction()->id == 'signup') {
+            return;
+        }
+
+
         if ($step > 2) {
             throw new CHttpException(404);
         }
 
-        $scenario = "signup-$step";
-
         $model = null;
         if ($currentId = User()->getState('signup.user.id')) {
             if ($model = models\User::model()->findByPk($currentId)) {
-                $model->scenario = $scenario;
+
             } else {
                 User()->setState('signup.user.id', null);
             }
         }
 
         if (!$model) {
-            if (1 == $step) {
-                $model = new models\User($scenario);
-            } else {
-                $this->redirect(['', 'step' => 1]);
-            }
+            $step = 1;
+            $model = new models\User();
         }
+
+
+        $scenario = "signup-$step";
+        $model->scenario = $scenario;
+
 
         if ($model->attributes = $model->getPost()) {
             $model->avatarUpload = CUploadedFile::getInstance($model, 'avatarUpload');
             if ($model->save()) {
                 if (1 == $step) {
                     User()->setState('signup.user.id', $model->id);
-                    $this->redirect(['', 'step' => 2]);
+                    $this->redirect(['/auth/signup', 'step' => 2]);
                 } else {
                     if ($model->avatarUpload) {
                         $model->generateAvatarName($model->avatarUpload->extensionName);
@@ -120,7 +125,8 @@ class AuthController extends components\Controller
         }
         $model->password = null;
 
-        $this->render("signup-$step", compact('model'));
+        $render = 1 == $step ? 'renderPartial' : 'render';
+        $this->$render("signup-$step", compact('model'));
     }
 
     /**
@@ -161,13 +167,13 @@ class AuthController extends components\Controller
 
     public function actionSignin() {
         $model = new models\forms\Signin('login');
-        if ($model->attributes = Yii()->getRequest()->getPost(get_class($model))) {
+        if ($model->attributes = Yii()->getRequest()->getPost($model->formName())) {
             // validates user input and redirect to previous page if validated
             $this->signIn($model);
         }
 
         // displays the login form
-        $this->render('signin', array('model' => $model));
+        $this->renderPartial('signin', compact('model'));
     }
 
     /**

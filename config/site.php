@@ -25,12 +25,12 @@ return [
                     'depends' => ['bootstrap'],
                 ],
 //                'jquery'     => [
-//                    'baseUrl' => 'static/js/',
-//                    'js'      => ['jquery.min.js'],
+//                    'baseUrl' => '',
+//                    'js'      => ['js/jquery.min.js'],
 //                ],
                 'bootstrap'  => [
                     'baseUrl' => '',
-                    'css'     => ['css/bootstrap.min.css', 'css/bootstrap-responsive.min.css'],
+                    'css'     => ['css/bootstrap.min.css'],
                     'js'      => ['js/bootstrap.min.js'],
                     'depends' => ['jquery'],
                 ],

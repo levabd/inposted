@@ -44,7 +44,7 @@ class Signin extends \base\FormModel
      */
     public function attributeLabels() {
         return array(
-            'username' => 'Email',
+            'username' => 'E-Mail',
             'password' => 'Password',
             'rememberMe' => 'Remember me',
         );

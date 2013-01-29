@@ -6,25 +6,25 @@ namespace shared\models;
  *
  * The followings are the available columns in table 'User':
  *
- * @property integer $id
- * @property string  $email
- * @property string  $hashedPassword
- * @property string  $name
- * @property string  $nickname
- * @property integer $active
- * @property string  $dateCreated
- * @property string  $dateAccessed
- * @property string  $note
- * @property bool    $verified
- * @property string  $avatar
- * @property string  $avatarUrl
- * @property string  $reputation
- * @property string  $level
+ * @property integer    $id
+ * @property string     $email
+ * @property string     $hashedPassword
+ * @property string     $name
+ * @property string     $nickname
+ * @property integer    $active
+ * @property string     $dateCreated
+ * @property string     $dateAccessed
+ * @property string     $note
+ * @property bool       $verified
+ * @property string     $avatar
+ * @property string     $avatarUrl
+ * @property string     $reputation
+ * @property string     $level
  *
  * @property Interest[] $interests
  *
- * @property string  $EID
- * @property string  $firstName
+ * @property string     $EID
+ * @property string     $firstName
  */
 use base\Randomizr;
 use base\ActiveRecord;
@@ -67,7 +67,7 @@ class User extends ActiveRecord
             ['email', 'email'],
             ['email, name, nickname', 'length', 'max' => 255],
             ['homepage', 'length', 'max' => 1024],
-            ['Country_id', 'exist', 'className' => $this->ns('Country')]
+            ['Country_id', 'exist', 'className' => $this->ns('Country'), 'attributeName' => 'id'],
         ];
     }
 
@@ -76,7 +76,7 @@ class User extends ActiveRecord
      */
     public function relations() {
         return [
-            'country' => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
+            'country'   => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
             'interests' => [self::MANY_MANY, $this->ns('Interest'), 'Interest_User(User_id, Interest_id)'],
         ];
     }
@@ -94,7 +94,8 @@ class User extends ActiveRecord
             'dateCreated'    => 'Date Created',
             'dateAccessed'   => 'Date Accessed',
             'note'           => 'Note',
-            'Country_id'     => 'Country'
+            'Country_id'     => 'Country',
+            'nickname'       => 'login',
         ];
     }
 
@@ -138,9 +139,14 @@ class User extends ActiveRecord
     }
 
     public function getAvatarUrl() {
-        $config = Yii()->params->itemAt('avatars-baseUrl');
-        list($appId, $baseUrl) = explode(':', $config);
-        return Yii()->urlManager->getBaseUrl($appId) . "/$baseUrl/{$this->formatIdPath()}/$this->avatar";
+        if($this->avatar){
+            $config = Yii()->params->itemAt('avatars-baseUrl');
+            list($appId, $baseUrl) = explode(':', $config);
+            return Yii()->urlManager->getBaseUrl($appId) . "/$baseUrl/{$this->formatIdPath()}/$this->avatar";
+        }
+
+        return Yii()->urlManager->site->baseUrl . '/img/empty_avatar.jpg';
+
     }
 
     protected function formatIdPath() {

@@ -1,72 +1,73 @@
-<div class="span5 well loginForm">
 <?php
-/**
- * @var $model Signin
- */
-$model;
+/** @var $this \site\controllers\AuthController */
+/** @var $model \site\models\forms\Signin */
+
 /** @var $form \CActiveForm */
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'signin-form',
-    'enableAjaxValidation' => false,
+$form = $this->beginWidget(
+    'CActiveForm',
+    [
+    'id'                     => 'signin-form',
+    'enableAjaxValidation'   => false,
     'enableClientValidation' => false,
-    'focus' => array($model, 'username'),
-    'errorMessageCssClass' => 'help-block',
-    'htmlOptions' => array(
-        'class' => 'form-horizontal',
-    )
-)); ?>
-<fieldset>
-    <?php if($success = User()->getSuccess()):?>
-            <div class="alert alert-success"><?=$success?></div>
-    <?php endif?>
-    <?php if($error = User()->getError()):?>
+    'focus'                  => [$model, 'username'],
+    'errorMessageCssClass'   => 'help-block',
+    ]
+);
+
+$baseUrl = Yii()->baseUrl;
+?>
+
+<div class="well" style="background:#ffffff;margin-top:10px;"><!--вход на сайт-->
+    <?php if ($error = User()->getError()): ?>
         <div class="alert alert-error"><?=$error?></div>
     <?php endif?>
-    <div class="control-group <?=$model->hasErrors('username')?'error':''?>">
-        <?php echo $form->label($model, 'username', array('class' => 'control-label')); ?>
-        <div class="controls">
-            <?=$form->textField($model, 'username', array('placeholder' => $model->getAttributeLabel('username'),'tabindex'=>1)); ?>
-            <?=$form->error($model, 'username')?>
-        </div>
+    <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
+        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>Sing in</b></a>
     </div>
-    <div class="control-group <?=$model->hasErrors('password')?'error':''?>">
-        <?php echo $form->label($model, 'password', array('class' => 'control-label')); ?>
-        <div class="controls">
-            <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'),'tabindex'=>1)); ?>
-            <span class="help-inline"><a id="restore" href="<?=$this->createUrl('restore')?>">I forgot</a></span>
-            <?=$form->error($model, 'password')?>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <label class="checkbox">
-                <?=$form->checkbox($model, 'rememberMe', array('tabindex'=>1)); ?>
-                <?=$model->getAttributeLabel('rememberMe'); ?>
-            </label>
-            <button type="submit" class="btn btn-primary" tabindex="1">Sign in</button>
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            Don't have an account? <?=CHtml::link('Sign up', array('signup'), array('tabindex'=>1))?>
-        </div>
-    </div>
-</fieldset>
+    <br/>
 
-<?php $this->endWidget(); ?>
+    <div style="text-align:center;">
+        <?=$form->textField($model, 'username', ['placeholder' => $model->getAttributeLabel('username'), 'style' => 'width:85%;'])?>
+        <?=$form->error($model, 'username')?>
+
+        <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'), 'style' => 'width:85%;')); ?>
+        <?=$form->error($model, 'password')?>
+        <input class="btn" type="submit" style="text-decoration:underline;" value="Sing in"/>
+        <br/>
+
+        <div style="text-align:center;color:#000000;clear:both;">Login with :</div>
+					<span class="soc_seti">
+                        <a href=""><img src="<?=$baseUrl?>/img/f.png"></a>
+						<a href=""><img src="<?=$baseUrl?>/img/b.png"></a>
+						<a href=""><img src="<?=$baseUrl?>/img/t.png"></a>
+						<a href=""><img src="<?=$baseUrl?>/img/g.png"></a>
+						<a href=""><img src="<?=$baseUrl?>/img/h.png"></a>
+                    </span><br/>
+
+        <a href="<?=$this->createUrl('restore')?>" style="color:#686968;text-decoration: underline;">
+            Forgot your password?
+        </a>
+        <br/>
+        Not registered?
+        <a href="#signup" data-toggle="modal" style="color:#686968;text-decoration: underline;">
+            Join us!
+        </a>
+    </div>
 </div>
+<?php $this->endWidget(); ?>
+<!--конец вход на сайт-->
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         var $form = $('#signin-form');
         $form.attr('action', $form.attr('action') + window.location.hash);
 
         var $username = $form.find('#Signin_username');
         var $restore = $('#restore');
-        $restore.click(function(e){
+        $restore.click(function (e) {
             var name = $username.val();
             var url = e.target.href;
 
-            if(name){
+            if (name) {
                 url += '?user=' + encodeURIComponent(name);
             }
             window.location = url;
