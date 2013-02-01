@@ -20,8 +20,10 @@ namespace shared\models;
  * @property string     $avatarUrl
  * @property string     $reputation
  * @property string     $level
+ * @property string     $info
  *
  * @property Interest[] $interests
+ * @property Post[]     $posts
  *
  * @property string     $EID
  * @property string     $firstName
@@ -31,6 +33,8 @@ use base\ActiveRecord;
 
 class User extends ActiveRecord
 {
+    const INTEREST_RELATION_TABLE = 'Interest_User';
+
     public $active = 1;
 
     /**
@@ -77,7 +81,8 @@ class User extends ActiveRecord
     public function relations() {
         return [
             'country'   => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
-            'interests' => [self::MANY_MANY, $this->ns('Interest'), 'Interest_User(User_id, Interest_id)'],
+            'interests' => [self::MANY_MANY, $this->ns('Interest'), self::INTEREST_RELATION_TABLE . '(User_id, Interest_id)'],
+            'posts'     => [self::HAS_MANY, $this->ns('Post'), 'User_id'],
         ];
     }
 
@@ -139,7 +144,7 @@ class User extends ActiveRecord
     }
 
     public function getAvatarUrl() {
-        if($this->avatar){
+        if ($this->avatar) {
             $config = Yii()->params->itemAt('avatars-baseUrl');
             list($appId, $baseUrl) = explode(':', $config);
             return Yii()->urlManager->getBaseUrl($appId) . "/$baseUrl/{$this->formatIdPath()}/$this->avatar";

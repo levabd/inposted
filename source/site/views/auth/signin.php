@@ -10,7 +10,7 @@ $form = $this->beginWidget(
     'enableAjaxValidation'   => false,
     'enableClientValidation' => false,
     'focus'                  => [$model, 'username'],
-    'errorMessageCssClass'   => 'help-block',
+    'errorMessageCssClass'   => 'text-error',
     ]
 );
 
@@ -22,7 +22,7 @@ $baseUrl = Yii()->baseUrl;
         <div class="alert alert-error"><?=$error?></div>
     <?php endif?>
     <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>Sing in</b></a>
+        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>Sign in</b></a>
     </div>
     <br/>
 
@@ -32,9 +32,9 @@ $baseUrl = Yii()->baseUrl;
 
         <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'), 'style' => 'width:85%;')); ?>
         <?=$form->error($model, 'password')?>
-        <input class="btn" type="submit" style="text-decoration:underline;" value="Sing in"/>
+        <input class="btn" type="submit" style="text-decoration:underline;" value="Sign in"/>
         <br/>
-
+<?php /*
         <div style="text-align:center;color:#000000;clear:both;">Login with :</div>
 					<span class="soc_seti">
                         <a href=""><img src="<?=$baseUrl?>/img/f.png"></a>
@@ -43,7 +43,7 @@ $baseUrl = Yii()->baseUrl;
 						<a href=""><img src="<?=$baseUrl?>/img/g.png"></a>
 						<a href=""><img src="<?=$baseUrl?>/img/h.png"></a>
                     </span><br/>
-
+*/?>
         <a href="<?=$this->createUrl('restore')?>" style="color:#686968;text-decoration: underline;">
             Forgot your password?
         </a>

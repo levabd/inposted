@@ -4,11 +4,14 @@ use base\Randomizr;
 
 class User extends \shared\models\User
 {
+    use InterestRelationTrait;
+
     public $password;
     public $passwordRepeat;
     public $avatarUpload;
 
     const PASSWORD_MAX_SAME_CHARS = 3;
+
 
     public function rules() {
         return array_merge(
@@ -108,31 +111,21 @@ class User extends \shared\models\User
         }
     }
 
-    public function addInterest(Interest $interest) {
-        $result = true;
-        $transaction = $this->dbConnection->beginTransaction();
-        if (!$this->hasInterest($interest)) {
-            $result = $this->dbConnection->createCommand(
-                "INSERT INTO `Interest_User`
-                SET `User_id` = :userId, `Interest_id` = :interestId"
-            )->execute(['userId' => $this->id, 'interestId' => $interest->id]);
+    public function vote($id, $type) {
+        try {
+            $vote = new Vote();
+            $vote->User_id = $this->id;
+            $vote->Post_id = $id;
+            $vote->type = $type;
+            $vote->save();
+        } catch (\Exception $e) {
         }
-        $transaction->commit();
-        return $result;
     }
 
-    public function hasInterest(Interest $interest) {
-        return (bool)$this->dbConnection->createCommand(
-            "SELECT COUNT(*)
-            FROM `Interest_User`
-            WHERE `User_id` = :userId AND `Interest_id` = :interestId"
-        )->queryScalar(['userId' => $this->id, 'interestId' => $interest->id]);
-    }
-
-    public function removeInterest($interest) {
-        return $this->dbConnection->createCommand(
-            "DELETE FROM `Interest_User`
-            WHERE `User_id` = :userId AND `Interest_id` = :interestId"
-        )->query(['userId' => $this->id, 'interestId' => $interest->id]);
+    public function canVote($id) {
+        if (is_object($id)) {
+            $id = $id->id;
+        }
+        return !Vote::model()->countByAttributes(['User_id' => $this->id, 'Post_id' => $id]);
     }
 }

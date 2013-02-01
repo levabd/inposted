@@ -1,6 +1,8 @@
 <?php
 namespace site\controllers;
 use Yii, CHtml, Exception;
+use site\models\Post;
+
 class SiteController extends \site\components\Controller
 {
     public function actions() {
@@ -18,7 +20,8 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionIndex() {
-        $this->render('index');
+        $posts = Post::model()->good()->byDate()->findAll();
+        $this->render('index', compact('posts'));
     }
 
     public function actionContact() {

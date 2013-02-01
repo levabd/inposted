@@ -1,5 +1,5 @@
 <?php
-/** @var $this \site\controllers\SiteController */
+/** @var $this \site\controllers\UserController */
 /** @var $posts site\models\Post[] */
 
 $view = '//post/view';

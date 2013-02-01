@@ -21,6 +21,12 @@ class Interest extends ActiveRecord
         ];
     }
 
+    protected function beforeValidate() {
+        $this->name = trim($this->name);
+        return parent::beforeValidate();
+    }
+
+
     public function relations() {
         return ['children' => [self::HAS_MANY, get_class($this), 'parent_id']];
     }

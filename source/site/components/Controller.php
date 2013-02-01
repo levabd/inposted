@@ -6,7 +6,7 @@ namespace site\components;
  */
 class Controller extends \shared\components\Controller
 {
-
+    public $author;
 
     /**
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -125,5 +125,13 @@ class Controller extends \shared\components\Controller
         ];
 
         return array_path($httpCodes, $httpCode, $replacement);
+    }
+
+    public function controllerWidget($route, $properties = [], $captureOutput = false) {
+        list($controller, $action) = explode('/', $route);
+        $class = 'site\controllers\\' . ucfirst($controller) . 'Controller';
+        $properties['action'] = $action;
+        $this->widget($class, $properties, $captureOutput);
+
     }
 }

@@ -23,11 +23,11 @@ return [
             'class'     => 'shared\extensions\mail\Mailer',
             'transport' => [
                 'type'       => 'smtp',
-                'server'     => null,
-                'port'       => 587,
-                'encryption' => 'tls',
-                'username'   => null,
-                'password'   => null,
+                'server'     => 'smtp.gmail.com',
+                'port'       => 465,
+                'encryption' => 'ssl',
+                'username'   => 'info@inposted.com',
+                'password'   => 'keboho704~',
             ],
             'message'   => [
                 'from' => ['info@inposted.com' => 'Inposted'],
@@ -89,7 +89,7 @@ return [
                     'urlSuffix'      => '/',
                     'showScriptName' => false,
                     'rules'          => [
-                        '' => 'site/index',
+                        ''                         => 'site/index',
                         'register/step<step>'      => 'auth/signup',
                         'register'                 => 'auth/signup',
                         'register/verify/<policy>' => 'auth/verify',
@@ -109,10 +109,11 @@ return [
         ],
 
         'db'             => [
-            'connectionString' => sprintf('mysql:host=%s;dbname=%s', 'localhost', 'inposted'),
-            'username'         => 'inposted.com',
-            'password'         => 'inposted',
-            'charset'          => 'utf8',
+            'connectionString'   => sprintf('mysql:host=%s;dbname=%s', 'localhost', 'inposted'),
+            'username'           => 'inposted.com',
+            'password'           => 'inposted',
+            'charset'            => 'utf8',
+            'enableParamLogging' => YII_DEBUG,
         ],
 
         'format'         => [

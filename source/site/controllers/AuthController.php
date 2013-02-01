@@ -103,6 +103,7 @@ class AuthController extends components\WidgetController
             $model->avatarUpload = CUploadedFile::getInstance($model, 'avatarUpload');
             if ($model->save()) {
                 if (1 == $step) {
+                    InpostedUser::makeUser($model->id);
                     User()->setState('signup.user.id', $model->id);
                     $this->redirect(['/auth/signup', 'step' => 2]);
                 } else {
@@ -112,7 +113,6 @@ class AuthController extends components\WidgetController
                         $this->fsDir(dirname($file));
                         $model->avatarUpload->saveAs($file);
                     }
-                    InpostedUser::makeUser($model->id);
 
                     $this->sendVerificationLink($model);
 

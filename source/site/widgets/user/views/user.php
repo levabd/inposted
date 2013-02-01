@@ -18,7 +18,7 @@
             Reputation: <?=$user->reputation?><br>
             Level: <?=$user->level?><br>
             <?php if ($user->country): ?>
-                <a href=""><img alt="bender" src="<?=$user->country->flagUrl?>" title="<?=$user->country->name?>"></a><br>
+                <a href=""><img alt="<?=$user->country?>" src="<?=$user->country->flagUrl?>" title="<?=$user->country->name?>"></a><br>
             <?php endif;#($user->country)?>
         </div>
     </div>

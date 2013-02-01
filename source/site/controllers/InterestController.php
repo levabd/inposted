@@ -5,15 +5,17 @@
 namespace site\controllers;
 use site\components\WidgetController;
 use site\models\Interest;
+use site\models\User;
 
 class InterestController extends WidgetController
 {
     public $layout = '//interest/layout';
 
-    public function actionCreate($name) {
+    public function actionCreate($name, $parentId = null) {
         if (!($interest = Interest::model()->findByName($name))) {
             $interest = new Interest();
             $interest->name = $name;
+            $interest->parent_id = $parentId;
             if (!$interest->save()) {
                 $this->renderJson($interest->errors);
                 return;
@@ -27,36 +29,37 @@ class InterestController extends WidgetController
 
     public function actionAttach($id, $detach = false) {
         /** @var $interest Interest */
-        if($interest = Interest::model()->findByPk($id)){
+        if ($interest = Interest::model()->findByPk($id)) {
             /** @var $user \site\models\User */
             $user = Yii()->user->model;
-            if(!$detach){
+            if (!$detach) {
                 $user->addInterest($interest);
-            }
-            else{
+            } else {
                 $user->removeInterest($interest);
             }
             $this->renderJson(true);
-        }
-        else{
+        } else {
             $this->renderJson(false, 404);
         }
     }
 
-    public function actionIndex($verb = null) {
+    public function actionIndex($verb = null, array $checked = [], $widgetId = null) {
+        if ($widgetId) {
+            $this->widgetId = \CHtml::encode($widgetId);
+        }
         $interests = Yii()->user->model->interests;
-        $this->render('own', compact('interests', 'verb'));
+        $this->render('own', compact('interests', 'verb', 'checked'));
     }
 
-    public function actionVote() {
-        echo __METHOD__;
-    }
+
 
     public function actionRemove() {
         echo __METHOD__;
     }
 
-    public function actionSearch($verb, $excludeOwn = true) {
+    public function actionSearch($verb, array $except = [], $parentId = null) {
+
+
         $criteria = new \CDbCriteria(
             [
             'condition' => '`name` LIKE CONCAT(:verb, "%")',
@@ -64,11 +67,23 @@ class InterestController extends WidgetController
             ]
         );
 
-        if($excludeOwn){
-            $criteria->addCondition('`id` NOT IN (SELECT `Interest_id` FROM Interest_User WHERE `User_id` = :userId)');
-            $criteria->params['userId'] = Yii()->user->id;
+        if($parentId){
+            $parent = Interest::model()->findByPk($parentId);
+            $criteria->compare('parent_id', $parent->id);
         }
+        else{
+            $parent = null;
+        }
+
+        $criteria->addNotInCondition('`id`', $except);
+
         $interests = Interest::model()->findAll($criteria);
-        $this->renderPartial('side-search-results', compact('interests', 'verb'));
+        $this->renderPartial('side-search-results', compact('interests', 'verb', 'parent'));
+    }
+
+    public function actionOfUser($id){
+        if($user = User::model()->with('interests')->findByPk($id)){
+            $this->render('of-user', ['interests' => $user->interests]);
+        }
     }
 }

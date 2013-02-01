@@ -4,9 +4,20 @@
  */
 namespace site\widgets\user;
 class User extends \CWidget{
+    protected $_user;
+    public $view = 'user';
+
     public function run() {
-        if($user = Yii()->user->model){
-            $this->render('user', compact('user'));
+        if($user = $this->user){
+            $this->render($this->view, compact('user'));
         }
+    }
+
+    public function getUser() {
+        return $this->_user ?: ($this->_user = Yii()->user->model);
+    }
+
+    public function setUser($user) {
+        $this->_user = $user;
     }
 }

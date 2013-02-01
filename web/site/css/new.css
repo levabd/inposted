@@ -199,14 +199,14 @@ input[type="text"] {
 background-color:#ffffff !important;
 }
 
-input#quicksearch {
+input.quicksearch {
     height:22px; 
     line-height:22px; 
     
     float:left;
 	padding-right:25px;
 }
-input#go {
+input.go {
     text-indent:-9999px;
     line-height:20;
     border:0;

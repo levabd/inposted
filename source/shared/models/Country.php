@@ -10,4 +10,10 @@ class Country extends \base\ActiveRecord{
     public function getFlagUrl() {
         return Yii()->urlManager->getBaseUrl('site') . "/img/flags/$this->code.jpg";
     }
+
+    function __toString() {
+        return $this->name;
+    }
+
+
 }

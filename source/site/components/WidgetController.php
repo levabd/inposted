@@ -5,6 +5,9 @@
 namespace site\components;
 /**
  * base class for controller which also may be launched as widget
+ *
+ * @property bool   $isWidget
+ * @property string $widgetId
  */
 class WidgetController extends Controller
 {
@@ -51,7 +54,7 @@ class WidgetController extends Controller
      */
     public function getWidgetId($autoGenerate = true) {
         if ($this->_widgetId !== null) {
-            return $this->_id;
+            return $this->_widgetId;
         } elseif ($autoGenerate) {
             return $this->_widgetId = 'ycw' . self::$_counter++;
         }
@@ -115,5 +118,10 @@ class WidgetController extends Controller
         return $this->_mode == 'widget';
     }
 
-
+    public function processOutput($output) {
+        if (!$this->isWidget) {
+            return parent::processOutput($output);
+        }
+        return $output;
+    }
 }
