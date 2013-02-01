@@ -98,6 +98,10 @@ return [
                         '<view:null>'              => 'site/page',
                         'account'                  => 'account/index',
                         'account/<view>.html'      => 'account/page',
+                        'user/<nickname>'          => 'user/view',
+                        '<id:\d+>'                 => 'post/view',
+                        'vote/<id:\d+>/<type>'     => 'post/vote',
+                        'signout' => 'auth/signout'
                     ]
                 ],
                 'admin' => [

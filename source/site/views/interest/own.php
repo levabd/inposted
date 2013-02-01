@@ -1,10 +1,14 @@
 <?php
 /** @var $this \site\controllers\InterestController */
+/** @var $parent \site\models\Interest */
 /** @var $interests \site\models\Interest[] */
 /** @var $verb string */
 /** @var $checked array */
 
-$except = array_values(CHtml::listData($interests, 'id', 'id'));
+$except = [];
+$parentId = $parent ? $parent->id : null;
+
+isset($filter) || ($filter = false);
 ?>
 <?php foreach ($interests as $interest): ?>
     <label class="checkbox" style="line-height:18px;">
@@ -14,17 +18,18 @@ $except = array_values(CHtml::listData($interests, 'id', 'id'));
             in_array($interest->id, $checked),
             [
             'value'      => $interest->id,
-            'class'      => 'own-interest',
+            'class'      => 'own-interest' . ($filter ? ' posts-filter' : ''),
             'data-group' => $this->widgetId,
-            'id' => null,
+            'id'         => null,
             ]
         );
 
         ?>
-        <b><?=$interest?> </b>
+        <b><?=$interest->fullName?> </b>
         <button
             class="btn btn-1mini attach-interest"
             data-url="<?=$this->createUrl('attach', ['id' => $interest->id, 'detach' => true])?>"
+            data-parent-id="<?=$parentId?>"
             >
             x
         </button>
@@ -33,11 +38,15 @@ $except = array_values(CHtml::listData($interests, 'id', 'id'));
 
 <br>
 <div class="poisk"> <!--форма поиска-->
+    <?php if ($parent): ?>
+        <a class="btn parent" style="float:left;" href="#" title="clear parent"><?=CHtml::encode('<')?></a>
+    <?php endif;#($parent)?>
     <input
-        class="quicksearch" type="text" style="width:75%;"
-        class="input" placeholder="Search"
-        data-url="<?=$this->createUrl('search')?>"
+        class="quicksearch" type="text" style="width:<?=$parent ? 50 : 75?>%;"
+        class="input" placeholder="<?='Search' . ($parent ? " in $parent->name" : '')?>"
+        data-url="<?=$this->createUrl('search', ['parentId' => $parentId])?>"
         data-except='<?=CJSON::encode($except)?>'
+        value="<?=$verb?>"
         >
     <input class="go" type="submit">
 </div>
@@ -50,7 +59,7 @@ $except = array_values(CHtml::listData($interests, 'id', 'id'));
             get_class($this),
             [
             'action'       => 'search',
-            'actionParams' => compact('verb', 'except')
+            'actionParams' => compact('verb', 'except', 'parentId')
             ]
         );
     }

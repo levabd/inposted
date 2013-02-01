@@ -44,9 +44,9 @@ $baseUrl = Yii()->baseUrl;
 						<a href=""><img src="<?=$baseUrl?>/img/h.png"></a>
                     </span><br/>
 */?>
-        <a href="<?=$this->createUrl('restore')?>" style="color:#686968;text-decoration: underline;">
+        <?/*<a href="<?=$this->createUrl('restore')?>" style="color:#686968;text-decoration: underline;">
             Forgot your password?
-        </a>
+        </a>*/?>
         <br/>
         Not registered?
         <a href="#signup" data-toggle="modal" style="color:#686968;text-decoration: underline;">
@@ -59,8 +59,6 @@ $baseUrl = Yii()->baseUrl;
 <script type="text/javascript">
     $(function () {
         var $form = $('#signin-form');
-        $form.attr('action', $form.attr('action') + window.location.hash);
-
         var $username = $form.find('#Signin_username');
         var $restore = $('#restore');
         $restore.click(function (e) {

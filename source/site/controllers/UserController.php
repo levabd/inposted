@@ -38,13 +38,22 @@ class UserController extends \site\components\Controller
         $this->render('account');
     }
 
-    public function actionView($nickname){
+    public function actionView($nickname, array $interests = []){
         $model = $this->loadModel($nickname);
         $this->author = $model;
 
-        $posts = $model->posts(['scopes' => ['good', 'byDate']]);
+        $criteria = new \CDbCriteria(['scopes' => ['good', 'byDate']]);
+        if($interests){
+            foreach($interests as $index => $interest){
+                $criteria->addCondition("posts.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
+                $criteria->params["interest$index"] = $interest;
+            }
+        }
 
-        $this->render('view', ['posts' => $posts]);
+        $posts = $model->posts($criteria);
+
+        $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
+        $this->$render('//post/list', ['posts' => $posts]);
     }
 
     /**

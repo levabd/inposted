@@ -19,9 +19,17 @@ class SiteController extends \site\components\Controller
         );
     }
 
-    public function actionIndex() {
-        $posts = Post::model()->good()->byDate()->findAll();
-        $this->render('index', compact('posts'));
+    public function actionIndex(array $interests = array()) {
+        $criteria = new \CDbCriteria();
+        if($interests){
+            foreach($interests as $index => $interest){
+                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
+                $criteria->params["interest$index"] = $interest;
+            }
+        }
+        $posts = Post::model()->good()->byDate()->findAll($criteria);
+        $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
+        $this->$render('//post/list', compact('posts'));
     }
 
     public function actionContact() {

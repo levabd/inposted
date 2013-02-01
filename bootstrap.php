@@ -9,7 +9,7 @@ ini_set('log_errors', false);
 register_shutdown_function(
     function () {
         $error = error_get_last();
-        if (null !== $error && ($error['type'] & error_reporting())) {
+        if (null !== $error && !in_array($error['type'], [E_WARNING, E_NOTICE]) && ($error['type'] & error_reporting())) {
             if (class_exists('Yii', false) && class_exists('CApplication', false) && (Yii::app() instanceof CApplication)) {
                 Yii::app()->handleError($error['type'], $error['message'], $error['file'], $error['line']);
             } else {

@@ -38,10 +38,17 @@ isset($thanks) || ($thanks = null);
         <div class="<?=$this->author ? 'span11' : 'span10'?>" style="padding-left:20px;">
             <b>
                 <?php foreach ($interests as $index => $interest): ?>
-                    <?= $interest . (isset($interests[$index + 1]) ? ', ' : '') ?>
-                    <?php if ($user && !$user->hasInterest($interest)): ?>
-                        <button class="btn btn-1mini">+</button>
-                    <?php endif;#($user && !$user->hasInterest($interest))?>
+                    <?php
+                    $comma = isset($interests[$index + 1]);
+                    echo $interest;
+                    if ($user && !$user->hasInterest($interest)):
+                        ?>
+                        <button data-url="<?=$this->createUrl('/interest/attach', ['id' => $interest->id])?>" class="btn btn-1mini attach-interest" data-id=<?=$interest->id?>>+</button><?=$comma?', ':''?>
+                    <?php
+                    elseif($comma):
+                        echo ', ';
+                    endif;#($user && !$user->hasInterest($interest))
+                    ?>
                 <?php endforeach;#($post->interests as $interest)?>
             </b>
             <i style="float:right;"><?=Yii()->dateFormatter->format('HH:mm dd MMM yyy', $post->dateSubmitted)?></i>
@@ -49,7 +56,7 @@ isset($thanks) || ($thanks = null);
             <p> <?=$post->htmlContent?></p>
         </div>
         <div class="span1" style="margin-right:0px;line-height:30px;margin-top:-7px;">
-            <?php if ($user): ?>
+            <?php if ($user && $post->User_id != $user->id): ?>
 
                 <a href=""><img src="<?=Yii()->baseUrl?>/img/star_null.png" style="margin-left:4px;"></a><br>
 

@@ -4,7 +4,9 @@
 ?>
 <div class="well" style="background:#ffffff;"><!--инфо о пользователе-->
     <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b><?=$user->firstName?></b></a>
+        <a href="<?=Yii()->createUrl('/user/view', ['nickname' => $user->nickname])?>" style="color:#54211d;font-size:18px;text-decoration: underline;">
+            <b><?=$user->firstName?></b>
+        </a>
     </div>
     <br>
 

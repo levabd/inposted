@@ -50,6 +50,7 @@ Yii()->clientScript->registerScript('max-post-size', sprintf('Inposted.MAX_POST_
                     'widgetId'     => 'new-post-interests',
                     'actionParams' => [
                         'checked' => CHtml::listData($model->interests, 'id', 'id'),
+                        'filter' => false,
                     ]
                     ]
                 );

@@ -126,9 +126,9 @@ class Manager extends \CUrlManager
     public function getBaseUrl($absolute = false) {
         if ($this->getIsAlien() || is_array($this->_host)) {
             if(is_array($this->_host)){
-                $baseUrl = isset($this->_host['path']) ? $this->_host['path'] : '';
+                $baseUrl = isset($this->_host['path']) ? '/' . $this->_host['path'] : '';
                 if($absolute){
-                    $baseUrl = "$this->hostInfo/$baseUrl";
+                    $baseUrl = $this->hostInfo  . $baseUrl;
                 }
                 return $baseUrl;
             }

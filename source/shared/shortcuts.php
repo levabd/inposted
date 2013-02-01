@@ -59,6 +59,14 @@ function dump(){
     }
 }
 
+function mb_ucfirst($string, $charset = null){
+    if(!$charset){
+        $charset = Yii()->charset;
+    }
+
+    return mb_strtoupper(mb_substr($string, 0, 1, $charset)) . mb_substr($string, 1);
+}
+
 function array_path($array, $path, $default = null, $delimiter = '.') {
     // fail if the path is empty
     if (null === $path) {

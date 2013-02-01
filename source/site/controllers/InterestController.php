@@ -15,11 +15,14 @@ class InterestController extends WidgetController
         if (!($interest = Interest::model()->findByName($name))) {
             $interest = new Interest();
             $interest->name = $name;
-            $interest->parent_id = $parentId;
             if (!$interest->save()) {
                 $this->renderJson($interest->errors);
                 return;
             }
+        }
+
+        if($parentId && ($parent = Interest::model()->findByPk($parentId))){
+            $interest->addParent($parent);
         }
 
         Yii()->user->model->addInterest($interest);
@@ -27,7 +30,7 @@ class InterestController extends WidgetController
         $this->renderJson(true);
     }
 
-    public function actionAttach($id, $detach = false) {
+    public function actionAttach($id, $detach = false, $parentId = null) {
         /** @var $interest Interest */
         if ($interest = Interest::model()->findByPk($id)) {
             /** @var $user \site\models\User */
@@ -37,18 +40,36 @@ class InterestController extends WidgetController
             } else {
                 $user->removeInterest($interest);
             }
+
+            if($parentId && ($parent = Interest::model()->findByPk($parentId))){
+                $interest->addParent($parent);
+            }
+
             $this->renderJson(true);
         } else {
             $this->renderJson(false, 404);
         }
     }
 
-    public function actionIndex($verb = null, array $checked = [], $widgetId = null) {
+    public function actionIndex($verb = null, array $checked = [], $widgetId = null, $parentId = null, $filter = false) {
+        $filter = \CJSON::decode($filter);
+        if($verb){
+            $verb = \CHtml::encode(strip_tags($verb));
+        }
+
         if ($widgetId) {
             $this->widgetId = \CHtml::encode($widgetId);
         }
+
+        if($parentId){
+            $parent = Interest::model()->findByPk($parentId);
+        }
+        else{
+            $parent = null;
+        }
+
         $interests = Yii()->user->model->interests;
-        $this->render('own', compact('interests', 'verb', 'checked'));
+        $this->render('own', compact('interests', 'verb', 'checked', 'parent', 'filter'));
     }
 
 
@@ -58,7 +79,9 @@ class InterestController extends WidgetController
     }
 
     public function actionSearch($verb, array $except = [], $parentId = null) {
-
+        if($verb){
+            $verb = \CHtml::encode(strip_tags($verb));
+        }
 
         $criteria = new \CDbCriteria(
             [
@@ -67,9 +90,11 @@ class InterestController extends WidgetController
             ]
         );
 
-        if($parentId){
-            $parent = Interest::model()->findByPk($parentId);
-            $criteria->compare('parent_id', $parent->id);
+        if($parentId && ($parent = Interest::model()->findByPk($parentId))){
+            $criteria->addCondition('t.id != :parentId');
+            $criteria->addNotInCondition('t.id', $parent->indirectParentIds);
+            $criteria->params['parentId'] = $parent->id;
+            $criteria->order = "(`t`.`id` IN (SELECT `Interest_id` FROM Interest_Parent WHERE `Parent_id` = $parent->id)) DESC, `t`.`name`";
         }
         else{
             $parent = null;

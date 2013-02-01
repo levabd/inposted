@@ -10,6 +10,8 @@ use base\ActiveRecord;
  */
 class Interest extends ActiveRecord
 {
+    const PARENT_RELATION_TABLE = 'Interest_Parent';
+
     public $id;
     public $name;
     public $parent_id;
@@ -22,21 +24,38 @@ class Interest extends ActiveRecord
     }
 
     protected function beforeValidate() {
-        $this->name = trim($this->name);
+        $this->name = $this->prepareName($this->name);
         return parent::beforeValidate();
     }
 
 
     public function relations() {
-        return ['children' => [self::HAS_MANY, get_class($this), 'parent_id']];
+        return [
+            'children' => [self::MANY_MANY, get_class($this), self::PARENT_RELATION_TABLE . '(Parent_id, Interest_id)'],
+            'parents' => [self::MANY_MANY, get_class($this), self::PARENT_RELATION_TABLE . '(Interest_id, Parent_id)'],
+        ];
     }
 
-    function __toString() {
+    public function getFullName() {
+        $string = $this->name;
+        if($this->parents){
+            $string .= ' <-[' . implode(', ', $this->parents) . ']';
+        }
+
+        return $string;
+    }
+
+    public function __toString() {
         return $this->name;
     }
 
     public function findByName($name, $condition = '', $params = array()) {
+        $name = $this->prepareName($name);
         return parent::findByAttributes(compact('name'), $condition, $params);
+    }
+
+    protected function prepareName($name) {
+        return mb_ucfirst(mb_strtolower(preg_replace('/[^\w-]/', '', str_replace(' ', '-', strip_tags(trim($name)))), Yii()->charset));
     }
 
 
