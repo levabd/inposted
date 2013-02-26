@@ -21,6 +21,9 @@ namespace shared\models;
  * @property string     $reputation
  * @property string     $level
  * @property string     $info
+ * @property bool       $enabledTooltips
+ * @property bool       $enabledNotifications
+ * @property float      $timezone
  *
  * @property Interest[] $interests
  * @property Post[]     $posts
@@ -36,6 +39,11 @@ class User extends ActiveRecord
     const INTEREST_RELATION_TABLE = 'Interest_User';
 
     public $active = 1;
+
+    /**
+     * @var \CUploadedFile
+     */
+    public $avatarUpload;
 
     /**
      * Returns behaviors configuration.
@@ -55,6 +63,19 @@ class User extends ActiveRecord
         );
     }
 
+    protected function afterFind() {
+        if (intval($this->timezone) == $this->timezone) {
+            $this->timezone = intval($this->timezone);
+        }
+        parent::afterFind();
+    }
+
+    protected function beforeValidate() {
+        $this->avatarUpload = \CUploadedFile::getInstance($this, 'avatarUpload');
+        return parent::beforeValidate();
+    }
+
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -72,7 +93,24 @@ class User extends ActiveRecord
             ['email, name, nickname', 'length', 'max' => 255],
             ['homepage', 'length', 'max' => 1024],
             ['Country_id', 'exist', 'className' => $this->ns('Country'), 'attributeName' => 'id'],
+            ['timezone', 'numerical', 'min' => -12, 'max' => 12],
+            ['info, enabledHints, enabledNotifications', 'safe'],
+            ['homepage', 'url'],
+
+            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
+            ['avatarUpload', 'validImage'],
         ];
+    }
+
+    public function validImage($attribute) {
+        if($this->$attribute instanceof \CUploadedFile){
+            try{
+                new \Imagick($this->$attribute->tempName);
+            }
+            catch(\ImagickException $e){
+                $this->addError($attribute, 'Invalid image file');
+            }
+        }
     }
 
     /**
@@ -91,16 +129,19 @@ class User extends ActiveRecord
      */
     public function attributeLabels() {
         return [
-            'id'             => 'ID',
-            'email'          => 'Email',
-            'password'       => 'Password',
-            'passwordRepeat' => 'Confirm Password',
-            'active'         => 'Active',
-            'dateCreated'    => 'Date Created',
-            'dateAccessed'   => 'Date Accessed',
-            'note'           => 'Note',
-            'Country_id'     => 'Country',
-            'nickname'       => 'login',
+            'id'           => 'ID',
+            'name'         => 'Full Name',
+            'email'        => 'E-Mail',
+            'password'     => 'Current Password',
+            'active'       => 'Active',
+            'dateCreated'  => 'Date Created',
+            'dateAccessed' => 'Date Accessed',
+            'note'         => 'Note',
+            'Country_id'   => 'Country',
+            'nickname'     => 'Login',
+            'homepage'     => 'Web-site',
+            'enabledHints' => 'Show Hints',
+            'enabledNotifications' => 'Notify about all new posts'
         ];
     }
 
@@ -138,24 +179,8 @@ class User extends ActiveRecord
         return $this->update(['verified']);
     }
 
-    public function getAvatarFile() {
-        $storage = Yii()->params->itemAt('avatars-storage');
-        return path($storage, $this->formatIdPath(), $this->avatar);
-    }
-
-    public function getAvatarUrl() {
-        if ($this->avatar) {
-            $config = Yii()->params->itemAt('avatars-baseUrl');
-            list($appId, $baseUrl) = explode(':', $config);
-            return Yii()->urlManager->getBaseUrl($appId) . "/$baseUrl/{$this->formatIdPath()}/$this->avatar";
-        }
-
-        return Yii()->urlManager->site->baseUrl . '/img/empty_avatar.jpg';
-
-    }
-
-    protected function formatIdPath() {
-        return number_format($this->id, 0, null, '/');
+    public function getAvatarUrl($size = null) {
+        return Yii()->avatarStorage->getAvatarUrl($this, $size);
     }
 
     protected function getFirstName() {

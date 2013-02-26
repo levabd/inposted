@@ -26,7 +26,7 @@ Yii()->clientScript->registerPackage('main');
                 <div class="instum">
                     <?php if (!Yii()->user->isGuest): ?>
                         <div class="ins"><a href="<?=$this->createUrl('/auth/signout')?>"><i class="icon-1share"></i></a></div>
-                        <div class="ins"><a href=""><i class="icon-1star-empty"></i></a></div>
+                        <div class="ins"><a href="<?=$this->createUrl('/user/settings')?>"><i class="icon-1star-empty"></i></a></div>
                         <div class="ins"><a href="#createPost" data-toggle="modal"><i class="icon-1pencil"></i></a></div>
                     <?php endif;#(!Yii()->user->isGuest)?>
 

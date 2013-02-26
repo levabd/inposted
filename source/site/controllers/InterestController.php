@@ -68,7 +68,7 @@ class InterestController extends WidgetController
             $parent = null;
         }
 
-        $interests = Yii()->user->model->interests;
+        $interests = Yii()->user->model ? Yii()->user->model->interests : [];
         $this->render('own', compact('interests', 'verb', 'checked', 'parent', 'filter'));
     }
 

@@ -2,7 +2,7 @@
 /** @var $this \site\controllers\AuthController */
 /** @var $model \site\models\User */
 
-$countries = CHtml::listData(site\models\Country::model()->sort()->findAll(), 'id', 'name');
+$countries = site\models\Country::model()->listData();
 ?>
 <?php
 /** @var $form \CActiveForm */

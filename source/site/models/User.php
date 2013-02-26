@@ -7,8 +7,8 @@ class User extends \shared\models\User
     use InterestRelationTrait;
 
     public $password;
-    public $passwordRepeat;
-    public $avatarUpload;
+    public $newPassword;
+
 
     const PASSWORD_MAX_SAME_CHARS = 3;
 
@@ -18,12 +18,15 @@ class User extends \shared\models\User
             parent::rules(),
             [
             ['nickname', 'validateNickname'],
-            ['password', 'required', 'on' => 'signup-1'],
-            ['password', 'length', 'min' => 6],
-            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
-            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
-            ['password', 'passwordValidator'],
-            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png', 'allowEmpty' => true],
+            ['newPassword', 'required', 'on' => 'signup-1'],
+            ['newPassword', 'length', 'min' => 6],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
+            ['newPassword', 'passwordValidator'],
+
+//            ['password', 'required', 'on' => 'settings'],
+            ['newPassword', 'checkPassword', 'on' => 'settings'],
+            ['password', 'safe'],
             ]
         );
     }
@@ -37,6 +40,18 @@ class User extends \shared\models\User
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
+        }
+    }
+
+    public function checkPassword($attribute, $params = []) {
+        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Invalid password', 'skipEmpty' => true], $params));
+        /** @var $passwordAttribute string */
+        /** @var $message string */
+        /** @var $skipEmpty bool */
+        if($this->$attribute || !$skipEmpty){
+            if(!$this->validatePassword($this->$passwordAttribute)){
+                $this->addError($passwordAttribute, $message);
+            }
         }
     }
 
@@ -87,16 +102,10 @@ class User extends \shared\models\User
     }
 
     public function beforeSave() {
-        switch ($this->scenario) {
-            case 'signup-1':
-                $this->hashedPassword = Randomizr::hashPassword($this->password);
-                break;
-            case 'profile':
-                if ($this->newPassword) {
-                    $this->password = Randomizr::hashPassword($this->newPassword);
-                }
-                break;
+        if($this->newPassword){
+            $this->hashedPassword = Randomizr::hashPassword($this->newPassword);
         }
+
         return parent::beforeSave();
     }
 

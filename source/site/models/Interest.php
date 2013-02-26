@@ -7,6 +7,7 @@ class Interest extends \shared\models\Interest{
     protected $parentIds;
 
     public function addParent($interest) {
+	if($interest->id == $this->id) return false;
         $table = static::PARENT_RELATION_TABLE;
 
         $result = true;

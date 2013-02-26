@@ -30,8 +30,8 @@ $form = $this->beginWidget(
             <div class="join_us">
                 <?=$form->textField($model, 'email', array('placeholder' => $model->getAttributeLabel('email'), 'style' => 'width:96%;')); ?>
                 <?=$form->error($model, 'email')?>
-                <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'), 'class' => 'span5')); ?>
-                <?=$form->error($model, 'password')?>
+                <?=$form->passwordField($model, 'newPassword', array('placeholder' => $model->getAttributeLabel('newPassword'), 'class' => 'span5')); ?>
+                <?=$form->error($model, 'newPassword')?>
                 <?=$form->textField($model, 'nickname', array('placeholder' => $model->getAttributeLabel('nickname'), 'style' => 'width:96%;')); ?>
                 <?=$form->error($model, 'nickname')?>
                 <input type="submit" class="btn" style="text-decoration: underline;float:right;" value="Next"/>

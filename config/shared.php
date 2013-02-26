@@ -95,13 +95,12 @@ return [
                         'register/verify/<policy>' => 'auth/verify',
                         'register/verify'          => 'auth/verify',
 
-                        '<view:null>'              => 'site/page',
-                        'account'                  => 'account/index',
-                        'account/<view>.html'      => 'account/page',
+                        'settings'                 => 'user/settings',
+                        'signout'                  => 'auth/signout',
+
                         'user/<nickname>'          => 'user/view',
                         '<id:\d+>'                 => 'post/view',
                         'vote/<id:\d+>/<type>'     => 'post/vote',
-                        'signout' => 'auth/signout'
                     ]
                 ],
                 'admin' => [
@@ -153,11 +152,22 @@ return [
                 ],
             ],
         ],
+
+        'avatarStorage' => [
+            'class' => 'shared\components\AvatarStorage',
+            'appId' => 'site',
+            'basePath' => ROOT . '/web/site/avatars',
+            'baseUrl' => 'avatars',
+            'sizes' => [56, 73, 210],
+        ],
+
+        'fs' => [
+            'class' => 'shared\components\Fs',
+            'safeLocations'   => [ROOT . '/web/site/avatars'],
+        ]
     ],
 
     'params'      => [
-        'avatars-storage' => ROOT . '/web/site/avatars',
-        'avatars-baseUrl' => 'site:avatars',
         'safeLocations'   => [ROOT . '/web/site/avatars']
     ]
 ];

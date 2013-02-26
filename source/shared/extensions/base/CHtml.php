@@ -38,5 +38,26 @@ class CHtml extends yii_core\CHtml{
         }
         return $model->formName().'['.$attribute.']';
     }
+
+    public static function activeTextField($model,$attribute,$htmlOptions=array()){
+        if(!array_key_exists('placeholder', $htmlOptions)){
+            $htmlOptions['placeholder'] = $model->getAttributeLabel($attribute);
+        }
+        return parent::activeTextField($model,$attribute,$htmlOptions);
+    }
+
+    public static function activePasswordField($model,$attribute,$htmlOptions=array()){
+            if(!array_key_exists('placeholder', $htmlOptions)){
+                $htmlOptions['placeholder'] = $model->getAttributeLabel($attribute);
+            }
+            return parent::activePasswordField($model,$attribute,$htmlOptions);
+        }
+
+    public static function activeTextArea($model,$attribute,$htmlOptions=array()){
+        if(!array_key_exists('placeholder', $htmlOptions)){
+            $htmlOptions['placeholder'] = $model->getAttributeLabel($attribute);
+        }
+        return parent::activeTextArea($model,$attribute,$htmlOptions);
+    }
 }
 

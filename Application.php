@@ -7,6 +7,8 @@
  * @property \site\components\UrlShorten $urlShorten
  * @property \shared\components\InpostedUser $user
  * @property \base\url\ManagerCollection $urlManager
+ * @property \shared\components\AvatarStorage $avatarStorage
+ * @property \shared\components\Fs $fs
  */
 class Application extends CWebApplication
 {

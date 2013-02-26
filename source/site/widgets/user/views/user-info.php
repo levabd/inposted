@@ -13,7 +13,7 @@
         <div class="row-fluid">
             <div class="info_user_left ">
                 <div class="avat_big">
-                    <img alt="bender" class="face" src="<?=$user->avatarUrl?>" title="fry">
+                    <img alt="bender" class="face" src="<?=$user->getAvatarUrl(73)?>" title="fry">
                 </div>
                 <div class="flag">
                     <?php if ($user->country): ?>

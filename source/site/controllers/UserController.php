@@ -9,16 +9,23 @@ class UserController extends \site\components\Controller
 
     public function filters() {
         return array(
-            'accessControl - preview',
-            array(
-                '\shared\filters\ForceSuffix + index',
-            ),
+            'accessControl - view',
+            '\shared\filters\ForceSuffix + index',
         );
     }
+
+    public function accessRules() {
+        return [
+            ['allow', 'users' => ['@']],
+            ['deny', 'users' => ['?']],
+        ];
+    }
+
+
     public function actions() {
         return array(
             'page' => array(
-                'class' => 'CViewAction',
+                'class'  => 'CViewAction',
                 'layout' => false,
             )
         );
@@ -34,17 +41,26 @@ class UserController extends \site\components\Controller
         $this->render('index');
     }
 
-    public function actionAccount() {
-        $this->render('account');
+    public function actionSettings() {
+        $this->layout = 'main';
+        $user = Yii()->user->model;
+        $user->scenario = 'settings';
+        if (($user->loadPost()) && $user->save()) {
+            Yii()->avatarStorage->processAvatarUpload($user);
+
+            Yii()->user->setFlash('settings.update', true);
+            $this->refresh();
+        }
+        $this->render('settings', ['user' => $user]);
     }
 
-    public function actionView($nickname, array $interests = []){
+    public function actionView($nickname, array $interests = []) {
         $model = $this->loadModel($nickname);
         $this->author = $model;
 
         $criteria = new \CDbCriteria(['scopes' => ['good', 'byDate']]);
-        if($interests){
-            foreach($interests as $index => $interest){
+        if ($interests) {
+            foreach ($interests as $index => $interest) {
                 $criteria->addCondition("posts.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
                 $criteria->params["interest$index"] = $interest;
             }
@@ -63,14 +79,13 @@ class UserController extends \site\components\Controller
      * @throws \CHttpException
      */
     protected function loadModel($id) {
-        if(is_numeric($id)){
+        if (is_numeric($id)) {
             $user = User::model()->findByPk($id);
-        }
-        else{
+        } else {
             $user = User::model()->findByAttributes(['nickname' => $id]);
         }
 
-        if(!$user){
+        if (!$user) {
             throw new \CHttpException(404);
         }
 

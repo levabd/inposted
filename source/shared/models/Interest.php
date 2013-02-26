@@ -7,6 +7,7 @@ use base\ActiveRecord;
 
 /**
  * @property Interest[] $children
+ * @property Interest[] $parents
  */
 class Interest extends ActiveRecord
 {
@@ -37,12 +38,20 @@ class Interest extends ActiveRecord
     }
 
     public function getFullName() {
-        $string = $this->name;
+        return $this->getParentsString();
+    }
+
+    public function getParentsString() {
+        $result = $this->name;
         if($this->parents){
-            $string .= ' <-[' . implode(', ', $this->parents) . ']';
+            $strings = [];
+            foreach($this->parents as $parent){
+                $strings[] = $parent->getParentsString();
+            }
+            $result .= ' <-[' . implode(', ', $strings) . ']';
         }
 
-        return $string;
+        return $result;
     }
 
     public function __toString() {

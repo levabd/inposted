@@ -13,7 +13,7 @@
     <div class="row-fluid">
         <div class="span5">
             <div class="avat">
-                <img alt="<?=$user->nickname?>" src="<?=$user->avatarUrl?>" title="bender" align="middle">
+                <img alt="<?=$user->nickname?>" src="<?=$user->getAvatarUrl(56)?>" title="bender" align="middle">
             </div>
         </div>
         <div class="span7">

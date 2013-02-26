@@ -1,14 +1,5 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * Author: Yurko Fedoriv
- * Date: 12/20/11
- * Time: 1:59 PM
- */
-
-
 namespace base;
-
 class ActiveRecord extends \CActiveRecord
 {
     use ModelTrait;

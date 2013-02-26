@@ -30,7 +30,7 @@ isset($thanks) || ($thanks = null);
                 </a>
 
                 <div class="avat">
-                    <img alt="<?=$author->nickname?>" class="face" src="<?=$author->avatarUrl?>" title="<?=$author->nickname?>">
+                    <img alt="<?=$author->nickname?>" class="face" src="<?=$author->getAvatarUrl(56)?>" title="<?=$author->nickname?>">
                 </div>
             </div>
         <?php endif;#($this->author)?>

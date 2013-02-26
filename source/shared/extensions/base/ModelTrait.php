@@ -11,4 +11,8 @@ trait ModelTrait{
     public function getPost(){
         return \Yii::app()->getRequest()->getPost($this->formName(), array());
     }
+
+    public function loadPost() {
+        return (bool) ($this->attributes = $this->getPost());
+    }
 }
