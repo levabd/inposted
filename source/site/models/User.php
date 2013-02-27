@@ -9,10 +9,6 @@ class User extends \shared\models\User
     public $password;
     public $newPassword;
 
-
-    const PASSWORD_MAX_SAME_CHARS = 3;
-
-
     public function rules() {
         return array_merge(
             parent::rules(),
@@ -22,7 +18,7 @@ class User extends \shared\models\User
             ['newPassword', 'length', 'min' => 6],
             ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
             ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
-            ['newPassword', 'passwordValidator'],
+            ['newPassword', 'site\validators\Password'],
 
 //            ['password', 'required', 'on' => 'settings'],
             ['newPassword', 'checkPassword', 'on' => 'settings'],
@@ -54,53 +50,6 @@ class User extends \shared\models\User
             }
         }
     }
-
-    public function passwordValidator($attribute) {
-        if (!$this->$attribute) {
-            return true;
-        }
-
-        $password = $this->$attribute;
-        $encoding = Yii()->charset;
-        $length = mb_strlen($password, $encoding);
-
-        $error = null;
-
-        if (mb_strtolower($password, $encoding) == $password || mb_strtoupper($password, $encoding) == $password) {
-            $error = '{attribute} should contain letters in different case';
-        } else {
-            $charCounts = [];
-            for ($i = 0; $i < $length; $i++) {
-                $char = mb_substr($password, $i, 1, $encoding);
-                if (!isset($charCounts[$char])) {
-                    $charCounts[$char] = 1;
-                } else {
-                    $charCounts[$char]++;
-                    if ($charCounts[$char] > self::PASSWORD_MAX_SAME_CHARS) {
-                        $error = '{attribute} can not contain more than {num} same characters.';
-                        break;
-                    }
-                }
-            }
-        }
-
-        if ($error) {
-            $this->addError(
-                $attribute,
-                \Yii::t(
-                    'inposted', $error,
-                    [
-                    '{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute)),
-                    '{num}'       => self::PASSWORD_MAX_SAME_CHARS,
-                    ]
-                )
-            );
-            return false;
-        }
-
-        return true;
-    }
-
     public function beforeSave() {
         if($this->newPassword){
             $this->hashedPassword = Randomizr::hashPassword($this->newPassword);

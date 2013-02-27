@@ -1,16 +1,17 @@
 const KEY_ENTER = 13;
 const KEY_SHIFT = 16;
 var Inposted = {
+    baseUrl: '',
     MAX_POST_SIZE: null,
     refreshOwnInterests: function (verb, widgetId, parentId, check) {
-        var checked = $('#sidebar-interests .own-interest:checked').map(function(index, item){return $(item).val()}).toArray()
-        if(check){
+        var checked = $('#sidebar-interests .own-interest:checked').map(function (index, item) {return $(item).val()}).toArray()
+        if (check) {
             checked.push(check);
         }
 
         $.get(
             $('#sidebar-interests').data('url'),
-            {verb: verb, parentId: parentId, filter: true, widgetId: 'sidebar-interests', checked:checked},
+            {verb: verb, parentId: parentId, filter: true, widgetId: 'sidebar-interests', checked: checked},
             function (data) {
                 $('#sidebar-interests').replaceWith(data);
                 Inposted.updateInterestCheckboxesState('sidebar-interests');
@@ -18,14 +19,14 @@ var Inposted = {
             }
         );
 
-        var checked = $('#new-post-interests .own-interest:checked').map(function(index, item){return $(item).val()}).toArray()
-        if(check){
+        var checked = $('#new-post-interests .own-interest:checked').map(function (index, item) {return $(item).val()}).toArray()
+        if (check) {
             checked.push(check);
         }
 
         $.get(
             $('#new-post-interests').data('url'),
-            {verb: verb, parentId: parentId, filter: false, widgetId: 'new-post-interests', checked:checked},
+            {verb: verb, parentId: parentId, filter: false, widgetId: 'new-post-interests', checked: checked},
             function (data) {
                 $('#new-post-interests').replaceWith(data);
                 Inposted.updateInterestCheckboxesState('new-post-interests');
@@ -37,17 +38,40 @@ var Inposted = {
     updateInterestCheckboxesState: function (group) {
         var selector = '.own-interest[data-group=' + group + ']';
         var checked = $(selector + ':checked');
-        if(checked.length > 3){
+        if (checked.length > 3) {
             checked.slice(0, -3).prop('checked', false);
         }
         var disableMore = checked.length > 2;
         $(selector).not(':checked').prop('disabled', disableMore);
     },
 
-    filterPosts: function(){
-        var interests = $('.posts-filter:checked').map(function(index, item){return $(item).val()}).toArray();
+    filterPosts: function () {
+        var interests = $('.posts-filter:checked').map(function (index, item) {return $(item).val()}).toArray();
         console.log(interests);
-        $.get($('#posts').data('url'),{interests : interests}, function(data){$('#posts').replaceWith(data)});
+        $.get($('#posts').data('url'), {interests: interests}, function (data) {$('#posts').replaceWith(data)});
+    },
+
+    ajaxError: function (info) {
+        alert(info.responseText)
+    },
+
+    showAjaxLoader: function () {
+        var loader = $('<div>')
+            .attr('id', 'ajax-loader')
+            .css({
+                background: 'url("' + Inposted.baseUrl + '/img/ajax-loader-big.gif") no-repeat scroll center center gray',
+                position: 'absolute',
+                top:0,
+                left: 0,
+                opacity: 0.5,
+                'z-index': 1000,
+                height: '100%',
+                width: '100%'
+            })
+        $('body').append(loader);
+    },
+    hideAjaxLoader: function(){
+        $('#ajax-loader').remove();
     }
 
 }
@@ -188,23 +212,59 @@ jQuery(function ($) {
 
     $(document).on('change', '.own-interest, .posts-filter', function () {
         Inposted.updateInterestCheckboxesState($(this).data('group'));
-        if($(this).hasClass('posts-filter')){
+        if ($(this).hasClass('posts-filter')) {
             Inposted.filterPosts();
         }
     })
 
-    $(document).on('click', '.lock-parent-interest', function(e){
+    $(document).on('click', '.lock-parent-interest', function (e) {
         e.preventDefault();
         var widgetId = $(this).closest('.own-interests').attr('id');
         Inposted.refreshOwnInterests(null, widgetId, $(this).data('parent-id'));
         return false;
     });
 
-    $(document).on('click', '.parent', function(e){
+    $(document).on('click', '.parent', function (e) {
         e.preventDefault();
         var widgetId = $(this).closest('.own-interests').attr('id');
         Inposted.refreshOwnInterests(null, widgetId);
     })
+
+
+    //ajax widget
+    $(document).on('click', '.ajax-widget a.ajax', function (e) {
+        e.preventDefault();
+        var widget = $(this).closest('.ajax-widget');
+        Inposted.showAjaxLoader();
+        $.ajax(
+            $(this).attr('href'),
+            {
+                success: function (data) {
+                    widget.replaceWith(data);
+                    Inposted.hideAjaxLoader();
+                },
+                error: Inposted.ajaxError
+            }
+        )
+    });
+
+    $(document).on('submit', '.ajax-widget form.ajax', function (e) {
+        e.preventDefault();
+        var widget = $(this).closest('.ajax-widget');
+        Inposted.showAjaxLoader();
+        $.ajax(
+            $(this).attr('action'),
+            {
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    widget.replaceWith(data);
+                    Inposted.hideAjaxLoader();
+                },
+                error: Inposted.ajaxError
+            }
+        );
+    });
 
 
 });

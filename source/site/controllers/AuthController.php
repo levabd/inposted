@@ -166,6 +166,7 @@ class AuthController extends components\WidgetController
     }
 
     public function actionSignin() {
+        $this->layout = '//auth/layout';
         $model = new models\forms\Signin('login');
         if ($model->attributes = Yii()->getRequest()->getPost($model->formName())) {
             // validates user input and redirect to previous page if validated
@@ -173,7 +174,7 @@ class AuthController extends components\WidgetController
         }
 
         // displays the login form
-        $this->renderPartial('signin', compact('model'));
+        $this->render('signin', compact('model'));
     }
 
     /**
@@ -182,16 +183,15 @@ class AuthController extends components\WidgetController
      * @throws \CHttpException
      */
     public function actionRestore($policy = null) {
+
         if (!$this->user->isGuest) {
             $this->goHome();
         }
 
         if (!$policy) {
+            $this->layout = '//auth/layout';
             $model = new Restore('request');
-            $model->username = Yii()->getRequest()->getQuery('user');
-            if ($data = Yii()->getRequest()->getPost(get_class($model))) {
-                $model->attributes = $data;
-                // validates user input and redirect to previous page if validated
+            if ($model->loadPost()) {
                 $this->restoreRequest($model);
             }
             $this->render('restore-request', array('model' => $model));
@@ -211,19 +211,10 @@ class AuthController extends components\WidgetController
 
             $model = new Restore('set-password');
             $model->username = $username;
-            if ($data = Yii()->getRequest()->getPost(get_class($model))) {
-                $model->attributes = $data;
-                // validates user input and redirect to previous page if validated
+            if($model->loadPost()){
                 $this->restoreSetPassword($model, $username);
             }
             $this->render('restore-set-password', array('model' => $model));
-        }
-    }
-
-    protected function signIn(Signin $form) {
-        if ($form->validate() && $form->login()) {
-            $returnUrl = $this->user->getReturnUrl() ? : $this->user->getHomeUrl();
-            $this->redirect($returnUrl);
         }
     }
 
@@ -237,6 +228,14 @@ class AuthController extends components\WidgetController
             sleep(3);
         }
     }
+
+    protected function signIn(Signin $form) {
+        if ($form->validate() && $form->login()) {
+            $returnUrl = $this->user->getReturnUrl() ? : $this->user->getHomeUrl();
+            $this->redirect($returnUrl);
+        }
+    }
+
 
     protected function restoreSetPassword(Restore $form, $email) {
         if ($form->validate()) {

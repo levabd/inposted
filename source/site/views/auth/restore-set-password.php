@@ -1,4 +1,4 @@
-<div class="span5 well loginForm">
+<div class="well">
 <?php
 /**
  * @var $model Signin

@@ -28,6 +28,17 @@ class Controller extends \shared\components\Controller
 
     public $showTopMenu = true;
 
+    public function init() {
+        parent::init();
+        if(Yii()->baseUrl){
+            Yii()->clientScript->registerScript(
+                'baseUrl',
+                sprintf('Inposted.baseUrl = "%s";', Yii()->baseUrl),
+                \CClientScript::POS_HEAD
+            );
+        }
+    }
+
     public function getStaticUrl() {
         return Yii()->getBaseUrl() . '/static';
     }

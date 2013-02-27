@@ -119,7 +119,7 @@ class WidgetController extends Controller
     }
 
     public function processOutput($output) {
-        if (!$this->isWidget) {
+        if (!($this->isWidget || Yii()->request->isAjaxRequest)) {
             return parent::processOutput($output);
         }
         return $output;
