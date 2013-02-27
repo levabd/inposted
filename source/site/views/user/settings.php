@@ -51,7 +51,7 @@ $form = $this->beginWidget(
     <div class="span12">
         <div class="well" style="background:#ffffff;margin-top:10px;">
             <div class="info_title ">
-                <a href="" class="span9">Personal</a>
+                <a href="<?=Yii()->createUrl('/user/view', ['nickname' => $user->nickname])?>" class="span9">Personal</a>
                 <?php if (Yii()->user->getFlash('settings.update')): ?>
                     <span class="text-info">Settings was updated</span>
                 <?php endif;#(Yii()->user->getFlash('settings.update'))?>
@@ -117,7 +117,7 @@ $form = $this->beginWidget(
         <div class="row">
             <div class="span6">
                 <div class="well" style="background:#ffffff;margin-top:10px;">
-                    <div class="info_title  "><a href="">E-mail notifications</a></div>
+                    <div class="info_title  "><a href="" onclick="return false;">E-mail notifications</a></div>
                     <?=CHtml::submitButton('Apply', ['class' => 'btn', 'style' => 'text-decoration: underline;float:right;'])?>
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledNotifications')?> <?=$user->getAttributeLabel('enabledNotifications')?>

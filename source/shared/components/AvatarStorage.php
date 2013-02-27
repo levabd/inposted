@@ -36,7 +36,7 @@ class AvatarStorage extends \CApplicationComponent
     }
 
     protected function formPath(User $user) {
-        return number_format($user->id, 0, null, '/') . '/' . $user->id;
+        return implode('/', str_split($user->id, 2)) . '/' . $user->id;
     }
 
     protected function formFileName($size = null) {

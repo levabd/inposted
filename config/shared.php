@@ -47,7 +47,7 @@ return [
 
         'user'           => [
             'class'           => 'site\components\InpostedUser',
-            'loginUrl'        => ['site:auth/signin'],
+            'loginUrl'        => ['site:site/index'],
             // enable cookie-based authentication
             'allowAutoLogin'  => true,
             'autoRenewCookie' => true,
