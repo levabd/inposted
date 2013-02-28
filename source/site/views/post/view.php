@@ -43,9 +43,9 @@ isset($thanks) || ($thanks = null);
                     echo $interest;
                     if ($user && !$user->hasInterest($interest)):
                         ?>
-                        <button data-url="<?=$this->createUrl('/interest/attach', ['id' => $interest->id])?>" class="btn btn-1mini attach-interest" data-id=<?=$interest->id?>>+</button><?=$comma?', ':''?>
-                    <?php
-                    elseif($comma):
+                    <button data-url="<?=$this->createUrl('/interest/attach', ['id' => $interest->id])?>" class="btn btn-1mini attach-interest"
+                            data-id=<?=$interest->id?>>+</button><?= $comma ? ', ' : '' ?>
+                    <?php elseif ($comma):
                         echo ', ';
                     endif;#($user && !$user->hasInterest($interest))
                     ?>
@@ -53,7 +53,7 @@ isset($thanks) || ($thanks = null);
             </b>
             <i style="float:right;"><?=Yii()->dateFormatter->format('HH:mm dd MMM yyy', $post->dateSubmitted)?></i>
 
-            <p> <?=$post->htmlContent?></p>
+            <p><?=$post->htmlContent?></p>
         </div>
         <div class="span1" style="margin-right:0px;line-height:30px;margin-top:-7px;">
             <?php if ($user && $post->User_id != $user->id): ?>
@@ -70,6 +70,9 @@ isset($thanks) || ($thanks = null);
                     <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'abuse'])?>" class="btn btn-mini">
                         <i class="  icon-warning-sign"></i>
                     </a>
+                    <?php else: ?>
+                    <button class="btn btn-mini btn-success"><i class=" icon-thumbs-up"></i></button>
+                    <div class="arrow_box"><?=$post->likesCount?></div>
                 <?php endif;#($user->canVote($post))?>
             <?php endif;#($user)?>
         </div>
