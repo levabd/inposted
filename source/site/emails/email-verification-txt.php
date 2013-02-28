@@ -1,6 +1,6 @@
 Dear <?=$firstName?>,
 
-Thanks for joining Inposted. Now click to activate your account:
+Thanks for joining Inposted. Now click to confirm your account:
 
 <?=$link?>
 
