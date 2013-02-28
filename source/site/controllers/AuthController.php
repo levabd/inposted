@@ -107,13 +107,7 @@ class AuthController extends components\WidgetController
                     User()->setState('signup.user.id', $model->id);
                     $this->redirect(['/auth/signup', 'step' => 2]);
                 } else {
-                    if ($model->avatarUpload) {
-                        $model->generateAvatarName($model->avatarUpload->extensionName);
-                        $file = $model->getAvatarFile();
-                        $this->fsDir(dirname($file));
-                        $model->avatarUpload->saveAs($file);
-                    }
-
+                    Yii()->avatarStorage->processAvatarUpload($model);
                     $this->sendVerificationLink($model);
 
                     User()->login(new \shared\components\UserIdentity($model));
