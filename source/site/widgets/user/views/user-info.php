@@ -13,7 +13,9 @@
         <div class="row-fluid">
             <div class="info_user_left ">
                 <div class="avat_big">
-                    <img alt="bender" class="face" src="<?=$user->getAvatarUrl(73)?>" title="fry">
+                    <a href="<?=Yii()->createUrl('/user/view', ['nickname' => $user->nickname])?>">
+                        <img alt="<?=$user->nickname?>" class="face" src="<?=$user->getAvatarUrl(73)?>" title="<?=$user->nickname?>">
+                    </a>
                 </div>
                 <div class="flag">
                     <?php if ($user->country): ?>
@@ -23,8 +25,11 @@
             </div>
             <div class="info_user_right ">
                 <p>
-                    <?=nl2br(strip_tags($user->info)) ?: 'no info'?>
+                    <?=nl2br(strip_tags($user->info)) ? : 'no info'?>
                 </p>
+                <?php if($user->homepage):?>
+                    <p><a href="<?=$user->homepage?>"><?=$user->homepage?></a></p>
+                <?php endif;#($user->homepage)?>
             </div>
 
         </div>

@@ -60,6 +60,11 @@ class Post extends \shared\models\Post
         return parent::beforeValidate();
     }
 
+    public function getLocalDateSubmitted() {
+        //TODO: implement retrieving of local time
+        return $this->dateSubmitted;
+    }
+
     public function save($runValidation = true, $attributes = null) {
         $transaction = $this->dbConnection->currentTransaction ? false : $this->dbConnection->beginTransaction();
         try {

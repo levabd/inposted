@@ -55,6 +55,8 @@ class User extends \shared\models\User
             $this->hashedPassword = Randomizr::hashPassword($this->newPassword);
         }
 
+        //TODO: setup timezone according to selected country
+
         return parent::beforeSave();
     }
 

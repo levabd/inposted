@@ -21,15 +21,13 @@ $this->beginContent('//layouts/main');
             if (Yii()->user->isGuest) {
                 $this->controllerWidget('auth/signin');
                 $this->controllerWidget('auth/signup');
-            } else {
-                if($this->author){
-                    $this->controllerWidget('interest/ofUser', ['actionParams' => ['id' => $this->author->id]]);
-                }
-                else{
-                    $this->widget('site\widgets\user\User');
-                    $this->controllerWidget('interest/index', ['widgetId' => 'sidebar-interests', 'actionParams' => ['filter' => true]]);
-                    $this->widget('site\widgets\user\Favorites');
-                }
+            }
+            if ($this->author) {
+                $this->controllerWidget('interest/ofUser', ['actionParams' => ['id' => $this->author->id]]);
+            } elseif (!Yii()->user->isGuest) {
+                $this->widget('site\widgets\user\User');
+                $this->controllerWidget('interest/index', ['widgetId' => 'sidebar-interests', 'actionParams' => ['filter' => true]]);
+                $this->widget('site\widgets\user\Favorites');
             }
             ?>
 

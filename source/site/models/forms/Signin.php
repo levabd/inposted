@@ -29,7 +29,6 @@ class Signin extends \base\FormModel
         return array(
             // username and password are required
             array('username', 'required'),
-            array('username', 'email'),
             array('password', 'required', 'on' => 'login'),
             // password needs to be authenticated
             array('password', 'authenticate', 'on' => 'login'),
