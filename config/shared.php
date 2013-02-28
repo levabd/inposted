@@ -101,6 +101,7 @@ return [
                         'user/<nickname>'          => 'user/view',
                         '<id:\d+>'                 => 'post/view',
                         'vote/<id:\d+>/<type>'     => 'post/vote',
+                        'go/<eid:\w+>'              => ['go/go', 'urlSuffix' => false],
                     ]
                 ],
                 'admin' => [
@@ -153,21 +154,21 @@ return [
             ],
         ],
 
-        'avatarStorage' => [
-            'class' => 'shared\components\AvatarStorage',
-            'appId' => 'site',
+        'avatarStorage'  => [
+            'class'    => 'shared\components\AvatarStorage',
+            'appId'    => 'site',
             'basePath' => ROOT . '/web/site/avatars',
-            'baseUrl' => 'avatars',
-            'sizes' => [56, 73, 210],
+            'baseUrl'  => 'avatars',
+            'sizes'    => [56, 73, 210],
         ],
 
-        'fs' => [
-            'class' => 'shared\components\Fs',
-            'safeLocations'   => [ROOT . '/web/site/avatars'],
+        'fs'             => [
+            'class'         => 'shared\components\Fs',
+            'safeLocations' => [ROOT . '/web/site/avatars'],
         ]
     ],
 
     'params'      => [
-        'safeLocations'   => [ROOT . '/web/site/avatars']
+        'safeLocations' => [ROOT . '/web/site/avatars']
     ]
 ];

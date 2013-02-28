@@ -4,7 +4,7 @@
  *
  * @property \site\components\GeoIp   $geoip
  * @property \shared\components\Crypt $crypt
- * @property \site\components\UrlShorten $urlShorten
+ * @property \site\components\urlShorten\UrlShorten $urlShorten
  * @property \shared\components\InpostedUser $user
  * @property \base\url\ManagerCollection $urlManager
  * @property \shared\components\AvatarStorage $avatarStorage

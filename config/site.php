@@ -1,26 +1,26 @@
 <?php
 /** @var $name string Name of sub-application */
 return [
-    'name'       => 'Inposted',
+    'name'          => 'Inposted',
 
-    'import' => [
-        'site.models.forms.*',
+    'controllerMap' => [
+        'go' => 'site\components\urlShorten\Controller',
     ],
 
-    'components' => [
-        'geoip' => [
+    'components'    => [
+        'geoip'        => [
             'class' => 'site\components\GeoIp',
         ],
 
-        'urlShorten' => [
-            'class' => 'site\components\UrlShorten',
+        'urlShorten'   => [
+            'class' => 'site\components\urlShorten\UrlShorten',
         ],
 
         'clientScript' => [
             'packages' => [
-                'main'       => [
+                'main'      => [
                     'baseUrl' => '',
-                    'js' => ['js/inposted.js'],
+                    'js'      => ['js/inposted.js'],
                     'css'     => ['css/new.css'],
                     'depends' => ['bootstrap'],
                 ],
@@ -28,7 +28,7 @@ return [
 //                    'baseUrl' => '',
 //                    'js'      => ['js/jquery.min.js'],
 //                ],
-                'bootstrap'  => [
+                'bootstrap' => [
                     'baseUrl' => '',
                     'css'     => ['css/bootstrap.min.css'],
                     'js'      => ['js/bootstrap.min.js'],

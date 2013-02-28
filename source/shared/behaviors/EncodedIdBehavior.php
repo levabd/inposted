@@ -7,17 +7,21 @@ class EncodedIdBehavior extends \CActiveRecordBehavior
     public $attribute = 'id';
     public $shift = 620;
 
-    public function init() {
-        parent::init();
+    public function attach($owner) {
+        parent::attach($owner);
 
         $this->shift = abs($this->shift);
 
         $min = 2;
-        $max = strlen($this->baseAlpha);
-        if ($this->baseSize < 2 || $this->baseSize > $max)
-            throw new \CException(\Yii::t('base', 'Incorrect target base size {size}. Min: {min}, max: {max}',
-                    array('{min}' => $min, '{max}' => $max, '{size}' => $this->size))
+        $max = strlen($this->base);
+        if ($this->size < 2 || $this->size > $max) {
+            throw new \CException(
+                \Yii::t(
+                    'base', 'Incorrect target base size {size}. Min: {min}, max: {max}',
+                    ['{min}' => $min, '{max}' => $max, '{size}' => $this->size]
+                )
             );
+        }
     }
 
     public function findByEID($eid, $condition = '', $params = array()) {
@@ -39,7 +43,7 @@ class EncodedIdBehavior extends \CActiveRecordBehavior
         return $this->from($eid) - $this->shift;
     }
 
-    public static function abc(){
+    public static function abc() {
         return 'abc';
     }
 
