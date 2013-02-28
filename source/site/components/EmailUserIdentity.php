@@ -14,8 +14,13 @@ class EmailUserIdentity extends \CUserIdentity
     }
 
     public function authenticate() {
-        /** @var $user  \site\models\User*/
-        if ($user = User::model()->findByAttributes(array('email' => $this->username))) {
+        /** @var $user  \site\models\User */
+        $user = User::model()->findByAttributes(array('email' => $this->username));
+        if (!$user) {
+            $user = User::model()->findByAttributes(array('nickname' => $this->username));
+        }
+        if ($user) {
+            $this->username = $user->email;
             if (!$user->validatePassword($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
