@@ -30,7 +30,6 @@ Yii()->clientScript->registerScript('max-post-size', sprintf('Inposted.MAX_POST_
                 'id'                     => 'create-post-form',
                 'enableAjaxValidation'   => false,
                 'enableClientValidation' => false,
-                'focus'                  => [$model, 'username'],
                 'errorMessageCssClass'   => 'text-error',
                 ]
             );
