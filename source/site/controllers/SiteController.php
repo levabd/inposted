@@ -19,7 +19,7 @@ class SiteController extends \site\components\Controller
         );
     }
 
-    public function actionIndex(array $interests = array()) {
+    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE) {
         $criteria = new \CDbCriteria();
         if($interests){
             foreach($interests as $index => $interest){
@@ -27,9 +27,9 @@ class SiteController extends \site\components\Controller
                 $criteria->params["interest$index"] = $interest;
             }
         }
-        $posts = Post::model()->good()->byDate()->findAll($criteria);
+        $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
         $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
-        $this->$render('//post/list', compact('posts'));
+        $this->$render('//post/list', compact('posts', 'sort'));
     }
 
     public function actionContact() {

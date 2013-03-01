@@ -11,6 +11,9 @@ class Post extends \shared\models\Post
 {
     use InterestRelationTrait;
 
+    const SORT_DATE = 'date';
+    const SORT_VOTES = 'votes';
+
     public $inInterests = [];
 
     private $_originalContent;
@@ -28,8 +31,24 @@ class Post extends \shared\models\Post
     public function scopes() {
         return [
             'byDate' => ['order' => $this->tableAlias . ".dateSubmitted DESC"],
-            'good' => ['condition' => $this->tableAlias . '.id NOT IN (SELECT `Post_id` FROM `Vote` where `type` IN ("spam", "abuse"))'],
+            'good'   => ['condition' => $this->tableAlias . '.id NOT IN (SELECT `Post_id` FROM `Vote` where `type` IN ("spam", "abuse"))'],
         ];
+    }
+
+    public function sortBy($sort) {
+
+        switch ($sort) {
+            case self::SORT_DATE:
+                $this->dbCriteria->mergeWith(['order' => $this->tableAlias . '.dateSubmitted DESC']);
+                break;
+            case self::SORT_VOTES:
+                $this->dbCriteria->mergeWith(
+                    ['order' => "(SELECT COUNT(*) FROM Vote WHERE Vote.Post_id = `$this->tableAlias`.`id` AND Vote.`type` = 'like') DESC, `$this->tableAlias`.`dateSubmitted` DESC"]
+                );
+                break;
+        }
+
+        return $this;
     }
 
 

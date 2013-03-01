@@ -278,3 +278,16 @@ margin:10px 0px 0px 10px !important;
 .join_us{
 margin: 0px 50px;
 }
+
+.sort-post{
+    border-bottom: 1px dotted;
+    text-decoration: none;
+}
+
+.sort-post.active{
+    color:#fea500;border-bottom-color: #fea500;
+}
+
+.sort-post.inactive{
+    color:#464646;border-bottom-color: #464646;
+}

@@ -45,10 +45,14 @@ var Inposted = {
         $(selector).not(':checked').prop('disabled', disableMore);
     },
 
-    filterPosts: function () {
+    filterPosts: function (url) {
+        url = url || $('#posts').data('url');
         var interests = $('.posts-filter:checked').map(function (index, item) {return $(item).val()}).toArray();
-        console.log(interests);
-        $.get($('#posts').data('url'), {interests: interests}, function (data) {$('#posts').replaceWith(data)});
+        Inposted.showAjaxLoader();
+        $.get(url, {interests: interests}, function (data) {
+            $('#posts').replaceWith(data);
+            Inposted.hideAjaxLoader();
+        });
     },
 
     ajaxError: function (info) {
@@ -265,6 +269,11 @@ jQuery(function ($) {
             }
         );
     });
+
+    $(document).on('click', 'a.sort-post', function(e){
+        e.preventDefault();
+        Inposted.filterPosts($(this).attr('href'));
+    })
 
 
 });
