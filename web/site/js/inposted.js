@@ -65,7 +65,7 @@ var Inposted = {
             .css({
                 background: 'url("' + Inposted.baseUrl + '/img/ajax-loader-big.gif") no-repeat scroll center center gray',
                 position: 'absolute',
-                top:0,
+                top: 0,
                 left: 0,
                 opacity: 0.5,
                 'z-index': 1000,
@@ -74,8 +74,23 @@ var Inposted = {
             })
         $('body').append(loader);
     },
-    hideAjaxLoader: function(){
+    hideAjaxLoader: function () {
         $('#ajax-loader').remove();
+    },
+
+    refreshFavorites: function () {
+        var node = $('#favorites');
+        if (node.length) {
+            $.ajax(
+                node.data('url'),
+                {
+                    success: function (data) {
+                        console.log(data);
+                        node.replaceWith(data);
+                    }
+                }
+            );
+        }
     }
 
 }
@@ -270,10 +285,39 @@ jQuery(function ($) {
         );
     });
 
-    $(document).on('click', 'a.sort-post', function(e){
+    $(document).on('click', 'a.sort-post', function (e) {
         e.preventDefault();
         Inposted.filterPosts($(this).attr('href'));
     })
 
+    //favorite
+    $(document).on('click', 'a.favorite-star', function (e) {
+        e.preventDefault();
+        var self = this;
+        var settings = $(this).data('favorite');
+        if (settings.state == 'add' || !settings.confirm || confirm('Are you sure you want to unstar this post?')) {
+            $.ajax(
+                settings[settings.state].url,
+                {
+                    success: function () {
+                        $(self).find('img').attr('src', settings[settings.stateChange].image);
+                        var state = settings.stateChange;
+                        settings.stateChange = settings.state;
+                        settings.state = state;
+
+                        if (settings.refresh) {
+                            Inposted.refreshFavorites();
+                        }
+                    }
+                }
+            )
+        }
+    });
+
+    $(document).on('click', 'a.favorites-group', function (e) {
+        e.preventDefault();
+        var img = $(this).find('img');
+        img.attr('src', img.data($(this).nextAll('ul').toggle().is(':hidden') ? 'collapsed' : 'expanded'))
+    });
 
 });

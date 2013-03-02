@@ -291,3 +291,7 @@ margin: 0px 50px;
 .sort-post.inactive{
     color:#464646;border-bottom-color: #464646;
 }
+
+.favorite-star:hover, .favorites-group:hover{
+    text-decoration: none;
+}

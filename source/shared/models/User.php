@@ -27,6 +27,7 @@ namespace shared\models;
  *
  * @property Interest[] $interests
  * @property Post[]     $posts
+ * @property Post[]     $favorites
  *
  * @property string     $EID
  * @property string     $firstName
@@ -37,6 +38,7 @@ use base\ActiveRecord;
 class User extends ActiveRecord
 {
     const INTEREST_RELATION_TABLE = 'Interest_User';
+    const FAVORITES_RELATION_TABLE = 'Favorites';
 
     public $active = 1;
 
@@ -103,11 +105,10 @@ class User extends ActiveRecord
     }
 
     public function validImage($attribute) {
-        if($this->$attribute instanceof \CUploadedFile){
-            try{
+        if ($this->$attribute instanceof \CUploadedFile) {
+            try {
                 new \Imagick($this->$attribute->tempName);
-            }
-            catch(\ImagickException $e){
+            } catch (\ImagickException $e) {
                 $this->addError($attribute, 'Invalid image file');
             }
         }
@@ -121,6 +122,7 @@ class User extends ActiveRecord
             'country'   => [self::BELONGS_TO, $this->ns('Country'), 'Country_id'],
             'interests' => [self::MANY_MANY, $this->ns('Interest'), self::INTEREST_RELATION_TABLE . '(User_id, Interest_id)'],
             'posts'     => [self::HAS_MANY, $this->ns('Post'), 'User_id'],
+            'favorites' => [self::MANY_MANY, $this->ns('Post'), self::FAVORITES_RELATION_TABLE . '(User_id, Post_id)'],
         ];
     }
 
@@ -129,18 +131,18 @@ class User extends ActiveRecord
      */
     public function attributeLabels() {
         return [
-            'id'           => 'ID',
-            'name'         => 'Full Name',
-            'email'        => 'E-Mail',
-            'password'     => 'Current Password',
-            'active'       => 'Active',
-            'dateCreated'  => 'Date Created',
-            'dateAccessed' => 'Date Accessed',
-            'note'         => 'Note',
-            'Country_id'   => 'Country',
-            'nickname'     => 'Login',
-            'homepage'     => 'Web-site',
-            'enabledHints' => 'Show Hints',
+            'id'                   => 'ID',
+            'name'                 => 'Full Name',
+            'email'                => 'E-Mail',
+            'password'             => 'Current Password',
+            'active'               => 'Active',
+            'dateCreated'          => 'Date Created',
+            'dateAccessed'         => 'Date Accessed',
+            'note'                 => 'Note',
+            'Country_id'           => 'Country',
+            'nickname'             => 'Login',
+            'homepage'             => 'Web-site',
+            'enabledHints'         => 'Show Hints',
             'enabledNotifications' => 'Notify about all new posts'
         ];
     }

@@ -42,4 +42,34 @@ class PostController extends \site\components\WidgetController
         $this->author = $post->author;
         $this->render('view', compact('post'));
     }
+
+    public function actionFavorites() {
+        $favorites = Yii()->user->model->favorites;
+
+        $interests = [];
+        foreach ($favorites as $post) {
+            foreach ($post->interests as $interest) {
+                if (!isset($interests[$interest->id])) {
+                    $interests[$interest->id] = ['interest' => $interest, 'posts' => []];
+                }
+                $interests[$interest->id]['posts'][] = $post;
+            }
+        }
+
+        $this->renderPartial('favorites', compact('interests'));
+    }
+
+    public function actionAddFavorite($id) {
+        Yii()->user->model->addFavorite($id);
+        if(!Yii()->request->isAjaxRequest){
+            $this->goBack();
+        }
+    }
+
+    public function actionDeleteFavorite($id) {
+        Yii()->user->model->deleteFavorite($id);
+        if(!Yii()->request->isAjaxRequest){
+            $this->goBack();
+        }
+    }
 }

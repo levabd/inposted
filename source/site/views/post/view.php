@@ -2,12 +2,29 @@
 /** @var $this \site\controllers\PostController */
 /** @var $post \site\models\Post */
 
+/** @var $user \site\models\User */
 $user = Yii()->user->model;
 $interests = $post->interests;
 
 isset($style) || ($style = 'background:#f4f2e7;margin-top:10px;');
 isset($necessarily) || ($necessarily = null);
 isset($thanks) || ($thanks = null);
+
+//favorite
+$favorite = [
+    'state' => $user->isFavorite($post) ? 'delete' : 'add',
+    'stateChange' => $user->isFavorite($post) ? 'add' : 'delete',
+    'refresh' => true,
+
+    'add' => [
+        'image' => Yii()->baseUrl . '/img/star_null.png',
+        'url'   => Yii()->createUrl('/post/addFavorite', ['id' => $post->id]),
+    ],
+    'delete' => [
+        'image' => Yii()->baseUrl . '/img/star_full.png',
+        'url'   => Yii()->createUrl('/post/deleteFavorite', ['id' => $post->id]),
+    ],
+];
 ?>
 
 <div class="well" style="<?=$style?>"><!--мини-пост-->
@@ -60,7 +77,10 @@ isset($thanks) || ($thanks = null);
         <div class="span1" style="margin-right:0px;line-height:30px;margin-top:-7px;">
             <?php if ($user && $post->User_id != $user->id): ?>
 
-                <a href=""><img src="<?=Yii()->baseUrl?>/img/star_null.png" style="margin-left:4px;"></a><br>
+                <a href="<?=$favorite[$favorite['state']]['url']?>" data-favorite='<?=CJSON::encode($favorite)?>' class="favorite-star">
+                    <img src="<?=$favorite[$favorite['state']]['image']?>" style="margin-left:4px;">
+                </a>
+                <br>
 
                 <?php if ($user->canVote($post)): ?>
                     <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'like'])?>" class="btn btn-mini">

@@ -114,6 +114,7 @@ return [
         ],
 
         'db'             => [
+            'behaviors' => ['shared\behaviors\MysqlDb'],
             'connectionString'   => sprintf('mysql:host=%s;dbname=%s', 'localhost', 'inposted'),
             'username'           => 'inposted.com',
             'password'           => 'inposted',
@@ -122,54 +123,54 @@ return [
         ],
 
         'format'         => [
-            'class' => 'shared\components\Formatter'
-        ],
+    'class' => 'shared\components\Formatter'
+],
 
         'log'            => [
-            'class'  => 'CLogRouter',
-            'routes' => [
-                'email'       => [
-                    'class'      => 'CFileLogRoute',
-                    'categories' => 'email',
-                    'logFile'    => 'email.log',
-                ],
-                'application' => [
-                    'class'  => 'CFileLogRoute',
-                    'levels' => 'error, warning, info',
-                ],
-                'error'       => [
-                    'class'   => 'CFileLogRoute',
-                    'levels'  => 'error, warning',
-                    'logFile' => 'error.log',
-                ],
-                'info'        => [
-                    'class'   => 'CFileLogRoute',
-                    'levels'  => 'info',
-                    'logFile' => 'info.log',
-                ],
-                'trace'       => [
-                    'class'   => 'CFileLogRoute',
-                    'levels'  => 'trace',
-                    'logFile' => 'trace.log',
-                ],
-            ],
+    'class'  => 'CLogRouter',
+    'routes' => [
+        'email'       => [
+            'class'      => 'CFileLogRoute',
+            'categories' => 'email',
+            'logFile'    => 'email.log',
         ],
+        'application' => [
+            'class'  => 'CFileLogRoute',
+            'levels' => 'error, warning, info',
+        ],
+        'error'       => [
+            'class'   => 'CFileLogRoute',
+            'levels'  => 'error, warning',
+            'logFile' => 'error.log',
+        ],
+        'info'        => [
+            'class'   => 'CFileLogRoute',
+            'levels'  => 'info',
+            'logFile' => 'info.log',
+        ],
+        'trace'       => [
+            'class'   => 'CFileLogRoute',
+            'levels'  => 'trace',
+            'logFile' => 'trace.log',
+        ],
+    ],
+],
 
         'avatarStorage'  => [
-            'class'    => 'shared\components\AvatarStorage',
-            'appId'    => 'site',
-            'basePath' => ROOT . '/web/site/avatars',
-            'baseUrl'  => 'avatars',
-            'sizes'    => [56, 73, 210],
-        ],
+    'class'    => 'shared\components\AvatarStorage',
+    'appId'    => 'site',
+    'basePath' => ROOT . '/web/site/avatars',
+    'baseUrl'  => 'avatars',
+    'sizes'    => [56, 73, 210],
+],
 
         'fs'             => [
-            'class'         => 'shared\components\Fs',
-            'safeLocations' => [ROOT . '/web/site/avatars'],
-        ]
+    'class'         => 'shared\components\Fs',
+    'safeLocations' => [ROOT . '/web/site/avatars'],
+]
     ],
 
     'params'      => [
-        'safeLocations' => [ROOT . '/web/site/avatars']
-    ]
+    'safeLocations' => [ROOT . '/web/site/avatars']
+]
 ];

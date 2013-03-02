@@ -20,7 +20,7 @@ class User extends \shared\models\User
             ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
             ['newPassword', 'site\validators\Password'],
 
-//            ['password', 'required', 'on' => 'settings'],
+            //            ['password', 'required', 'on' => 'settings'],
             ['newPassword', 'checkPassword', 'on' => 'settings'],
             ['password', 'safe'],
             ]
@@ -44,14 +44,15 @@ class User extends \shared\models\User
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */
-        if($this->$attribute || !$skipEmpty){
-            if(!$this->validatePassword($this->$passwordAttribute)){
+        if ($this->$attribute || !$skipEmpty) {
+            if (!$this->validatePassword($this->$passwordAttribute)) {
                 $this->addError($passwordAttribute, $message);
             }
         }
     }
+
     public function beforeSave() {
-        if($this->newPassword){
+        if ($this->newPassword) {
             $this->hashedPassword = Randomizr::hashPassword($this->newPassword);
         }
 
@@ -87,5 +88,43 @@ class User extends \shared\models\User
             $id = $id->id;
         }
         return !Vote::model()->countByAttributes(['User_id' => $this->id, 'Post_id' => $id]);
+    }
+
+    public function isFavorite($id){
+        if ($id instanceof Post) {
+            $id = $id->id;
+        }
+
+        return in_array($id, \CHtml::listData($this->favorites, 'id', 'id'));
+    }
+
+    public function addFavorite($id) {
+        if ($id instanceof Post) {
+            $id = $id->id;
+        }
+
+        try {
+            return $this->dbConnection->createCommand()->insert(self::FAVORITES_RELATION_TABLE, ['User_id' => $this->id, 'Post_id' => $id]);
+        } catch (\CDbException $e) {
+            if ($this->dbConnection->isDuplicateException($e)) {
+                return true;
+            }
+            throw $e;
+        }
+    }
+
+    public function deleteFavorite($id) {
+        if ($id instanceof Post) {
+            $id = $id->id;
+        }
+
+        return $this->dbConnection->createCommand()->delete(
+            self::FAVORITES_RELATION_TABLE,
+            'User_id = :userId AND Post_id = :postId',
+            [
+            'userId' => $this->id,
+            'postId' => $id
+            ]
+        );
     }
 }
