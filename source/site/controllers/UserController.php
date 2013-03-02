@@ -55,7 +55,7 @@ class UserController extends \site\components\Controller
         $this->render('settings', ['user' => $user]);
     }
 
-    public function actionView($nickname, array $interests = [], $sort = Post::SORT_DATE) {
+    public function actionView($nickname = null, array $interests = [], $sort = Post::SORT_DATE) {
         $model = $this->loadModel($nickname);
         $this->author = $model;
 
@@ -67,7 +67,7 @@ class UserController extends \site\components\Controller
             }
         }
 
-        $posts = Post::model()->good()->sortBy($sort)->findAllByAttributes(['User_id' => $model->id],$criteria);
+        $posts = Post::model()->good()->sortBy($sort)->findAllByAttributes(['User_id' => $model->id], $criteria);
 
         $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
         $this->$render('//post/list', ['posts' => $posts, 'sort' => $sort]);
@@ -82,8 +82,10 @@ class UserController extends \site\components\Controller
     protected function loadModel($id) {
         if (is_numeric($id)) {
             $user = User::model()->findByPk($id);
-        } else {
+        } elseif ($id) {
             $user = User::model()->findByAttributes(['nickname' => $id]);
+        } else {
+            $user = Yii()->user->model;
         }
 
         if (!$user) {

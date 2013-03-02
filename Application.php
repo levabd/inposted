@@ -9,6 +9,8 @@
  * @property \base\url\ManagerCollection $urlManager
  * @property \shared\components\AvatarStorage $avatarStorage
  * @property \shared\components\Fs $fs
+ *
+ * @method string createProfileUrl($user)
  */
 class Application extends CWebApplication
 {

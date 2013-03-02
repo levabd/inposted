@@ -23,14 +23,16 @@ isset($thanks) || ($thanks = null);
         <?php if (!$this->author && ($author = $post->author)): ?>
             <div class="span1">
                 <a
-                    href="<?=$this->createUrl('user/view', ['nickname' => $author->nickname])?>"
+                    href="<?=Yii()->createProfileUrl($author)?>"
                     style="color:#54211d;text-decoration: underline;display:block;text-align:center;"
                     >
                     <b><?=$author->nickname?></b>
                 </a>
 
                 <div class="avat">
-                    <img alt="<?=$author->nickname?>" class="face" src="<?=$author->getAvatarUrl(56)?>" title="<?=$author->nickname?>">
+                    <a href="<?=Yii()->createProfileUrl($author)?>">
+                        <img alt="<?=$author->nickname?>" class="face" src="<?=$author->getAvatarUrl(56)?>" title="<?=$author->nickname?>">
+                    </a>
                 </div>
             </div>
         <?php endif;#($this->author)?>
@@ -70,7 +72,7 @@ isset($thanks) || ($thanks = null);
                     <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'abuse'])?>" class="btn btn-mini">
                         <i class="  icon-warning-sign"></i>
                     </a>
-                    <?php else: ?>
+                <?php else: ?>
                     <button class="btn btn-mini btn-success"><i class=" icon-thumbs-up"></i></button>
                     <div class="arrow_box"><?=$post->likesCount?></div>
                 <?php endif;#($user->canVote($post))?>

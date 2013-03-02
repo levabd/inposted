@@ -7,6 +7,8 @@ return [
         'go' => 'site\components\urlShorten\Controller',
     ],
 
+    'behaviors'     => ['site\behaviors\Application'],
+
     'components'    => [
         'geoip'        => [
             'class' => 'site\components\GeoIp',

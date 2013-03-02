@@ -98,10 +98,11 @@ return [
                         'settings'                 => 'user/settings',
                         'signout'                  => 'auth/signout',
 
-                        'user/<nickname>'          => 'user/view',
+                        'profile'                  => ['user/view', 'defaultParams' => ['nickname' => false]],
+                        'profile/<nickname>'       => 'user/view',
                         '<id:\d+>'                 => 'post/view',
                         'vote/<id:\d+>/<type>'     => 'post/vote',
-                        'go/<eid:\w+>'              => ['go/go', 'urlSuffix' => false],
+                        'go/<eid:\w+>'             => ['go/go', 'urlSuffix' => false],
                     ]
                 ],
                 'admin' => [

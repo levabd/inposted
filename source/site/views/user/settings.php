@@ -51,7 +51,7 @@ $form = $this->beginWidget(
     <div class="span12">
         <div class="well" style="background:#ffffff;margin-top:10px;">
             <div class="info_title ">
-                <a href="<?=Yii()->createUrl('/user/view', ['nickname' => $user->nickname])?>" class="span9">Personal</a>
+                <a href="<?=Yii()->createProfileUrl($user)?>" class="span9">Personal</a>
                 <?php if (Yii()->user->getFlash('settings.update')): ?>
                     <span class="text-info">Settings was updated</span>
                 <?php endif;#(Yii()->user->getFlash('settings.update'))?>

@@ -32,13 +32,27 @@ Yii()->clientScript->registerPackage('main');
 
                 </div>
                 <div class="nav-collapse">
-                    <ul class="nav">
-                        <li class="<?=$this->id == 'site' && $this->action->id == 'index' ? 'active' : ''?>">
-                            <a href="<?=$this->createUrl('/site/index')?>" style="text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;">
-                                <i class="icon-1home"></i>Home
-                            </a>
-                        </li>
-                    </ul>
+                    <?php
+                    $this->widget(
+                        'zii.widgets.CMenu',
+                        [
+                        'htmlOptions' => ['class' => 'nav'],
+                        'encodeLabel' => false,
+                        'items' => [
+                            [
+                                'label'       => '<i class="icon-1home"></i>Home',
+                                'url'         => ['/site/index'],
+                                'linkOptions' => ['style' => 'text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;'],
+                            ],
+                            [
+                                'label'       => 'Me',
+                                'url'         => ['/user/view'],
+                                'linkOptions' => ['style' => 'text-decoration: underline;font-size:18px;font-weight:bold;color:#000000;'],
+                            ]
+                        ]
+                        ]
+                    );
+                    ?>
                 </div>
             </div>
         </div>
