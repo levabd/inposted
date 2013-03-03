@@ -295,7 +295,7 @@ jQuery(function ($) {
         e.preventDefault();
         var self = this;
         var settings = $(this).data('favorite');
-        if (settings.state == 'add' || !settings.confirm || confirm('Are you sure you want to unstar this post?')) {
+        if (settings.state != settings.confirm || confirm('Are you sure you want to unstar this post?')) {
             $.ajax(
                 settings[settings.state].url,
                 {

@@ -23,7 +23,7 @@ $user = Yii()->user->model;
                         $favorite = [
                             'state'       => 'delete',
                             'stateChange' => 'add',
-                            'confirm'     => true,
+                            'confirm'     => 'delete',
                             'refresh'     => false,
 
                             'add'         => [
