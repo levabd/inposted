@@ -432,6 +432,7 @@ a.sort_post:hover, a.sort_post.active {
 .unstyled_fav {
     line-height: 30px;
     margin-left: 20px;
+    list-style: none;
 }
 
 .unstyled_fav li {
@@ -552,6 +553,9 @@ a.sort_post:hover, a.sort_post.active {
     font-size: 14px;
     color: #000;
     margin-top: 32px;
+    background: #ffffff !important;
+    z-index: 1 !important;
+    position: relative;
 }
 
 .result_search ul {
@@ -654,8 +658,8 @@ input#go {
     margin: 0px 50px;
 }
 
-.join_us input[type=text], .join_us input[type=password]{
-    width:96%;
+.join_us input[type=text], .join_us input[type=password] {
+    width: 96%;
 }
 
 .login_with {
@@ -731,10 +735,11 @@ input#go {
     margin-left: -4px;
 }
 
-.button_log{
+.button_log {
     text-align: right;
 }
-.button_log input{
+
+.button_log input {
     text-decoration: underline;
     margin-right: 10px;
 }

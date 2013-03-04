@@ -22,16 +22,17 @@ $user = Yii()->user->model;
                     <?php foreach ($data['posts'] as $post): ?>
                         <?php
                         $favorite = [
-                            'state'       => 'delete',
-                            'stateChange' => 'add',
-                            'confirm'     => 'delete',
-                            'refresh'     => false,
+                            'state'        => 'delete',
+                            'stateChange'  => 'add',
+                            'confirm'      => false,
+                            'refresh'      => false,
+                            'refreshPosts' => true,
 
-                            'add'         => [
+                            'add'          => [
                                 'image' => Yii()->baseUrl . '/img/star_null.png',
                                 'url'   => Yii()->createUrl('/post/addFavorite', ['id' => $post->id]),
                             ],
-                            'delete'      => [
+                            'delete'       => [
                                 'image' => Yii()->baseUrl . '/img/star_full.png',
                                 'url'   => Yii()->createUrl('/post/deleteFavorite', ['id' => $post->id]),
                             ],

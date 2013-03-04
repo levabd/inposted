@@ -311,6 +311,9 @@ jQuery(function ($) {
                         if (settings.refresh) {
                             Inposted.refreshFavorites();
                         }
+                        if(settings.refreshPosts){
+                            Inposted.filterPosts();
+                        }
                     }
                 }
             )

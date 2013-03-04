@@ -31,13 +31,17 @@ class Post extends \shared\models\Post
     public function scopes() {
         return [
             'byDate' => ['order' => $this->tableAlias . ".dateSubmitted DESC"],
-            'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) <= (SELECT COUNT(`Post_id`) FROM `Vote` where `type` = 'like' AND $this->tableAlias.id = `Vote`.`Post_id`)"],
+//            'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) <= (SELECT COUNT(`Post_id`) FROM `Vote` where `type` = 'like' AND $this->tableAlias.id = `Vote`.`Post_id`)"],
+            'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) = 0"],
         ];
     }
 
     public function getIsGood() {
-        return $this->dbConnection->createCommand('SELECT (SELECT COUNT(*) FROM `Vote` WHERE `type` != "like" AND `Post_id` = :id) <= (SELECT COUNT(*) FROM `Vote` WHERE `type` = "like" AND `Post_id` = :id)')
-            ->queryScalar(['id' => $this->id]);
+//        return $this->dbConnection->createCommand('SELECT (SELECT COUNT(*) FROM `Vote` WHERE `type` != "like" AND `Post_id` = :id) <= (SELECT COUNT(*) FROM `Vote` WHERE `type` = "like" AND `Post_id` = :id)')
+//            ->queryScalar(['id' => $this->id]);
+
+        return $this->dbConnection->createCommand('SELECT COUNT(*) FROM `Vote` WHERE `type` != "like" AND `Post_id` = :id')
+            ->queryScalar(['id' => $this->id]) == 0;
     }
 
     public function sortBy($sort) {
