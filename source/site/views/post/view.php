@@ -139,7 +139,7 @@ if ($user) {
                                 <?php if ($vote->type == Vote::TYPE_ABUSE): ?>
                                     <button class="btn btn-mini btn-warning"><i class="icon-warning-sign"></i></button>
                                 <?php elseif ($vote->type == Vote::TYPE_SPAM): ?>
-                                    <button class="btn btn-mini btn-warning"><i class="icon-ban-circle"></i></button>
+                                    <button class="btn btn-mini btn-danger"><i class="icon-ban-circle"></i></button>
                                 <?php endif; ?>
                             <?php endif;#($vote->type == Vote::TYPE_LIKE)?>
                         </div>

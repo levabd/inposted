@@ -328,7 +328,7 @@ jQuery(function ($) {
         e.preventDefault();
     });
 
-    $(document).on('click', '.adm_butt a', function (e) {
+    $(document).on('click', '.adm_butt a[class!=favorite-star]', function (e) {
         e.preventDefault();
         var post = $(this).closest('.post');
         $.ajax(

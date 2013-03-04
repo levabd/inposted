@@ -6,7 +6,7 @@
 $user = Yii()->user->model;
 ?>
 
-<div class="well mini_post_white"> <!--фавориты-->
+<div class="well mini_post_white" id="favorites" data-url="<?=$this->createUrl('/post/favorites')?>"> <!--фавориты-->
     <div class="well yellow">
         <span class="ref_main"><b>Favorites</b></span>
     </div>
