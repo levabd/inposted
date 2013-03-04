@@ -1,5 +1,32 @@
 const KEY_ENTER = 13;
 const KEY_SHIFT = 16;
+
+var interestSuggestions = {
+    selected: null,
+    selectedTime: null,
+    active: null,
+
+    select: function (id) {
+        var now = new Date().getTime();
+        if ((this.selectedTime == null || this.selectedTime + 500 < now) && (id == this.active)) {
+            this.selected = id;
+            this.selectedTime = now;
+            $('.result_search li.main').removeClass('active_res').removeClass('hover_res');
+            $('.result_search li.main[data-id=' + id + ']').addClass('active_res');
+            $('.result_search li.additional').remove();
+
+            $.ajax(
+                $('.result_search li.main[data-id=' + id + ']').data('additional-url'),
+                {
+                    success: function (data) {
+                        $('.result_search ul').append(data);
+                    }
+                }
+            )
+        }
+    }
+}
+
 var Inposted = {
     baseUrl: '',
     MAX_POST_SIZE: null,
@@ -33,7 +60,9 @@ var Inposted = {
             }
         )
 
-
+        interestSuggestions.active = null;
+        interestSuggestions.selected = null;
+        interestSuggestions.selectedTime = null;
     },
     updateInterestCheckboxesState: function (group) {
         var selector = '.own-interest[data-group=' + group + ']';
@@ -311,7 +340,7 @@ jQuery(function ($) {
                         if (settings.refresh) {
                             Inposted.refreshFavorites();
                         }
-                        if(settings.refreshPosts){
+                        if (settings.refreshPosts) {
                             Inposted.filterPosts();
                         }
                     }
@@ -337,10 +366,35 @@ jQuery(function ($) {
         $.ajax(
             $(this).attr('href'),
             {
-                success: function(data){
+                success: function (data) {
                     post.replaceWith(data);
                 }
             }
         );
     });
+
+
+
+    //interests widget
+    $(document)
+        .on(
+        'mouseenter', '.result_search li.main',
+        function () {
+            var id = $(this).data('id');
+            if (id != interestSuggestions.selected) {
+                interestSuggestions.active = id;
+                $(this).addClass('hover_res')
+                setTimeout(function () {
+                    interestSuggestions.select(id);
+                }, 1500);
+            }
+        })
+        .on(
+        'mouseleave', '.result_search li.main',
+        function () {
+            $(this).removeClass('hover_res');
+            interestSuggestions.active = null;
+        })
+        .on('click', '.but_sear', function(){interestSuggestions.select($(this).data('id'))});
+
 });

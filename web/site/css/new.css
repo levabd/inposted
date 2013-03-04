@@ -544,6 +544,7 @@ a.sort_post:hover, a.sort_post.active {
 .poisk {
     margin: -19px -19px 5px -19px;
     min-height: 45px;
+    max-height: 45px;
     padding: 15px 0px 0px 20px;
 }
 
@@ -593,6 +594,11 @@ a.sort_post:hover, a.sort_post.active {
     height: 25px;
 }
 
+.hover_res {
+    background: #ffffc8;
+    height: 25px;
+}
+
 .btn-2mini:hover {
     background: #fffd74 !important;
     border: 1px solid #ffe066;
@@ -601,7 +607,15 @@ a.sort_post:hover, a.sort_post.active {
     border-radius: 4px;
 }
 
-#but_sear {
+.result_search .but_sear{
+    display: none;
+}
+
+.result_search .active_res .but_sear, .result_search .hover_res .but_sear{
+    display: block;
+}
+
+.but_sear {
     float: right;
     margin-right: 9px;
     margin-top: 3px;
@@ -622,7 +636,7 @@ input[type="text"] {
     background-color: #ffffff !important;
 }
 
-input#quicksearch {
+input.quicksearch {
     height: 22px;
     line-height: 22px;
     float: left;
@@ -630,7 +644,7 @@ input#quicksearch {
     margin-bottom: 0px;
 }
 
-input#go {
+input.go {
     text-indent: -9999px;
     line-height: 20;
     border: 0;

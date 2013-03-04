@@ -106,6 +106,13 @@ class InterestController extends WidgetController
         $this->renderPartial('side-search-results', compact('interests', 'verb', 'parent'));
     }
 
+    public function actionAdditional($parentId) {
+        if($parent = Interest::model()->findByPk($parentId)){
+            $interests = $parent->children;
+            $this->renderPartial('additional', compact('parent','interests'));
+        }
+    }
+
     public function actionOfUser($id){
         if($user = User::model()->with('interests')->findByPk($id)){
             $this->render('of-user', ['interests' => $user->interests]);

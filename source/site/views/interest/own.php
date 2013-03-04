@@ -11,7 +11,7 @@ $parentId = $parent ? $parent->id : null;
 isset($filter) || ($filter = false);
 ?>
 <?php foreach ($interests as $interest): ?>
-    <label class="checkbox" style="line-height:18px;">
+    <label class="checkbox">
         <?=
         CHtml::checkBox(
             'interests[]',
@@ -48,20 +48,21 @@ isset($filter) || ($filter = false);
         data-except='<?=CJSON::encode($except)?>'
         value="<?=$verb?>"
         >
-<!--    <input class="go" type="submit">-->
+    <input class="go" type="submit">
+
+    <div class="side_search_results">
+        <?php
+        if ($verb) {
+            $this->widget(
+                get_class($this),
+                [
+                'action'       => 'search',
+                'actionParams' => compact('verb', 'except', 'parentId')
+                ]
+            );
+        }
+        ?>
+    </div>
 </div>
 <!--конец форма поиска-->
 
-<div class="side_search_results">
-    <?php
-    if ($verb) {
-        $this->widget(
-            get_class($this),
-            [
-            'action'       => 'search',
-            'actionParams' => compact('verb', 'except', 'parentId')
-            ]
-        );
-    }
-    ?>
-</div>
