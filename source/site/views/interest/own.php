@@ -48,7 +48,7 @@ isset($filter) || ($filter = false);
         data-except='<?=CJSON::encode($except)?>'
         value="<?=$verb?>"
         >
-    <input class="go" type="submit">
+<!--    <input class="go" type="submit">-->
 </div>
 <!--конец форма поиска-->
 

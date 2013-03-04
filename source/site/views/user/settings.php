@@ -49,13 +49,9 @@ $form = $this->beginWidget(
 );
 ?>
     <div class="span12">
-        <div class="well" style="background:#ffffff;margin-top:10px;">
+        <div class="well mini_post_white">
             <div class="info_title ">
-                <a href="<?=Yii()->createProfileUrl($user)?>" class="span9">Personal</a>
-                <?php if (Yii()->user->getFlash('settings.update')): ?>
-                    <span class="text-info">Settings was updated</span>
-                <?php endif;#(Yii()->user->getFlash('settings.update'))?>
-            </div>
+                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Personal</h3></div>
             <div class="row-fluid">
                 <div class="span6">
                     <?=$form->textField($user, 'email', ['class' => 'span12'])?><br>
@@ -81,13 +77,13 @@ $form = $this->beginWidget(
                         </div>
                     </div>
                     <br>
+
                     <?=$form->passwordField($user, 'password', ['class' => 'span6'])?>
                     <?=$form->error($user, 'password')?>
                     <br>
                     <?=$form->passwordField($user, 'newPassword', ['class' => 'span6'])?>
-                    <?=CHtml::submitButton('Confirm', ['class' => 'btn', 'style' => 'text-decoration: underline;margin:-10px 0px 0px 10px;'])?>
+                    <?=CHtml::submitButton('Confirm', ['class' => 'but_conf'])?>
                     <?=$form->error($user, 'newPassword')?>
-
                 </div>
                 <div class="span6">
                     <?=$form->textField($user, 'nickname', ['class' => 'span6'])?><br>
@@ -107,27 +103,26 @@ $form = $this->beginWidget(
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledHints')?> <?=$user->getAttributeLabel('enabledHints')?>
                     </label>
-                    <?=CHtml::submitButton('Apply', ['class' => 'btn', 'style' => 'text-decoration: underline;float:right;margin-top:12px;'])?>
+                    <?=CHtml::submitButton('Apply', ['class' => 'but_apl'])?>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="span12">
         <div class="row">
             <div class="span6">
-                <div class="well" style="background:#ffffff;margin-top:10px;">
-                    <div class="info_title  "><a href="" onclick="return false;">E-mail notifications</a></div>
-                    <?=CHtml::submitButton('Apply', ['class' => 'btn', 'style' => 'text-decoration: underline;float:right;'])?>
+                <div class="well mini_post_white">
+                    <div class="info_title">
+                        <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> E-mail notifications</h3>
+                    </div>
+                    <?=CHtml::submitButton('Apply', ['class' => 'btn mypre'])?>
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledNotifications')?> <?=$user->getAttributeLabel('enabledNotifications')?>
                     </label>
                 </div>
 
             </div>
-            <div class="span6">&nbsp;
-            </div>
+            <div class="span6"></div>
         </div>
     </div>
-
 <?php $this->endWidget();

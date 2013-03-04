@@ -2,13 +2,14 @@
 /** @var $this \site\widgets\user\User */
 /** @var $user \site\models\User */
 ?>
-<div class="well" style="background:#ffffff;"><!--инфо о пользователе-->
-    <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-        <a href="<?=Yii()->createProfileUrl($user)?>" style="color:#54211d;font-size:18px;text-decoration: underline;">
+
+<div class="well mini_post_white"><!--инфо о пользователе-->
+    <div class="well yellow">
+        <a href="<?=Yii()->createProfileUrl($user)?>" class="ref_main">
             <b><?=$user->firstName?></b>
         </a>
     </div>
-    <br>
+    <br/>
 
     <div class="row-fluid">
         <div class="span5">
@@ -22,8 +23,8 @@
             Reputation: <?=$user->reputation?><br>
             Level: <?=$user->level?><br>
             <?php if ($user->country): ?>
-                <img alt="<?=$user->country?>" src="<?=$user->country->flagUrl?>" title="<?=$user->country->name?>"><br>
+                <img class="country" alt="<?=$user->country?>" src="<?=$user->country->flagUrl?>" title="<?=$user->country->name?>"><br>
             <?php endif;#($user->country)?>
         </div>
     </div>
-</div>
+</div><!--конец инфо о пользователе-->

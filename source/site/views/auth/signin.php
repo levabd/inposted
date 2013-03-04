@@ -17,12 +17,12 @@ $form = $this->beginWidget(
 $baseUrl = Yii()->baseUrl;
 ?>
 
-<div class="well" style="background:#ffffff;margin-top:10px;"><!--вход на сайт-->
+<div class="well mini_post_white"><!--вход на сайт-->
     <?php if ($error = User()->getError()): ?>
         <div class="alert alert-error"><?=$error?></div>
     <?php endif?>
-    <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>Sign in</b></a>
+    <div class="well yellow">
+        <span class="ref_main"><b>Sign in</b></span>
     </div>
     <br/>
 
@@ -32,8 +32,9 @@ $baseUrl = Yii()->baseUrl;
 
         <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'), 'style' => 'width:85%;')); ?>
         <?=$form->error($model, 'password')?>
-        <input class="btn" type="submit" style="text-decoration:underline;" value="Sign in"/>
-        <br/>
+        <div class="button_log">
+            <input class="btn" type="submit" value="Sign in"/>
+        </div>
 <?php /*
         <div style="text-align:center;color:#000000;clear:both;">Login with :</div>
 					<span class="soc_seti">
@@ -44,32 +45,16 @@ $baseUrl = Yii()->baseUrl;
 						<a href=""><img src="<?=$baseUrl?>/img/h.png"></a>
                     </span><br/>
 */?>
-        <a href="<?=$this->createUrl('restore')?>" class="ajax" style="color:#686968;text-decoration: underline;">
+        <a href="<?=$this->createUrl('restore')?>" class="ref_mess ajax" data-no-loader="true">
             Forgot your password?
         </a>
         <br/>
+
         Not registered?
-        <a href="#signup" data-toggle="modal" style="color:#686968;text-decoration: underline;">
+        <a href="#signup" data-toggle="modal" class="ref_mess">
             Join us!
         </a>
     </div>
 </div>
 <?php $this->endWidget(); ?>
 <!--конец вход на сайт-->
-<script type="text/javascript">
-    $(function () {
-        var $form = $('#signin-form');
-        var $username = $form.find('#Signin_username');
-        var $restore = $('#restore');
-        $restore.click(function (e) {
-            var name = $username.val();
-            var url = e.target.href;
-
-            if (name) {
-                url += '?user=' + encodeURIComponent(name);
-            }
-            window.location = url;
-            e.preventDefault();
-        })
-    })
-</script>

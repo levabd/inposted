@@ -31,14 +31,14 @@ $this->beginContent('//layouts/main');
             }
             ?>
 
-            <div class="well" style="background:#ffffff;">
-                <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-                    <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>About</b></a>
+            <div class="well mini_post_white"><!--о нас-->
+                <div class="well yellow">
+                    <span class="ref_main"><b>About</b></span>
                 </div>
                 <br/>
-
-                (c)2012 Copyright
+                &copy; 2012 Copyright
             </div>
+            <!--конец о нас-->
         </div>
         <!--конец правая часть контента-->
     </div>

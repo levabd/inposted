@@ -31,8 +31,13 @@ class Post extends \shared\models\Post
     public function scopes() {
         return [
             'byDate' => ['order' => $this->tableAlias . ".dateSubmitted DESC"],
-            'good'   => ['condition' => $this->tableAlias . '.id NOT IN (SELECT `Post_id` FROM `Vote` where `type` IN ("spam", "abuse"))'],
+            'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) <= (SELECT COUNT(`Post_id`) FROM `Vote` where `type` = 'like' AND $this->tableAlias.id = `Vote`.`Post_id`)"],
         ];
+    }
+
+    public function getIsGood() {
+        return $this->dbConnection->createCommand('SELECT (SELECT COUNT(*) FROM `Vote` WHERE `type` != "like" AND `Post_id` = :id) <= (SELECT COUNT(*) FROM `Vote` WHERE `type` = "like" AND `Post_id` = :id)')
+            ->queryScalar(['id' => $this->id]);
     }
 
     public function sortBy($sort) {

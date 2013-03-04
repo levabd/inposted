@@ -254,13 +254,16 @@ jQuery(function ($) {
     $(document).on('click', '.ajax-widget a.ajax', function (e) {
         e.preventDefault();
         var widget = $(this).closest('.ajax-widget');
-        Inposted.showAjaxLoader();
+
+        var showLoader = !$(this).data('no-loader');
+
+        showLoader && Inposted.showAjaxLoader();
         $.ajax(
             $(this).attr('href'),
             {
                 success: function (data) {
                     widget.replaceWith(data);
-                    Inposted.hideAjaxLoader();
+                    showLoader && Inposted.hideAjaxLoader();
                 },
                 error: Inposted.ajaxError
             }
@@ -285,7 +288,7 @@ jQuery(function ($) {
         );
     });
 
-    $(document).on('click', 'a.sort-post', function (e) {
+    $(document).on('click', 'a.sort_post', function (e) {
         e.preventDefault();
         Inposted.filterPosts($(this).attr('href'));
     })
@@ -320,4 +323,21 @@ jQuery(function ($) {
         img.attr('src', img.data($(this).nextAll('ul').toggle().is(':hidden') ? 'collapsed' : 'expanded'))
     });
 
+
+    $(document).on('click', 'a.DISABLED', function (e) {
+        e.preventDefault();
+    });
+
+    $(document).on('click', '.adm_butt a', function (e) {
+        e.preventDefault();
+        var post = $(this).closest('.post');
+        $.ajax(
+            $(this).attr('href'),
+            {
+                success: function(data){
+                    post.replaceWith(data);
+                }
+            }
+        );
+    });
 });

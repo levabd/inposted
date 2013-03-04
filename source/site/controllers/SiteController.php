@@ -84,4 +84,8 @@ class SiteController extends \site\components\Controller
             $this->render('error', $error);
         }
     }
+
+    public function actionShare() {
+        $this->renderText('');
+    }
 }

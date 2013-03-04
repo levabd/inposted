@@ -213,7 +213,6 @@ class AuthController extends components\WidgetController
     }
 
     protected function restoreRequest(Restore $form) {
-        sleep(1);
         /** @var $model User */
         if ($form->validate()) {
             $this->sendRestorePasswordLink($form);

@@ -13,7 +13,15 @@ class PostController extends \site\components\WidgetController
 
     public function actionVote($id, $type) {
         Yii()->user->model->vote($id, $type);
-        $this->redirect(Yii()->user->returnUrl);
+        if(Yii()->request->isAjaxRequest){
+            $post = Post::model()->findByPk($id);
+            if($post->isGood){
+                $this->renderPartial('//post/view', ['post' => $post]);
+            }
+        }
+        else{
+            $this->redirect(Yii()->user->returnUrl);
+        }
     }
 
     public function actionCreate() {

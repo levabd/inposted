@@ -16,16 +16,16 @@ $form = $this->beginWidget(
     ]
 );
 ?>
-<div class="well" style="background:#ffffff;margin-top:10px;"><!--вход на сайт-->
-    <div class="well" style="background:#fffd74;margin:-19px -19px -10px -19px ; border: 1px solid #fffd74;">
-        <a href="" style="color:#54211d;font-size:18px;text-decoration: underline;"><b>Send new pass</b></a>
+<div class="well mini_post_white"><!--вход на сайт-->
+    <div class="well yellow">
+        <span class="ref_main"><b>Send new pass</b></span>
     </div>
     <br>
 
-    <div style="text-align:center;min-height:60px;">
+    <div class="send_np">
         <?=$form->textField($model, 'username', ['style' => 'width:93%;'])?>
         <?=$form->error($model, 'username')?>
-        <input type="submit" class="btn" style="text-decoration: underline;float:right;" value="Next"/>
+        <input type="submit" class="btn mypre" value="Next"/>
     </div>
 </div>
 <?php $this->endWidget(); ?>

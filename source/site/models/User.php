@@ -90,7 +90,11 @@ class User extends \shared\models\User
         return !Vote::model()->countByAttributes(['User_id' => $this->id, 'Post_id' => $id]);
     }
 
-    public function isFavorite($id){
+    public function getVote($post) {
+        return Vote::model()->findByAttributes(['User_id' => $this->id, 'Post_id' => $post->id]);
+    }
+
+    public function isFavorite($id) {
         if ($id instanceof Post) {
             $id = $id->id;
         }
