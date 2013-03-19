@@ -26,7 +26,7 @@ $this->beginContent('//layouts/main');
                 $this->controllerWidget('interest/ofUser', ['actionParams' => ['id' => $this->author->id]]);
             } elseif (!Yii()->user->isGuest) {
                 $this->widget('site\widgets\user\User');
-                $this->controllerWidget('interest/index', ['widgetId' => 'sidebar-interests', 'actionParams' => ['filter' => true]]);
+                $this->controllerWidget('interest/own', ['widgetId' => 'sidebar-interests', 'actionParams' => ['filter' => true]]);
                 $this->controllerWidget('post/favorites', ['widgetId' => 'favorites']);
             }
             ?>

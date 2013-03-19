@@ -28,6 +28,8 @@ class Controller extends \shared\components\Controller
 
     public $showTopMenu = true;
 
+    protected $restActions = [];
+
     public function init() {
         parent::init();
         if(Yii()->baseUrl){

@@ -1,5 +1,11 @@
 <?php
 /** @var $name string Name of sub-application */
+
+$js = function($script, $min = null){
+    null === $min && $min = !YII_DEBUG;
+    return $min ? "$script.min.js" : "$script.js";
+};
+
 return [
     'name'          => 'Inposted',
 
@@ -20,11 +26,17 @@ return [
 
         'clientScript' => [
             'packages' => [
+                'app' => [
+                    'baseUrl' => 'js/app',
+                    'js' => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js'],
+                ],
+
                 'main'      => [
                     'baseUrl' => '',
-                    'js'      => ['js/inposted.js'],
+//                    'js'      => ['js/inposted.js'],
+
                     'css'     => ['css/new.css'],
-                    'depends' => ['bootstrap'],
+                    'depends' => ['bootstrap', 'angular', 'underscore', 'app'],
                 ],
 //                'jquery'     => [
 //                    'baseUrl' => '',
@@ -33,20 +45,21 @@ return [
                 'bootstrap' => [
                     'baseUrl' => '',
                     'css'     => ['css/bootstrap.min.css'],
-                    'js'      => ['js/bootstrap.min.js'],
+                    'js'      => [$js('js/bootstrap')],
                     'depends' => ['jquery'],
                 ],
-//                'angular'    => [
-//                    'baseUrl' => 'static/angular',
-//                    'js'      => [
-//                        'angular.min.js',
-//                        'angular-resource.min.js',
-//                    ],
-//                ],
-//                'underscore' => [
-//                    'baseUrl' => 'static/js/',
-//                    'js'      => ['underscore.min.js', 'underscore.mixins.js'],
-//                ],
+                'angular'    => [
+                    'baseUrl' => 'js/angular',
+                    'js'      => [
+                        $js('angular'),
+                        $js('angular-resource'),
+                        $js('angular-sanitize'),
+                    ],
+                ],
+                'underscore' => [
+                    'baseUrl' => 'js/underscore',
+                    'js'      => [$js('underscore')],
+                ],
 //                'async'      => [
 //                    'baseUrl' => 'static/js/',
 //                    'js'      => ['async.min.js'],

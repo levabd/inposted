@@ -4,7 +4,6 @@ use site\models\Post;
 /** @var $this \site\controllers\PostController */
 /** @var $model Post */
 
-Yii()->clientScript->registerScript('max-post-size', sprintf('Inposted.MAX_POST_SIZE = %d;', Post::MAX_POST_SIZE));
 ?>
 
 

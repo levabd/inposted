@@ -1,11 +1,13 @@
 <?php
 namespace site\components;
-use CJSON;
-use shared\interfaces\RestRecord;
 
-abstract class ActiveRestController extends RestController
+use \CJSON;
+
+abstract class ActiveRestController extends \site\components\RestController
 {
-    public $modelHasUserConstraint = true;
+    const MAX_ITEMS_IN_INDEX = 25;
+
+    public $modelHasAccountConstraint = true;
 
     abstract public function modelName();
 
@@ -15,15 +17,15 @@ abstract class ActiveRestController extends RestController
         $class = $this->modelName();
         $model = $class::model();
 
-        if(!$model instanceof RestRecord){
+        if(!$model instanceof \shared\interfaces\RestRecord){
             throw new \CException("$class should implement \\shared\\interfaces\\RestRecord interface");
         }
 
-        if(null === $this->modelHasUserConstraint){
-            $this->modelHasUserConstraint = array_key_exists('user', $model->relations());
+        if(null === $this->modelHasAccountConstraint){
+            $this->modelHasAccountConstraint = array_key_exists('account', $model->relations());
         }
-        if($this->modelHasUserConstraint){
-            if(!method_exists($model,'user')){
+        if($this->modelHasAccountConstraint){
+            if(!method_exists($model,'account')){
                 throw new \CException("$class has Account constraint and should have account() scope definition");
             }
         }
@@ -36,8 +38,8 @@ abstract class ActiveRestController extends RestController
         $class = $this->modelName();
 
         $model = $class::model();
-        if($this->modelHasUserConstraint){
-            $model->user(User()->getModel()->getPrimaryKey());
+        if($this->modelHasAccountConstraint){
+            $model->account(User()->getAccount()->getPrimaryKey());
         }
 
         return $model;
@@ -78,8 +80,8 @@ abstract class ActiveRestController extends RestController
         /** @var $model \CActiveRecord */
         $model = new $class;
 
-        if($model->hasAttribute('User_id')){
-            $model->User_id = User()->getModel()->getPrimaryKey();
+        if($model->hasAttribute('accountId')){
+            $model->accountId = User()->getAccount()->getPrimaryKey();
         }
 
         return $model;
@@ -91,11 +93,24 @@ abstract class ActiveRestController extends RestController
 
     public function getModelListCriteria(){
         $from = Yii()->getRequest()->getQuery('from',0);
-        $to = Yii()->getRequest()->getQuery('to',25);
+        $to = Yii()->getRequest()->getQuery('to', self::MAX_ITEMS_IN_INDEX);
+        $filter = Yii()->getRequest()->getQuery('filter');
 
         $cr = new \CDbCriteria;
 
-        $cr->limit = abs($from - $to);
+        if($filter){
+            $model = $this->model();
+            foreach(explode(' ', $filter) as $f){
+                if(false !== strpos($f, ':')){
+                    list($prop, $value) = explode(':', $f, 2);
+                    if($model->hasAttribute($prop) && $value){
+                        $cr->compare('t.'.$prop, $value, true);
+                    }
+                }
+            }
+        }
+
+        $cr->limit = min(abs($from - $to), self::MAX_ITEMS_IN_INDEX);
         $cr->offset = min($from, $to);
 
         return $cr;
@@ -112,8 +127,7 @@ abstract class ActiveRestController extends RestController
                 return $result;
             }
 
-            $this->reject(404, 'NotFound', "$class #$id not found", compact('id'));
-            Yii()->end();
+            $this->reject(404, null, "$class #$id not found", compact('id'));
         }
     }
 
@@ -127,7 +141,7 @@ abstract class ActiveRestController extends RestController
     }
 
     public function transformResponse($model){
-        return $model->getPublicAttributes();
+        return $model instanceof \CModel ? $model->getPublicAttributes() : $model;
     }
 
 }

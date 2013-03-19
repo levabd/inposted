@@ -1,68 +1,90 @@
 <?php
 /** @var $this \site\controllers\InterestController */
-/** @var $parent \site\models\Interest */
-/** @var $interests \site\models\Interest[] */
-/** @var $verb string */
-/** @var $checked array */
-
-$except = [];
-$parentId = $parent ? $parent->id : null;
-
-isset($filter) || ($filter = false);
 ?>
-<?php foreach ($interests as $interest): ?>
-    <label class="checkbox">
-        <?=
-        CHtml::checkBox(
-            'interests[]',
-            in_array($interest->id, $checked),
-            [
-            'value'      => $interest->id,
-            'class'      => 'own-interest' . ($filter ? ' posts-filter' : ''),
-            'data-group' => $this->widgetId,
-            'id'         => null,
-            ]
-        );
-
-        ?>
-        <b><?=$interest->fullName?> </b>
-        <button
-            class="btn btn-1mini attach-interest"
-            data-url="<?=$this->createUrl('attach', ['id' => $interest->id, 'detach' => true])?>"
-            data-parent-id="<?=$parentId?>"
-            >
-            x
-        </button>
-    </label>
-<?php endforeach;#($interests as $interest)?>
+<label class="checkbox" ng-repeat="interest in interests">
+    <input
+        type="checkbox"
+        ng-model="interest.checked"
+        ng-disabled="isFilterDisabled(interest.id)"
+        ng-click="toggleFilter(interest.id); $event.stopPropagation()"
+        >
+    <b>{{interest.fullName}}</b>
+    <button
+        class="btn btn-1mini"
+        ng-click="detachInterest(interest); $event.stopPropagation()"
+        >
+        x
+    </button>
+</label>
 
 <br>
 <div class="poisk"> <!--форма поиска-->
-    <?php if ($parent): ?>
-        <a class="btn parent" style="float:left;" href="#" title="clear parent"><?=CHtml::encode('<')?></a>
-    <?php endif;#($parent)?>
-    <input
-        class="quicksearch" type="text" style="width:<?=$parent ? 50 : 75?>%;"
-        class="input" placeholder="<?='Search' . ($parent ? " in $parent->name" : '')?>"
-        data-url="<?=$this->createUrl('search', ['parentId' => $parentId])?>"
-        data-except='<?=CJSON::encode($except)?>'
-        value="<?=$verb?>"
-        >
-    <input class="go" type="submit">
-
-    <div class="side_search_results">
-        <?php
-        if ($verb) {
-            $this->widget(
-                get_class($this),
-                [
-                'action'       => 'search',
-                'actionParams' => compact('verb', 'except', 'parentId')
-                ]
-            );
-        }
-        ?>
+    <div class="search_block">
+        <span class="bit-box" ng-show="suggestions.parents.length > 1" ng-click="suggestions.popParent()">
+            <img src="<?=Yii()->baseUrl?>/img/back.png">
+        </span>
+        <span class="bit-box" ng-show="suggestions.parents.length" ng-click="suggestions.popParent()">
+            {{suggestions.parents[suggestions.parents.length - 1].name}}
+            <a href="#" class="closebutt"><sup>x</sup></a>
+        </span>
+        <input ng-model="search.term" ng-change="search()" class="searchh input" type="text" />
+        <button
+            class="btn btn-2mini"
+            ng-click="createInterest(); $event.stopPropagation()"
+            ng-show="search.term && search.term.length >= 3 && !existsInterest"
+            >+</button>
     </div>
-</div>
-<!--конец форма поиска-->
 
+    <div class="result_search" ng-show="suggestions.main.length">
+        <ul>
+            <li
+                ng-repeat="interest in suggestions.main"
+                ng-class="{active_res: interest.active}"
+
+                ng-click="suggestions.pushParent(interest); $event.stopPropagation()"
+                class="suggestion"
+                >
+
+                <button
+                    class="btn btn-2mini"
+                    ng-hide="hasInterest(interest)"
+                    ng-click="attachInterest(interest); $event.stopPropagation()">+</button>
+                {{interest.name}}
+                <button
+                    class="btn btn-2mini"
+                    class="but_sear"
+                    ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()">
+                    <img src="<?=Yii()->baseUrl?>/img/sear.png">
+                </button>
+            </li>
+
+            <li class="fixing_res" ng-show="suggestions.additional.length">{{suggestions.getActive().name}}</li>
+
+            <li ng-repeat="interest in suggestions.additional" ng-click="suggestions.pushParent(interest); $event.stopPropagation()" class="suggestion">
+                <button
+                    class="btn btn-2mini"
+                    ng-hide="hasInterest(interest)"
+                    ng-click="attachInterest(interest); $event.stopPropagation()">+</button>
+                {{interest.name}}
+            </li>
+        </ul>
+    </div>
+</div><!--конец форма поиска-->
+<?php $this->beginWidget('site\components\RegisterScript') ?>
+<script type="text/javascript">
+    $(function () {
+        $('.search_block')
+            .click(function () {
+                $(this).find('input').focus();
+            })
+
+            .find('input')
+            .focus(function () {
+                $(this).closest('.search_block').addClass('with-focus')
+            })
+            .blur(function () {
+                $(this).closest('.search_block').removeClass('with-focus')
+            })
+    });
+</script>
+<?php $this->endWidget() ?>

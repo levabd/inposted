@@ -145,4 +145,32 @@ class Post extends \shared\models\Post
     public function getContentLength() {
         return mb_strlen($this->content, Yii()->charset);
     }
+
+    public function getRestAttributes() {
+        $user = Yii()->user->model;
+        if($user && ($vote = $user->getVote($this))){
+            $vote = $vote->type;
+        }
+        else{
+            $vote = null;
+        }
+
+        $interests = [];
+        foreach($this->interests as $interest){
+            $interests[] = $interest->getRestAttributes();
+        }
+
+        return [
+            'id' => $this->id,
+            'htmlContent' => $this->htmlContent,
+            'date' => Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
+            'isFavorite' => $user && $user->isFavorite($this),
+            'likesCount' => $this->likesCount,
+            'isGood' => $this->getIsGood(),
+            'isModerated' => true,
+            'userVote' => $vote,
+            'author' => $this->author->restAttributes,
+            'interests' => $interests,
+        ];
+    }
 }

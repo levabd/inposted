@@ -37,6 +37,9 @@ abstract class RestController extends \site\components\Controller
 
     public function reply($data) {
         header('Content-Type: application/json');
+        if(YII_DEBUG){
+            header('X-Debug-Mode: On');
+        }
 
         if(is_array($data)){
             foreach($data as &$d){
@@ -47,6 +50,7 @@ abstract class RestController extends \site\components\Controller
         }
 
         echo CJSON::encode($data);
+        Yii()->end();
     }
 
     /**
@@ -58,23 +62,42 @@ abstract class RestController extends \site\components\Controller
         return $model;
     }
 
-    public function reject($code, $type, $msg, $data) {
+    public function reject($code, $type = null, $msg = null, $data = null) {
+        if(!$type){
+            switch($code){
+                case 400:
+                    $type = 'Bad request';
+                    break;
+                case 403: $type = 'Forbidden';
+                    $msg = $msg ?: 'You have no access here';
+                    break;
+                case 404: $type = 'Not found'; break;
+                case 500: $type = 'Internal server error';
+                    $msg = $msg ?: 'Something terrible happened. Please contact us.';
+                    break;
+            }
+        }
+
         header("HTTP/1.1 $code $type");
         header('Content-Type: application/json');
+        if(YII_DEBUG){
+            header('X-Debug-Mode: On');
+        }
         echo CJSON::encode(
             array(
-                 'type' => strtolower($type) . '-error',
+                 'type' => strtolower(str_replace(' ','-',$type)) . '-error',
                  'msg' => $msg,
                  'data' => $data,
             )
         );
+        Yii()->end();
     }
 
     public function getJson($name = null, $defaultValue = null) {
         if (!$this->_body) {
             $this->_body = CJSON::decode(file_get_contents('php://input'), true);
         }
-        if ($name) {
+        if ($this->_body && $name) {
             return array_key_exists($name, $this->_body) ? $this->_body[$name] : $defaultValue;
         }
         return $this->_body;

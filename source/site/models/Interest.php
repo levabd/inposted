@@ -3,11 +3,14 @@
  * @author Yura Fedoriv <yurko.fedoriv@gmail.com>
  */
 namespace site\models;
-class Interest extends \shared\models\Interest{
+class Interest extends \shared\models\Interest
+{
     protected $parentIds;
 
     public function addParent($interest) {
-	if($interest->id == $this->id) return false;
+        if ($interest->id == $this->id) {
+            return false;
+        }
         $table = static::PARENT_RELATION_TABLE;
 
         $result = true;
@@ -54,8 +57,8 @@ class Interest extends \shared\models\Interest{
 
         $map = $this->dbConnection->createCommand("SELECT * FROM $table")->queryAll();
 
-        foreach($map as $link){
-            if(!isset($parents[$link['Interest_id']])){
+        foreach ($map as $link) {
+            if (!isset($parents[$link['Interest_id']])) {
                 $parents[$link['Interest_id']] = [];
             }
 
@@ -64,14 +67,14 @@ class Interest extends \shared\models\Interest{
 
         $processed = [];
 
-        $getParents = function($id) use($parents, &$processed, &$getParents){
-            if(in_array($id, $processed) || !isset($parents[$id])){
+        $getParents = function ($id) use ($parents, &$processed, &$getParents) {
+            if (in_array($id, $processed) || !isset($parents[$id])) {
                 return [];
             }
 
             $processed[] = $id;
             $result = $parents[$id];
-            foreach($parents[$id] as $parentId){
+            foreach ($parents[$id] as $parentId) {
                 $result = array_merge($result, $getParents($parentId));
             }
 
@@ -80,6 +83,14 @@ class Interest extends \shared\models\Interest{
 
         return $getParents($this->id);
 
+    }
+
+    public function getRestAttributes() {
+        return [
+            'id'       => $this->id,
+            'name'     => $this->name,
+            'fullName' => $this->getFullName(),
+        ];
     }
 
 

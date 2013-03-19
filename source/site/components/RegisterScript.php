@@ -7,7 +7,7 @@ namespace site\components;
  * F.I. styles should always be placed withing <head></head> tags and good place for JavaScript pieces is ready function.
  * You may wrap <style></style> and <script></script> blocks with this widget and their content will appear where it supposed to be.
  */
-class RegisterScript extends CWidget
+class RegisterScript extends \CWidget
 {
     const TYPE_CSS = 'css';
     const TYPE_SCRIPT = 'script';
@@ -20,7 +20,7 @@ class RegisterScript extends CWidget
     /**
      * @var int Position to place script while processing JavaScript piece
      */
-    public $position = CClientScript::POS_READY;
+    public $position = \CClientScript::POS_READY;
 
     /**
      * @var int Media to use while processing CSS piece
@@ -38,7 +38,7 @@ class RegisterScript extends CWidget
     /**
      * Ends recording script
      * This method will register content in appropriate place
-     * @throws CException On incorrect type.
+     * @throws \CException On incorrect type.
      */
     public function run() {
         $data = trim(ob_get_clean());
@@ -53,12 +53,12 @@ class RegisterScript extends CWidget
 
         $data = $this->removeTags($data);
         if ($type == self::TYPE_CSS) {
-            Yii::app()->clientScript->registerCss(__CLASS__ . "#css#$this->id", $data, $this->media);
+            Yii()->clientScript->registerCss(__CLASS__ . "#css#$this->id", $data, $this->media);
         } elseif ($type == self::TYPE_SCRIPT) {
-            Yii::app()->clientScript->registerScript(__CLASS__ . "#js#$this->id", $data, $this->position);
+            Yii()->clientScript->registerScript(__CLASS__ . "#js#$this->id", $data, $this->position);
         }
         else {
-            throw new CException(__CLASS__ . ": Unknown script type $type.");
+            throw new \CException(__CLASS__ . ": Unknown script type $type.");
         }
     }
 

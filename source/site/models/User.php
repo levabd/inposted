@@ -131,4 +131,23 @@ class User extends \shared\models\User
             ]
         );
     }
+
+    public function toggleFavorite($id, $value = null){
+        if($value === null){
+            $value = $this->isFavorite($id);
+        }
+        return $value ? $this->addFavorite($id) : $this->deleteFavorite($id);
+    }
+
+    public function getRestAttributes() {
+        return [
+            'id' => $this->id,
+            'name' => $this->firstName,
+            'nickname' => $this->nickname,
+            'url' => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
+            'avatarUrls' => [
+                56 => Yii()->avatarStorage->getAvatarUrl($this, 56)
+            ],
+];
+    }
 }

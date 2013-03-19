@@ -5,7 +5,7 @@
 Yii()->clientScript->registerPackage('main');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="inposted">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -15,7 +15,7 @@ Yii()->clientScript->registerPackage('main');
             display: none !important;
         }</style>
 </head>
-<body>
+<body ng-controller="inposted.controllers.main">
 
 <div class="container"> <!--общий контейнер-->
     <!--        <div class="mess_email">Please, enter your e-mail adress</div>-->
@@ -64,9 +64,9 @@ Yii()->clientScript->registerPackage('main');
 </div>
 <!--конец общий контейнер-->
 <?php
-if (!Yii()->user->isGuest) {
-    $this->controllerWidget('post/create');
-}
+//if (!Yii()->user->isGuest) {
+//    $this->controllerWidget('post/create');
+//}
 ?>
 </body>
 </html>

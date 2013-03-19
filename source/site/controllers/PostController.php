@@ -3,25 +3,32 @@
  * @author Yura Fedoriv <yurko.fedoriv@gmail.com>
  */
 namespace site\controllers;
+use site\components\RestTrait;
 use site\models\Post;
 
 class PostController extends \site\components\WidgetController
 {
-    public function actionIndex() {
+    use RestTrait;
+    public $restActions = ['vote'];
 
-    }
-
-    public function actionVote($id, $type) {
-        Yii()->user->model->vote($id, $type);
-        if(Yii()->request->isAjaxRequest){
-            $post = Post::model()->findByPk($id);
-            if($post->isGood){
-                $this->renderPartial('//post/view', ['post' => $post]);
+    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE) {
+        $criteria = new \CDbCriteria();
+        if($interests){
+            foreach($interests as $index => $interest){
+                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
+                $criteria->params["interest$index"] = $interest;
             }
         }
-        else{
-            $this->redirect(Yii()->user->returnUrl);
-        }
+        $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
+        $this->renderModels($posts);
+    }
+
+
+
+    public function actionVote($id, $userVote) {
+        Yii()->user->model->vote($id, $userVote);
+        $post = Post::model()->findByPk($id);
+        $this->renderModels($post);
     }
 
     public function actionCreate() {
@@ -52,32 +59,19 @@ class PostController extends \site\components\WidgetController
     }
 
     public function actionFavorites() {
-        $favorites = Yii()->user->model->favorites;
-
-        $interests = [];
-        foreach ($favorites as $post) {
-            foreach ($post->interests as $interest) {
-                if (!isset($interests[$interest->id])) {
-                    $interests[$interest->id] = ['interest' => $interest, 'posts' => []];
-                }
-                $interests[$interest->id]['posts'][] = $post;
-            }
+        if($this->isWidget){
+            $this->renderPartial('favorites');
         }
-
-        $this->renderPartial('favorites', compact('interests'));
-    }
-
-    public function actionAddFavorite($id) {
-        Yii()->user->model->addFavorite($id);
-        if(!Yii()->request->isAjaxRequest){
-            $this->goBack();
+        else{
+            $favorites = Yii()->user->model->favorites;
+            $this->renderModels($favorites);
         }
     }
 
-    public function actionDeleteFavorite($id) {
-        Yii()->user->model->deleteFavorite($id);
-        if(!Yii()->request->isAjaxRequest){
-            $this->goBack();
+    public function actionToggleFavorite($id, $value = null) {
+        if($value !== null){
+            $value = \CJSON::decode($value);
         }
+        $this->renderJson(Yii()->user->model->toggleFavorite($id, $value));
     }
 }
