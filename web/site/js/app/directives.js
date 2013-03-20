@@ -13,9 +13,9 @@
         return value;
     }
 
-    function isString(value){return typeof value == 'string';}
-
-    var lowercase = function(string){return isString(string) ? string.toLowerCase() : string;};
+    var lowercase = function (string) {
+        return angular.isString(string) ? string.toLowerCase() : string;
+    };
 
     angular.module('inposted.directives', []).
         directive('appVersion', ['version', function (version) {
@@ -23,14 +23,46 @@
                 elm.text(version);
             };
         }]).
-        directive('inHide', function () {
+        directive('inHide',function () {
             return function (scope, element, attr) {
                 scope.$watch(attr.inHide, function (value) {
-                    if(toBoolean(value)){
+                    if (toBoolean(value)) {
                         element.fadeOut(parseInt(attr.inHideSpeed) || 1000);
                     }
                 });
             }
         }
-    );
+    ).
+        directive('inSuggest', ['$timeout', function ($timeout) {
+            return function (scope, element, attr) {
+                var promises = scope.$parent.suggestions.promises;
+                var id = scope.interest.id;
+                element.
+                    mouseenter(function () {
+                        promises[id] = $timeout(function () {
+                            promises[id] = null;
+                            scope.$parent.showAdditionalSuggestions(scope.interest);
+                        }, 1500);
+                    }).
+                    mouseleave(function () {
+                        $timeout.cancel(promises[id]);
+                        promises[id] = null;
+                    })
+            }
+        }]).
+        directive('inSearch', function () {
+            return function (scope, element, attr) {
+                element.
+                    click(function () {
+                        $(this).find('input').focus();
+                    }).
+                    find('input').
+                    focus(function () {
+                        element.addClass('with-focus')
+                    }).
+                    blur(function () {
+                        element.removeClass('with-focus')
+                    })
+            }
+        })
 }());

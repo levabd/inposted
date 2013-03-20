@@ -56,25 +56,9 @@ class InterestController extends WidgetController
         }
     }
 
-    public function actionOwn($verb = null, array $checked = [], $widgetId = null, $parentId = null, $filter = false) {
-//        $filter = \CJSON::decode($filter);
-//        if ($verb) {
-//            $verb = \CHtml::encode(strip_tags($verb));
-//        }
-//
-//        if ($widgetId) {
-//            $this->widgetId = \CHtml::encode($widgetId);
-//        }
-//
-//        if ($parentId) {
-//            $parent = Interest::model()->findByPk($parentId);
-//        } else {
-//            $parent = null;
-//        }
-//
-//        $interests = Yii()->user->model ? Yii()->user->model->interests : [];
-//        $this->render('own', compact('interests', 'verb', 'checked', 'parent', 'filter'));
-        $this->render('own');
+    public function actionOwn($layout = '//interest/layout', $searchWidth = null) {
+        $this->layout = $layout;
+        $this->render('own', compact('searchWidth'));
     }
 
 
@@ -90,7 +74,8 @@ class InterestController extends WidgetController
         $criteria = new \CDbCriteria(
             [
             'condition' => '`name` LIKE CONCAT(:term, "%")',
-            'params'    => compact('term')
+            'params'    => compact('term'),
+            'limit' => 5,
             ]
         );
 
@@ -115,7 +100,7 @@ class InterestController extends WidgetController
 
     public function actionChildren($parentId) {
         if ($parent = Interest::model()->findByPk($parentId)) {
-            $interests = $parent->children;
+            $interests = $parent->children(['limit' => 5]);
             $this->renderModels($interests);
         }
         else{

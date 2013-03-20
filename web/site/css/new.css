@@ -594,7 +594,7 @@ a.sort_post:hover, a.sort_post.active {
 }
 
 .active_res {
-    background: #fffd74;
+    background: #fffd74 !important;
     height: 25px;
 }
 

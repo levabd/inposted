@@ -64,9 +64,9 @@ Yii()->clientScript->registerPackage('main');
 </div>
 <!--конец общий контейнер-->
 <?php
-//if (!Yii()->user->isGuest) {
-//    $this->controllerWidget('post/create');
-//}
+if (!Yii()->user->isGuest) {
+    $this->controllerWidget('post/create');
+}
 ?>
 </body>
 </html>

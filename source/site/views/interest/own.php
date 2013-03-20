@@ -1,5 +1,6 @@
 <?php
 /** @var $this \site\controllers\InterestController */
+/** @var $searchWidth int */
 ?>
 <label class="checkbox" ng-repeat="interest in interests">
     <input
@@ -19,20 +20,21 @@
 
 <br>
 <div class="poisk"> <!--форма поиска-->
-    <div class="search_block">
+    <div class="search_block" in-search <?php if($searchWidth):?>style="width: <?=$searchWidth?>px;"<?php endif;?>>
         <span class="bit-box" ng-show="suggestions.parents.length > 1" ng-click="suggestions.popParent()">
-            <img src="<?=Yii()->baseUrl?>/img/back.png">
+            <img src="<?= Yii()->baseUrl ?>/img/back.png">
         </span>
         <span class="bit-box" ng-show="suggestions.parents.length" ng-click="suggestions.popParent()">
             {{suggestions.parents[suggestions.parents.length - 1].name}}
             <a href="#" class="closebutt"><sup>x</sup></a>
         </span>
-        <input ng-model="search.term" ng-change="search()" class="searchh input" type="text" />
+        <input ng-model="search.term" ng-change="search()" class="searchh input" type="text"/>
         <button
             class="btn btn-2mini"
             ng-click="createInterest(); $event.stopPropagation()"
             ng-show="search.term && search.term.length >= 3 && !existsInterest"
-            >+</button>
+            >+
+        </button>
     </div>
 
     <div class="result_search" ng-show="suggestions.main.length">
@@ -42,19 +44,21 @@
                 ng-class="{active_res: interest.active}"
 
                 ng-click="suggestions.pushParent(interest); $event.stopPropagation()"
+                in-suggest
                 class="suggestion"
                 >
 
                 <button
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
-                    ng-click="attachInterest(interest); $event.stopPropagation()">+</button>
+                    ng-click="attachInterest(interest); $event.stopPropagation()">+
+                </button>
                 {{interest.name}}
                 <button
                     class="btn btn-2mini"
                     class="but_sear"
                     ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()">
-                    <img src="<?=Yii()->baseUrl?>/img/sear.png">
+                    <img src="<?= Yii()->baseUrl ?>/img/sear.png">
                 </button>
             </li>
 
@@ -64,27 +68,10 @@
                 <button
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
-                    ng-click="attachInterest(interest); $event.stopPropagation()">+</button>
+                    ng-click="attachInterest(interest); $event.stopPropagation()">+
+                </button>
                 {{interest.name}}
             </li>
         </ul>
     </div>
 </div><!--конец форма поиска-->
-<?php $this->beginWidget('site\components\RegisterScript') ?>
-<script type="text/javascript">
-    $(function () {
-        $('.search_block')
-            .click(function () {
-                $(this).find('input').focus();
-            })
-
-            .find('input')
-            .focus(function () {
-                $(this).closest('.search_block').addClass('with-focus')
-            })
-            .blur(function () {
-                $(this).closest('.search_block').removeClass('with-focus')
-            })
-    });
-</script>
-<?php $this->endWidget() ?>

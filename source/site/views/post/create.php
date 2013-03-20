@@ -13,47 +13,24 @@ use site\models\Post;
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 
         <h3 id="createPostLabel" class="my_modal3">
-            <img src="<?=Yii()->baseUrl?>/img/logo_icon.png">
-            <span id="create-post-left"><?=Post::MAX_POST_SIZE - $model->contentLength?></span> characters left
+            <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
+            <span id="create-post-left">{{<?=Post::MAX_POST_SIZE?> - newPost.content.length}}</span> characters left
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
         <div class="row-fluid">
-            <?php
-            /** @var $form \CActiveForm */
-            $form = $this->beginWidget(
-                'CActiveForm',
-                [
-                'id'                     => 'create-post-form',
-                'enableAjaxValidation'   => false,
-                'enableClientValidation' => false,
-                'errorMessageCssClass'   => 'text-error',
-                ]
-            );
-            ?>
             <div class="span8">
-                <?=$form->textArea($model, 'content', ['id' => 'create-post-textarea', 'class' => 'span12', 'rows' => '10'])?>
-                <?=$form->error($model, 'content')?>
-
-                <?=CHtml::errorSummary($model)?>
-                <span class="hint">Shift+Enter to submit</span>
+                <textarea name="create-post-textarea" class="span12" rows="10" ng-model="newPost.content"></textarea>
+                <button class="btn" ng-click="createNewPost()">Create</button>
+                <span class="text-error" ng-show="newPost.error">{{newPost.error}}</span>
             </div>
-            <?php $this->endWidget()?>
             <div class="span4">
-                <?php $this->widget(
-                    'site\controllers\InterestController',
-                    [
-                    'widgetId'     => 'new-post-interests',
-                    'actionParams' => [
-                        'checked' => CHtml::listData($model->interests, 'id', 'id'),
-                        'filter' => false,
-                    ]
-                    ]
-                );
-                ?>
+                <div class="well" id="mini_post_white">
+                    <span class="myint"><b>Interests</b></span>
+                    <?php $this->controllerWidget('interest/own', ['actionParams' => ['layout' => false, 'searchWidth' => 128]])?>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 

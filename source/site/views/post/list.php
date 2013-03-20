@@ -57,7 +57,7 @@ use site\models\Post;
                     <img ng-src="{{post.isFavorite && '<?=Yii()->baseUrl?>/img/star_full.png' || '<?=Yii()->baseUrl?>/img/star_null.png'}}" class="star">
                 </span>
                 <br>
-                <div class="adm_butt_left">
+                <div class="adm_butt_left" ng-hide="settings.user.id == post.author.id">
                     <button
                         class="btn btn-mini adm_butt_decor"
                         ng-repeat="(type, text) in {'nonsense': 'No sense', 'irrelevant': 'Wrong tags', 'duplicate': 'Duplication'}"
@@ -75,19 +75,19 @@ use site\models\Post;
                     <button
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"
-                        ng-class="{'btn-success': 'like' == post.userVote, 'disabled': post.userVote && 'like' != post.userVote}"
+                        ng-class="{'btn-success': 'like' == post.userVote, 'disabled': (post.userVote && 'like' != post.userVote) || settings.user.id == post.author.id}"
                         >
                         <i class="icon-thumbs-up"></i>
                     </button>
 
-                    <div class="arrow_box" ng-show="post.userVote">{{post.likesCount}}</div>
+                    <div class="arrow_box" ng-show="post.userVote || settings.user.id == post.author.id">{{post.likesCount}}</div>
 
                     <button
                         class="btn btn-mini"
                         ng-repeat="type in ['spam', 'abuse']"
                         ng-click="vote(post, type)"
                         ng-class="{'btn-warning': post.userVote=='spam', 'btn-danger': post.userVote=='abuse'}"
-                        ng-show="!post.userVote || post.userVote == type"
+                        ng-show="(!post.userVote || post.userVote == type) && settings.user.id != post.author.id"
                         >
                         <i ng-class="{'icon-ban-circle': type=='spam', 'icon-warning-sign': type=='abuse'}"></i>
                     </button>

@@ -2,7 +2,29 @@
 
 /* Controllers */
 
-app.controller('inposted.controllers.main', function ($scope, Interest, Post, settings) {
+app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings) {
+    $scope.newPost = new Post();
+
+    $scope.createNewPost = function () {
+        var interests = getFilters();
+        var post = $scope.newPost;
+        if (!(post.content && post.content.length)) {
+            post.error = 'Write something';
+        }
+        else if (interests.length) {
+            post.inInterests = interests;
+            post.$save(
+                function (saved) {
+                    $scope.posts.unshift(saved);
+                    $scope.newPost = new Post();
+                }
+            );
+        }
+        else {
+            post.error = 'Select some interests';
+        }
+    };
+
     $scope.settings = settings;
 
     $scope.interests = Interest.query();
@@ -39,6 +61,9 @@ app.controller('inposted.controllers.main', function ($scope, Interest, Post, se
     loadPosts();
 
     $scope.vote = function (post, type) {
+        if (post.author.id == settings.user.id) {
+            return;
+        }
         post.userVote = type;
         if (type != 'like') {
             post.isGood = false;
@@ -53,6 +78,7 @@ app.controller('inposted.controllers.main', function ($scope, Interest, Post, se
         main: [],
         additional: [],
         parents: [],
+        promises: {},
         getActive: function () {
             for (var i in this.main) {
                 if (this.main[i].active) {
@@ -84,6 +110,7 @@ app.controller('inposted.controllers.main', function ($scope, Interest, Post, se
     $scope.search = function () {
         $scope.suggestions.additional = [];
         if ($scope.search.term.length >= 3) {
+            $scope.suggestions.promises = {};
             $scope.suggestions.main = Interest.search({term: $scope.search.term});
 
             Interest.exists({name: $scope.search.term}).$then(
@@ -100,6 +127,10 @@ app.controller('inposted.controllers.main', function ($scope, Interest, Post, se
     $scope.search.term = '';
 
     $scope.showAdditionalSuggestions = function (parent) {
+        if ($scope.suggestions.promises[parent.id]) {
+            $timeout.cancel($scope.suggestions.promises[parent.id]);
+        }
+
         _($scope.suggestions.main).each(function (i) {
             i.active = false;
         });
@@ -193,7 +224,7 @@ app.controller('inposted.controllers.main', function ($scope, Interest, Post, se
 
         post.isFavorite = !post.isFavorite;
 
-        Post.toggleFavorite({id: post.id, value:post.isFavorite});
+        Post.toggleFavorite({id: post.id, value: post.isFavorite});
 
 
         if (add) {

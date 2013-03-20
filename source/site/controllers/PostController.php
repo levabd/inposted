@@ -9,12 +9,13 @@ use site\models\Post;
 class PostController extends \site\components\WidgetController
 {
     use RestTrait;
+
     public $restActions = ['vote'];
 
     public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE) {
         $criteria = new \CDbCriteria();
-        if($interests){
-            foreach($interests as $index => $interest){
+        if ($interests) {
+            foreach ($interests as $index => $interest) {
                 $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
                 $criteria->params["interest$index"] = $interest;
             }
@@ -24,29 +25,26 @@ class PostController extends \site\components\WidgetController
     }
 
 
-
     public function actionVote($id, $userVote) {
-        Yii()->user->model->vote($id, $userVote);
         $post = Post::model()->findByPk($id);
+        if(Yii()->user->id != $post->author->id){
+            Yii()->user->model->vote($id, $userVote);
+        }
         $this->renderModels($post);
     }
 
     public function actionCreate() {
-        $model = new Post;
-        $request = Yii()->request;
-        if (($model->attributes = $request->getPost($model->formName()))) {
-            $model->User_id = Yii()->user->id;
-            if ($model->save()) {
-                if ($request->isAjaxRequest) {
-                    header('Content-Type: application/json');
-                    echo \CJSON::encode(true);
-                    return;
-                } else {
-                    $this->redirect(['view', 'id' => $model->id]);
-                }
-            }
+        if($this->isWidget){
+            $this->renderPartial('create');
         }
-        $this->renderPartial('create', compact('model'));
+        else{
+            $model = new Post;
+            if ($model->attributes = $this->getJson()) {
+                $model->User_id = Yii()->user->id;
+                $model->save();
+            }
+            $this->renderModels($model);
+        }
     }
 
     public function actionView($id) {
@@ -59,17 +57,16 @@ class PostController extends \site\components\WidgetController
     }
 
     public function actionFavorites() {
-        if($this->isWidget){
+        if ($this->isWidget) {
             $this->renderPartial('favorites');
-        }
-        else{
+        } else {
             $favorites = Yii()->user->model->favorites;
             $this->renderModels($favorites);
         }
     }
 
     public function actionToggleFavorite($id, $value = null) {
-        if($value !== null){
+        if ($value !== null) {
             $value = \CJSON::decode($value);
         }
         $this->renderJson(Yii()->user->model->toggleFavorite($id, $value));

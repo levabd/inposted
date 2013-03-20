@@ -15,6 +15,7 @@ class SettingsController extends Controller
             'baseUrl'       => Yii()->baseUrl,
             'MAX_POST_SIZE' => Post::MAX_POST_SIZE,
             'user'          => [
+                'id'      => Yii()->user->id,
                 'isGuest' => Yii()->user->isGuest,
             ]
             ]

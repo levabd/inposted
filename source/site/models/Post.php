@@ -101,6 +101,8 @@ class Post extends \shared\models\Post
                     $index < 3 ? $this->addInterest($interest) : $this->removeInterest($interest);
                 }
                 $transaction && $transaction->commit();
+
+                $this->refresh();
                 return true;
             }
         } catch (\Exception $e) {
@@ -162,15 +164,19 @@ class Post extends \shared\models\Post
 
         return [
             'id' => $this->id,
+            'content' => $this->content,
             'htmlContent' => $this->htmlContent,
             'date' => Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
             'isFavorite' => $user && $user->isFavorite($this),
             'likesCount' => $this->likesCount,
             'isGood' => $this->getIsGood(),
-            'isModerated' => true,
+            'isModerated' => false,
             'userVote' => $vote,
             'author' => $this->author->restAttributes,
             'interests' => $interests,
+
+            'error' => $this->getError('content'),
+            'success' => !$this->isNewRecord,
         ];
     }
 }
