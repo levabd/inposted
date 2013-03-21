@@ -10,9 +10,9 @@ class PostController extends \site\components\WidgetController
 {
     use RestTrait;
 
-    public $restActions = ['vote'];
+    public $restActions = ['vote', 'index'];
 
-    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE) {
+    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE, $userId = null) {
         $criteria = new \CDbCriteria();
         if ($interests) {
             foreach ($interests as $index => $interest) {
@@ -20,6 +20,8 @@ class PostController extends \site\components\WidgetController
                 $criteria->params["interest$index"] = $interest;
             }
         }
+
+        $criteria->compare('User_id', $userId);
         $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
         $this->renderModels($posts);
     }
@@ -51,9 +53,8 @@ class PostController extends \site\components\WidgetController
         if (!($post = Post::model()->findByPk($id))) {
             throw new \CHttpException(404, 'Post not found');
         }
-
         $this->author = $post->author;
-        $this->render('view', compact('post'));
+        $this->render('list');
     }
 
     public function actionFavorites() {

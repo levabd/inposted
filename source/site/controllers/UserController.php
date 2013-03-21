@@ -55,22 +55,10 @@ class UserController extends \site\components\Controller
         $this->render('settings', ['user' => $user]);
     }
 
-    public function actionView($nickname = null, array $interests = [], $sort = Post::SORT_DATE) {
+    public function actionView($nickname = null) {
         $model = $this->loadModel($nickname);
         $this->author = $model;
-
-        $criteria = new \CDbCriteria();
-        if ($interests) {
-            foreach ($interests as $index => $interest) {
-                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
-                $criteria->params["interest$index"] = $interest;
-            }
-        }
-
-        $posts = Post::model()->good()->sortBy($sort)->findAllByAttributes(['User_id' => $model->id], $criteria);
-
-        $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
-        $this->$render('//post/list', ['posts' => $posts, 'sort' => $sort]);
+        $this->render('//post/list');
     }
 
     /**

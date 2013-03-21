@@ -7,7 +7,7 @@ use site\models\Post;
 ?>
 <div id="posts">
     <!--сортировка-->
-    <div class="block_sort">
+    <div class="block_sort" ng-show="posts.length > 1">
         <b>Sort:</b>
         <a href="#" class="sort_post"
            ng-class="{active: sort.value == 'date'}"
@@ -46,7 +46,7 @@ use site\models\Post;
                         ng-hide="settings.user.isGuest || hasInterest(interest)"
                         >+</button><span ng-show="!$last">,</span>
                 </b>
-                <i class="float_right">{{post.date}}</i>
+                <i class="float_right">{{post.date | date:'HH:mm dd MMM yyyy'}}</i>
 
                 <p ng-bind-html-unsafe="post.htmlContent"></p>
             </div>

@@ -6,7 +6,11 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     $scope.newPost = new Post();
 
     $scope.createNewPost = function () {
-        var interests = getFilters();
+        var interests = [];
+        _($scope.interests).each(function (interest) {
+            if (interest.checked) interests.push(interest.id)
+        });
+
         var post = $scope.newPost;
         if (!(post.content && post.content.length)) {
             post.error = 'Write something';
@@ -15,8 +19,10 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             post.inInterests = interests;
             post.$save(
                 function (saved) {
-                    $scope.posts.unshift(saved);
-                    $scope.newPost = new Post();
+                    if (saved.success) {
+                        $scope.posts.unshift(saved);
+                        $scope.newPost = new Post();
+                    }
                 }
             );
         }
@@ -29,14 +35,37 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     $scope.interests = Interest.query();
 
+    $scope.owner = {
+        interests: []
+    };
+    if (settings.page.owner) {
+        if (settings.user.id == settings.page.owner.id) {
+            $scope.owner.interests = $scope.interests;
+        }
+        else {
+            $scope.owner.interests = Interest.query({userId: settings.page.owner.id});
+        }
+    }
+    else {
+        $scope.owner.interests = [];
+    }
+
     var getFilters = function () {
         var i;
         var filters = [];
-        for (i = 0; i < $scope.interests.length; i++) {
-            if ($scope.interests[i].checked) {
-                filters.push($scope.interests[i].id);
-            }
+
+        _($scope.owner.interests).each(function (interest) {
+            if (interest.checked) filters.push(interest.id)
+        });
+
+
+        if (!filters.length) {
+            _($scope.interests).each(function (interest) {
+                if (interest.checked) filters.push(interest.id)
+            });
         }
+
+        filters = _(filters).uniq();
 
         return filters;
     };
@@ -51,17 +80,23 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     };
 
     var loadPosts = function () {
-        Post.query(
-            {sort: $scope.sort.value, 'interests': getFilters()},
-            function (data) {
-                $scope.posts = data;
-            }
-        );
+        if (settings.page.post) {
+            $scope.posts = [new Post(settings.page.post)];
+        }
+        else {
+            Post.query(
+                {sort: $scope.sort.value, interests: getFilters(), userId: settings.page.owner ? settings.page.owner.id : null},
+                function (data) {
+                    $scope.posts = data;
+                }
+            );
+        }
+
     };
     loadPosts();
 
     $scope.vote = function (post, type) {
-        if (post.author.id == settings.user.id) {
+        if (post.author.id == settings.user.id || post.userVote) {
             return;
         }
         post.userVote = type;
@@ -140,13 +175,23 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     //$scope.d_showAdditionalSuggestions = _.debounce($scope.showAdditionalSuggestions, 300);
 
-    $scope.toggleFilter = function (id) {
+    $scope.toggleFilter = function (interest) {
+        _($scope.owner.interests).each(function (i) {
+            if (interest.id == i.id) i.checked = interest.checked;
+        });
+
+        _($scope.interests).each(function (i) {
+            if (interest.id == i.id) i.checked = interest.checked;
+        });
         loadPosts();
     };
 
 
-    $scope.isFilterDisabled = function (id) {
-        var filters = getFilters();
+    $scope.isFilterDisabled = function (id, group) {
+        var filters = [];
+        _(group).each(function (interest) {
+            if (interest.checked) filters.push(interest.id)
+        });
         return (filters.length > 2) && (_(filters).indexOf(id) == -1);
     };
 
@@ -185,7 +230,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     $scope.getSearchWidth = function () {
         return 180;
-    }
+    };
 
     $scope.hasInterest = function (interest) {
         for (var i = 0; i < $scope.interests.length; i++) {
@@ -215,7 +260,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         });
     };
 
-    var favoritePosts = Post.favorites({}, prepareFavorites);
+    var favoritePosts = settings.user.isGuest? [] : Post.favorites({}, prepareFavorites);
 
     $scope.toggleFavorite = function (post, add) {
         var i;

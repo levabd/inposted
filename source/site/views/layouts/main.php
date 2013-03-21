@@ -48,7 +48,7 @@ Yii()->clientScript->registerPackage('main');
                     'items'        => [
                         ['label' => '<i class="icon-1share"></i>', 'url' => ['/auth/signout']],
                         ['label' => '<i class="icon-1star-empty"></i>', 'url' => ['/user/settings']],
-                        ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'],'linkOptions' => ['class' => 'DISABLED']],
+                        ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'],'linkOptions' => ['in-disabled' => 'true']],
                         ['label' => '<i class="icon-1pencil"></i>', 'url' => '#createPost', 'linkOptions' => ['data-toggle' => 'modal']],
                     ]
                     ]

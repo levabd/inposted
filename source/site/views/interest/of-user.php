@@ -1,25 +1,14 @@
-<?php
-$user = Yii()->user->model;
-?>
-
-<?php foreach($interests as $interest):?>
-<label class="checkbox">
-    <?=
-    CHtml::checkBox(
-        'interests[]',
-        null,
-        [
-        'value'      => $interest->id,
-        'class'      => 'posts-filter',
-        'data-group' => $this->widgetId,
-        'id'         => null,
-        ]
-    );
-
-    ?>
-    <b><?=$interest?></b>
-    <?php if($user && !$user->hasInterest($interest)):?>
-        <button class="btn btn-1mini">+</button>
-    <?php endif;#($user && !$user->hasInterest($interest))?>
+<label class="checkbox" ng-repeat="interest in owner.interests">
+    <input
+        type="checkbox"
+        ng-model="interest.checked"
+        ng-disabled="isFilterDisabled(interest.id, owner.interests)"
+        ng-click="toggleFilter(interest)"
+        >
+    <b>{{interest.fullName}}</b>
+    <button
+        class="btn btn-1mini attach-interest"
+        ng-click="attachInterest(interest); $event.stopPropagation(); $event.preventDefault()"
+        ng-show="!settings.user.isGuest && !hasInterest(interest)"
+        >+</button>
 </label>
-<?php endforeach;#($interests as $interest)?>

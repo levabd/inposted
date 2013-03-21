@@ -24,7 +24,7 @@ $user = Yii()->user->model;
                         <img ng-src="{{post.isFavorite && '<?= Yii()->baseUrl ?>/img/star_full.png' || '<?= Yii()->baseUrl ?>/img/star_null.png'}}" class="star">
                     </span>
                     <br>
-                    <a ng-href="post.viewUrl" ng-bind-html-unsafe="post.htmlContent"></a>
+                    <a ng-href="{{post.viewUrl}}" ng-bind-html-unsafe="post.htmlContent"></a>
                 </li>
             </ul>
         </li>

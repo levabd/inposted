@@ -6,7 +6,11 @@ namespace shared\models;
 /**
  * @property string $flagUrl
  */
-class Country extends \base\ActiveRecord{
+class Country extends \base\ActiveRecord
+{
+    public $code;
+    public $name;
+
     public function getFlagUrl() {
         return Yii()->urlManager->getBaseUrl('site') . "/img/flags/$this->code.jpg";
     }

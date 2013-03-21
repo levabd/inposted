@@ -5,6 +5,7 @@
 namespace site\components;
 /**
  * @property string $clientCountryCode;
+ * @property string $clientCountryName;
  */
 class GeoIp extends \CApplicationComponent{
     public function init(){
@@ -13,11 +14,11 @@ class GeoIp extends \CApplicationComponent{
         }
     }
 
-    public function lookupCountryCode($address){
-        return strtolower(@geoip_country_code_by_name($address));
+    public function getClientCountryCode() {
+        return strtolower(@geoip_country_code_by_name(Yii()->request->userHostAddress));
     }
 
-    public function getClientCountryCode() {
-        return $this->lookupCountryCode(Yii()->request->userHostAddress);
+    public function getClientCountryName(){
+        return @geoip_country_name_by_name(Yii()->request->userHostAddress);
     }
 }

@@ -10,7 +10,7 @@ angular.module('inposted.services', ['ngResource']).
     factory('Interest', function ($resource, settings) {
         return $resource(settings.baseUrl + '/interest/:action/', {}, {
             save: {method: 'POST', params: {action: 'create'}},
-//            query: {method: 'GET', params: {}, isArray: true}
+//            query: {method: 'POST', params: {}, isArray: true},
 
             search: {method: 'GET', params: {action: 'search'}, isArray: true},
             children: {method: 'GET', params: {action: 'children'}, isArray: true},
@@ -22,6 +22,7 @@ angular.module('inposted.services', ['ngResource']).
     }).
     factory('Post', function ($resource, settings) {
         return $resource(settings.baseUrl + '/post/:action/', {}, {
+            query: {method: 'POST', params: {}, isArray: true},
             save: {method: 'POST', params: {action: 'create'}},
             vote: {method: 'POST', params: {action: 'vote'}},
             favorites: {method: 'GET', params: {action: 'favorites'}, isArray: true},

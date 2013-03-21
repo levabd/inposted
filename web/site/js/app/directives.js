@@ -50,7 +50,7 @@
                     })
             }
         }]).
-        directive('inSearch', function () {
+        directive('inSearch',function () {
             return function (scope, element, attr) {
                 element.
                     click(function () {
@@ -64,5 +64,97 @@
                         element.removeClass('with-focus')
                     })
             }
-        })
+        }).
+        directive('inDisabled', function (version) {
+            return function (scope, element, attrs) {
+                element.click(function (e) {
+                    e.preventDefault();
+                    return false;
+                });
+            };
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //ajax widget
+
+
+    var Inposted ={
+        ajaxError: function (info) {
+            alert(info.responseText)
+        },
+
+        showAjaxLoader: function () {
+            var loader = $('<div>')
+                .attr('id', 'ajax-loader')
+                .css({
+                    background: 'url("/img/ajax-loader-big.gif") no-repeat scroll center center gray',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    opacity: 0.5,
+                    'z-index': 1000,
+                    height: '100%',
+                    width: '100%'
+                })
+            $('body').append(loader);
+        },
+        hideAjaxLoader: function () {
+            $('#ajax-loader').remove();
+        }
+    };
+
+    $(document).on('click', '.ajax-widget a.ajax', function (e) {
+        e.preventDefault();
+        var widget = $(this).closest('.ajax-widget');
+
+        var showLoader = !$(this).data('no-loader');
+
+        showLoader && Inposted.showAjaxLoader();
+        $.ajax(
+            $(this).attr('href'),
+            {
+                success: function (data) {
+                    widget.replaceWith(data);
+                    showLoader && Inposted.hideAjaxLoader();
+                },
+                error: Inposted.ajaxError
+            }
+        )
+    });
+
+    $(document).on('submit', '.ajax-widget form.ajax', function (e) {
+        e.preventDefault();
+        var widget = $(this).closest('.ajax-widget');
+        Inposted.showAjaxLoader();
+        $.ajax(
+            $(this).attr('action'),
+            {
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function (data) {
+                    widget.replaceWith(data);
+                    Inposted.hideAjaxLoader();
+                },
+                error: Inposted.ajaxError
+            }
+        );
+    });
+
+
+
+
 }());

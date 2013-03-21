@@ -116,12 +116,12 @@ class InterestController extends WidgetController
 
     public function actionIndex($userId = null) {
         if ($userId) {
-            $user = User::model()->with('interests')->findByPk($userId);
+            $user = User::model()->findByPk($userId);
         } else {
             $user = Yii()->user->model;
         }
 
-        $this->renderModels($user ? $user->interests : []);
+        $this->renderModels($user ? $user->interests(['order' => 'name ASC']) : []);
     }
 
     public function actionExists($name) {

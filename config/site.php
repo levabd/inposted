@@ -28,7 +28,7 @@ return [
             'packages' => [
                 'app' => [
                     'baseUrl' => 'js/app',
-                    'js' => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js'],
+                    'js' => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js?path=' . trim($_SERVER['REQUEST_URI'], '/') ],
                 ],
 
                 'main'      => [

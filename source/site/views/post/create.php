@@ -7,7 +7,7 @@ use site\models\Post;
 ?>
 
 
-<div class="modal hide" style="background:#f8f6ef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel" aria-hidden="true">
+<div class="modal hide" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel" aria-hidden="true">
 
     <div class="modal-header my_modal1">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>

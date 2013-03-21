@@ -7,6 +7,10 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} ^/admin
 RewriteRule . ../admin/index.php [L]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} /img/flags/.*$
+RewriteRule . /img/flags/missing.png [L]
+
 # if a directory or a file exists, use it directly
 
 RewriteCond %{REQUEST_FILENAME} !-f [OR]

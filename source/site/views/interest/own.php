@@ -6,8 +6,8 @@
     <input
         type="checkbox"
         ng-model="interest.checked"
-        ng-disabled="isFilterDisabled(interest.id)"
-        ng-click="toggleFilter(interest.id); $event.stopPropagation()"
+        ng-disabled="isFilterDisabled(interest.id, interests)"
+        ng-click="toggleFilter(interest); $event.stopPropagation()"
         >
     <b>{{interest.fullName}}</b>
     <button

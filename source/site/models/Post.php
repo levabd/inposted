@@ -24,7 +24,11 @@ class Post extends \shared\models\Post
     public function rules() {
         return array_merge(
             parent::rules(),
-            [['inInterests', 'safe']]
+            [
+            ['inInterests', 'safe'],
+            ['htmlContent', 'unsafe']
+
+            ]
         );
     }
 
@@ -128,6 +132,8 @@ class Post extends \shared\models\Post
                     }
                 }
 
+                $htmlContent = preg_replace('%(/go/\w+)%', '<a href="$1">link</a>', $htmlContent);
+
                 $shorten = Yii()->urlShorten;
                 foreach (array_unique($matches[2]) as $url) {
                     if ('www' == substr($url, 0, 3)) {
@@ -140,6 +146,8 @@ class Post extends \shared\models\Post
                     $htmlContent = str_replace($url, \CHtml::link('link', $shortUrl), $htmlContent);
                 }
             }
+
+
         }
         return [$content, $htmlContent];
     }
@@ -166,7 +174,8 @@ class Post extends \shared\models\Post
             'id' => $this->id,
             'content' => $this->content,
             'htmlContent' => $this->htmlContent,
-            'date' => Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
+            'date' => gmdate('c', strtotime($this->dateSubmitted . ' UTC')),//Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
+//            'date' => Yii()->dateFormatter->format('HH:mm dd MMM yyyy', $this->dateSubmitted),
             'isFavorite' => $user && $user->isFavorite($this),
             'likesCount' => $this->likesCount,
             'isGood' => $this->getIsGood(),
@@ -177,6 +186,8 @@ class Post extends \shared\models\Post
 
             'error' => $this->getError('content'),
             'success' => !$this->isNewRecord,
+
+            'viewUrl' => $this->id ?  Yii()->createUrl('post/view', ['id' => $this->id] ) : null,
         ];
     }
 }
