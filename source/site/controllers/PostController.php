@@ -12,8 +12,11 @@ class PostController extends \site\components\WidgetController
 
     public $restActions = ['vote', 'index'];
 
-    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE, $userId = null) {
+    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE, $userId = null, $limit = 10, $offset = 0) {
         $criteria = new \CDbCriteria();
+        $criteria->limit = $limit;
+        $criteria->offset = $offset;
+
         if ($interests) {
             foreach ($interests as $index => $interest) {
                 $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");

@@ -65,34 +65,29 @@
                     })
             }
         }).
-        directive('inDisabled', function (version) {
+        directive('inDisabled',function (version) {
             return function (scope, element, attrs) {
                 element.click(function (e) {
                     e.preventDefault();
                     return false;
                 });
             };
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }).
+        directive('inInfinitePosts', function () {
+            return function (scope, element, attrs) {
+                $(document).on('scroll', _.debounce(function () {
+                    if ($('.post:below-the-fold').length < 2) {
+                        scope.$apply(attrs.inInfinitePosts)
+                    }
+                }, 100))
+            }
+        })
 
 
     //ajax widget
 
 
-    var Inposted ={
+    var Inposted = {
         ajaxError: function (info) {
             alert(info.responseText)
         },
@@ -153,8 +148,6 @@
             }
         );
     });
-
-
 
 
 }());

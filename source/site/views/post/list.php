@@ -5,7 +5,7 @@ use site\models\Post;
 /** @var $posts Post[] */
 /** @var $sort string */
 ?>
-<div id="posts">
+<div id="posts" in-infinite-posts="loadMorePosts()">
     <!--сортировка-->
     <div class="block_sort" ng-show="posts.length > 1">
         <b>Sort:</b>

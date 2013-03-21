@@ -33,7 +33,7 @@ return [
 
                 'main'      => [
                     'baseUrl' => '',
-//                    'js'      => ['js/inposted.js'],
+                    'js'      => [$js('js/viewport/jquery.viewport')],
 
                     'css'     => ['css/new.css'],
                     'depends' => ['bootstrap', 'angular', 'underscore', 'app'],

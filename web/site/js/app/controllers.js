@@ -79,14 +79,48 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         }
     };
 
+    var pager = {
+        enabled: true,
+        limit: 10,
+        offset: 0,
+
+        shift: function(){
+            this.offset += this.limit;
+        },
+        reset: function(){
+            this.enable();
+            this.limit = 10;
+            this.offset = 0;
+        },
+        disable: function(){
+            this.enabled = false;
+        },
+        enable: function(){
+            this.enabled = true;
+        }
+    };
+
     var loadPosts = function () {
+        pager.reset();
+        pager.disable();
         if (settings.page.post) {
             $scope.posts = [new Post(settings.page.post)];
         }
         else {
             Post.query(
-                {sort: $scope.sort.value, interests: getFilters(), userId: settings.page.owner ? settings.page.owner.id : null},
+                {
+                    sort: $scope.sort.value,
+                    interests: getFilters(),
+                    userId: settings.page.owner ? settings.page.owner.id : null,
+                    limit: pager.limit,
+                    offset: pager.offset
+                },
                 function (data) {
+                    pager.shift();
+                    if(data.length == pager.limit){
+                        pager.enable();
+                    }
+
                     $scope.posts = data;
                 }
             );
@@ -94,6 +128,28 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     };
     loadPosts();
+
+    $scope.loadMorePosts = function(){
+        if(pager.enabled){
+            pager.disable();
+            Post.query(
+                {
+                    sort: $scope.sort.value,
+                    interests: getFilters(),
+                    userId: settings.page.owner ? settings.page.owner.id : null,
+                    limit: pager.limit,
+                    offset: pager.offset
+                },
+                function (data) {
+                    _(data).each(function(item){$scope.posts.push(item)});
+                    if(data.length == pager.limit){
+                        pager.shift();
+                        pager.enable();
+                    }
+                }
+            );
+        }
+    };
 
     $scope.vote = function (post, type) {
         if (post.author.id == settings.user.id || post.userVote) {
