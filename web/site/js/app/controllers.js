@@ -321,16 +321,14 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     $scope.toggleFavorite = function (post, add) {
         var i;
 
-        add = add || true;
-
         post.isFavorite = !post.isFavorite;
 
         Post.toggleFavorite({id: post.id, value: post.isFavorite});
 
-
         if (add) {
             for (i = 0; i < favoritePosts.length; i++) {
                 if (favoritePosts[i].id == post.id) {
+                    favoritePosts[i].isFavorite = post.isFavorite;
                     return;
                 }
             }

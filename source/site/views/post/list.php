@@ -53,7 +53,7 @@ use site\models\Post;
             <!--конец текст сообщения-->
 
             <div class="span2 adm_butt" ng-hide="settings.user.isGuest"><!--рейтинг-->
-                <span class="clickable" ng-click="toggleFavorite(post)">
+                <span class="clickable" ng-click="toggleFavorite(post, true)">
                     <img ng-src="{{post.isFavorite && '<?=Yii()->baseUrl?>/img/star_full.png' || '<?=Yii()->baseUrl?>/img/star_null.png'}}" class="star">
                 </span>
                 <br>
