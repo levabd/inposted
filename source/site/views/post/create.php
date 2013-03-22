@@ -7,7 +7,7 @@ use site\models\Post;
 ?>
 
 
-<div class="modal hide" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel" aria-hidden="true">
+<div class="modal hide" in-new-post="newPost.active" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel" aria-hidden="true">
 
     <div class="modal-header my_modal1">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -21,7 +21,7 @@ use site\models\Post;
         <div class="row-fluid">
             <div class="span8">
                 <textarea name="create-post-textarea" class="span12" rows="10" ng-model="newPost.content"></textarea>
-                <button class="btn" ng-click="createNewPost()">Create</button>
+                <button class="btn" ng-click="createNewPost()">Post</button>
                 <span class="text-error" ng-show="newPost.error">{{newPost.error}}</span>
             </div>
             <div class="span4">

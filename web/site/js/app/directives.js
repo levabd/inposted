@@ -73,13 +73,25 @@
                 });
             };
         }).
-        directive('inInfinitePosts', function () {
+        directive('inInfinitePosts',function () {
             return function (scope, element, attrs) {
                 $(document).on('scroll', _.debounce(function () {
                     if ($('.post:below-the-fold').length < 2) {
                         scope.$apply(attrs.inInfinitePosts)
                     }
                 }, 100))
+            }
+        }).
+        directive('inNewPost', function () {
+            return function (scope, element, attrs) {
+                element.on('hide', function () {
+                    if (!scope.$$phase) {
+                        scope.$apply(attrs.inNewPost + ' = false');
+                    }
+                });
+                scope.$watch(attrs.inNewPost, function (value) {
+                    element.modal(value ? 'show' : 'hide');
+                });
             }
         })
 

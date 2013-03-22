@@ -49,7 +49,7 @@ Yii()->clientScript->registerPackage('main');
                         ['label' => '<i class="icon-1share"></i>', 'url' => ['/auth/signout']],
                         ['label' => '<i class="icon-1star-empty"></i>', 'url' => ['/user/settings']],
                         ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'],'linkOptions' => ['in-disabled' => 'true']],
-                        ['label' => '<i class="icon-1pencil"></i>', 'url' => '#createPost', 'linkOptions' => ['data-toggle' => 'modal']],
+                        ['label' => '<i class="icon-1pencil"></i>', 'url' => '#', 'linkOptions' => ['ng-click' => 'newPost.active = true; $event.preventDefault()']],
                     ]
                     ]
                 );
