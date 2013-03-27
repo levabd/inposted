@@ -1,6 +1,7 @@
 <?php
 namespace site\models;
 use base\Randomizr;
+use shared\models\Country;
 
 class User extends \shared\models\User
 {
@@ -44,9 +45,11 @@ class User extends \shared\models\User
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */
-        if ($this->$attribute || !$skipEmpty) {
-            if (!$this->validatePassword($this->$passwordAttribute)) {
-                $this->addError($passwordAttribute, $message);
+        if($this->hashedPassword){
+            if ($this->$attribute || !$skipEmpty) {
+                if (!$this->validatePassword($this->$passwordAttribute)) {
+                    $this->addError($passwordAttribute, $message);
+                }
             }
         }
     }
@@ -54,6 +57,12 @@ class User extends \shared\models\User
     public function beforeSave() {
         if ($this->newPassword) {
             $this->hashedPassword = Randomizr::hashPassword($this->newPassword);
+        }
+        if(is_string($this->country)){
+            $this->country  = Country::model()->findByAttributes(['name' => $this->country]);
+            if($this->country){
+                $this->Country_id = $this->country->id;
+            }
         }
 
         //TODO: setup timezone according to selected country
@@ -132,8 +141,8 @@ class User extends \shared\models\User
         );
     }
 
-    public function toggleFavorite($id, $value = null){
-        if($value === null){
+    public function toggleFavorite($id, $value = null) {
+        if ($value === null) {
             $value = $this->isFavorite($id);
         }
         return $value ? $this->addFavorite($id) : $this->deleteFavorite($id);
@@ -141,13 +150,29 @@ class User extends \shared\models\User
 
     public function getRestAttributes() {
         return [
-            'id' => $this->id,
-            'name' => $this->firstName,
-            'nickname' => $this->nickname,
-            'url' => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
+            'id'         => $this->id,
+            'name'       => $this->firstName,
+            'nickname'   => $this->nickname,
+            'url'        => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
             'avatarUrls' => [
                 56 => Yii()->avatarStorage->getAvatarUrl($this, 56)
             ],
-];
+        ];
+    }
+
+    public function getAvatarSource() {
+        return null;
+    }
+
+    public function setAvatarSource($url) {
+        $handler = $this->onAfterSave = function () use ($url, &$handler) {
+            $this->detachEventHandler('onAfterSave', $handler);
+            if($this->isNewRecord){
+                $this->setIsNewRecord(false);
+                $this->setScenario('update');
+            }
+
+            Yii()->avatarStorage->importAvatar($this, $url);
+        };
     }
 }

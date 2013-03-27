@@ -1,11 +1,16 @@
 <?php
 namespace shared\components;
 
+use shared\models\User;
+
 class UserIdentity extends \CUserIdentity
 {
     private $user;
 
-    public function  __construct(\shared\models\User $user) {
+    public function  __construct($user) {
+        if (is_string($user)) {
+            $user = User::model()->findByEmail($user);
+        }
         $this->user = $user;
     }
 

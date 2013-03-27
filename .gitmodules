@@ -4,3 +4,6 @@
 [submodule "source/vendors/swift"]
 	path = source/vendors/swift
 	url = https://github.com/swiftmailer/swiftmailer.git
+[submodule "source/site/extensions/hoauth"]
+	path = source/site/extensions/hoauth
+	url = https://github.com/SleepWalker/hoauth.git

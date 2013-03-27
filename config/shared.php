@@ -1,6 +1,7 @@
 <?php
 /** @var $name string Name of sub-application */
 Yii::setPathOfAlias('base', ROOT . '/source/shared/extensions/base');
+Yii::setPathOfAlias('application.config', __DIR__);
 
 /** @var string $keyPrefix Needed for sharing components data between sub-applications (session, cache) */
 $keyPrefix = '412d9d2ff7f70f893dd67cfa940c8275';
@@ -11,7 +12,9 @@ return [
     'runtimePath' => path(ROOT, 'runtime', $name),
     'preload'     => ['log'],
 
-    'import'      => ['shared.extensions.base.CHtml'],
+    'import'      => [
+        'shared.extensions.base.CHtml',
+    ],
 
     'components'  => [
         'messenger'      => [
@@ -89,7 +92,7 @@ return [
                     'urlSuffix'      => '/',
                     'showScriptName' => false,
                     'rules'          => [
-                        'js/app/settings.js'           => 'settings/index',
+                        'js/app/settings.js'       => 'settings/index',
 
                         ''                         => 'site/index',
                         'register/step<step>'      => 'auth/signup',

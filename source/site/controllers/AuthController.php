@@ -26,7 +26,7 @@ class AuthController extends components\WidgetController
 
     public function filters() {
         return array(
-            'accessControl + signout, verify',
+            'accessControl + verify',
             'guest + signin, signup',
         );
     }
@@ -59,6 +59,57 @@ class AuthController extends components\WidgetController
         parent::init();
 
         $this->user = Yii()->user;
+    }
+
+    /**
+     * Declares class-based actions.
+     */
+    public function actions() {
+        return array(
+            'oauth' => array(
+                // the list of additional properties of this action is below
+                'class'         => 'site\components\oauth\OAuthAction',
+                // Yii alias for your user's model, or simply class name, when it already on yii's import path
+                // default value of this property is: User
+                'model'         => 'site\models\User',
+                'identityClass' => 'shared\components\UserIdentity',
+                'formView'      => 'oauth-form',
+//                'usernameAttribute' => 'nickname',
+                // map model attributes to attributes of user's social profile
+                // model attribute => profile attribute
+                // the list of available attributes is below
+                'attributes'    => array(
+                    'email'        => 'email',
+                    'name'         => function ($profile) {
+                        return $profile->firstName . ' ' . $profile->lastName;
+                    },
+                    'country'      => 'country',
+                    'info'         => 'description',
+                    'nickname'     => 'displayName',
+                    'homepage'     => function ($profile) {
+                        return $profile->webSiteURL ? : $profile->profileURL;
+                    },
+                    'avatarSource' => function ($profile) {
+                        //tweak for photo url from twitter
+                        if (strpos($profile->photoURL, 'twimg.com')) {
+                            return str_replace('_normal', '', $profile->photoURL);
+                        }
+                        return $profile->photoURL;
+                    },
+                    // you can also specify additional values,
+                    // that will be applied to your model (eg. account activation status)
+                    'verified'     => function ($profile) {
+                        return (bool)$profile->emailVerified;
+                    },
+                ),
+            ),
+            // this is an admin action that will help you to configure HybridAuth
+            // (you must delete this action, when you'll be ready with configuration, or
+            // specify rules for admin role. User shouldn't have access to this action!)
+//            'oauthadmin' => array(
+//                'class' => 'ext.hoauth.HOAuthAdminAction',
+//            ),
+        );
     }
 
     protected function goSignIn() {
@@ -205,7 +256,7 @@ class AuthController extends components\WidgetController
 
             $model = new Restore('set-password');
             $model->username = $username;
-            if($model->loadPost()){
+            if ($model->loadPost()) {
                 $this->restoreSetPassword($model, $username);
             }
             $this->render('restore-set-password', array('model' => $model));

@@ -853,3 +853,7 @@ input.go {
 .clickable{
     cursor: pointer;
 }
+
+.soc_seti a, .soc_seti a:hover{
+    text-decoration: none;
+}

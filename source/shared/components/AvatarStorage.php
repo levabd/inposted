@@ -83,4 +83,15 @@ class AvatarStorage extends \CApplicationComponent
         }
         return false;
     }
+
+    public function importAvatar(User $user, $source) {
+        if($source){
+            $temporaryFile = path(Yii()->runtimePath, md5($source) . basename($source));
+            copy($source, $temporaryFile);
+            //here I imitate CUploadedFile api
+            $user->avatarUpload = (object) ['tempName' => $temporaryFile];
+            $this->processAvatarUpload($user);
+            unlink($temporaryFile);
+        }
+    }
 }

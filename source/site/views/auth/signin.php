@@ -3,16 +3,7 @@
 /** @var $model \site\models\forms\Signin */
 
 /** @var $form \CActiveForm */
-$form = $this->beginWidget(
-    'CActiveForm',
-    [
-    'id'                     => 'signin-form',
-    'enableAjaxValidation'   => false,
-    'enableClientValidation' => false,
-    'focus'                  => [$model, 'username'],
-    'errorMessageCssClass'   => 'text-error',
-    ]
-);
+
 
 $baseUrl = Yii()->baseUrl;
 ?>
@@ -27,6 +18,18 @@ $baseUrl = Yii()->baseUrl;
     <br/>
 
     <div style="text-align:center;">
+        <?php
+        $form = $this->beginWidget(
+            'CActiveForm',
+            [
+            'id'                     => 'signin-form',
+            'enableAjaxValidation'   => false,
+            'enableClientValidation' => false,
+            'focus'                  => [$model, 'username'],
+            'errorMessageCssClass'   => 'text-error',
+            ]
+        );
+        ?>
         <?=$form->textField($model, 'username', ['placeholder' => $model->getAttributeLabel('username'), 'style' => 'width:85%;'])?>
         <?=$form->error($model, 'username')?>
 
@@ -35,17 +38,24 @@ $baseUrl = Yii()->baseUrl;
         <div class="button_log">
             <input class="btn" type="submit" value="Sign in"/>
         </div>
-<?php /*
+        <?php $this->endWidget(); ?>
+
+
         <div style="text-align:center;color:#000000;clear:both;">Login with :</div>
-					<span class="soc_seti">
-                        <a href=""><img src="<?=$baseUrl?>/img/f.png"></a>
-						<a href=""><img src="<?=$baseUrl?>/img/b.png"></a>
-						<a href=""><img src="<?=$baseUrl?>/img/t.png"></a>
-						<a href=""><img src="<?=$baseUrl?>/img/g.png"></a>
-						<a href=""><img src="<?=$baseUrl?>/img/h.png"></a>
-                    </span><br/>
-*/?>
-        <a href="<?=$this->createUrl('restore')?>" class="ref_mess ajax" data-no-loader="true">
+        <span class="soc_seti">
+            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Facebook'])?>">
+                <img src="<?= $baseUrl ?>/img/f.png">
+            </a>
+            <?/*<a href=""><img src="<?= $baseUrl ?>/img/b.png"></a> */?>
+            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Twitter'])?>">
+                <img src="<?= $baseUrl ?>/img/t.png">
+            </a>
+            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Google'])?>">
+                <img src="<?= $baseUrl ?>/img/g.png">
+            </a>
+            <?/*<a href=""><img src="<?= $baseUrl ?>/img/h.png"></a> */?>
+        </span><br/>
+        <a href="<?= $this->createUrl('restore') ?>" class="ref_mess ajax" data-no-loader="true">
             Forgot your password?
         </a>
         <br/>
@@ -56,5 +66,5 @@ $baseUrl = Yii()->baseUrl;
         </a>
     </div>
 </div>
-<?php $this->endWidget(); ?>
+
 <!--конец вход на сайт-->
