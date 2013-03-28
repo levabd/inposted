@@ -18,7 +18,24 @@ Yii()->clientScript->registerPackage('main');
 <body ng-controller="inposted.controllers.main">
 
 <div class="container"> <!--общий контейнер-->
-    <!--        <div class="mess_email">Please, enter your e-mail adress</div>-->
+
+    <?php if (!Yii()->user->isGuest && !Yii()->user->model->verified): ?>
+        <div class="mess_email">
+            <span class="clickable" ng-show="verification.state == 'initial'" ng-click="verification.sendEmail()">
+                Please, confirm your e-mail address
+            </span>
+            <span ng-show="verification.state == 'pending'" in-dots>
+                Sending verification link
+            </span>
+            <span ng-show="verification.state == 'sent'">
+                Verification link was sent to {{user.email}}. Please, check your inbox.
+            </span>
+            <span ng-show="verification.state == 'error'">
+                Error while sending verification link. Please try again later.
+            </span>
+        </div>
+    <?php endif;#(!Yii()->user->isGuest && !Yii()->user->model->verified)?>
+
     <div class="header"> <!--шапка-->
         <div class="head_left">
             <?php
@@ -35,7 +52,7 @@ Yii()->clientScript->registerPackage('main');
             ?>
         </div>
         <div class="head_center">
-            <img alt="Inposted" src="<?=Yii()->baseUrl?>/img/logo_full.png" title="Inposted">
+            <img alt="Inposted" src="<?= Yii()->baseUrl ?>/img/logo_full.png" title="Inposted">
         </div>
         <div class="head_right">
             <?php if (!Yii()->user->isGuest): ?>
@@ -48,8 +65,9 @@ Yii()->clientScript->registerPackage('main');
                     'items'        => [
                         ['label' => '<i class="icon-1share"></i>', 'url' => ['/auth/signout']],
                         ['label' => '<i class="icon-1star-empty"></i>', 'url' => ['/user/settings']],
-                        ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'],'linkOptions' => ['in-disabled' => 'true']],
-                        ['label' => '<i class="icon-1pencil"></i>', 'url' => '#', 'linkOptions' => ['ng-click' => 'newPost.active = true; $event.preventDefault()']],
+                        ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'], 'linkOptions' => ['in-disabled' => 'true']],
+                        ['label'       => '<i class="icon-1pencil"></i>', 'url' => '#',
+                         'linkOptions' => ['ng-click' => 'newPost.active = true; $event.preventDefault()']],
                     ]
                     ]
                 );

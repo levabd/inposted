@@ -32,19 +32,21 @@ class SettingsController extends Controller
                 }
             }
 
-            if(isset($page['owner'])){
+            if (isset($page['owner'])) {
                 $page['owner'] = $page['owner']->restAttributes;
             }
         }
 
 
+        $inpostedUser = Yii()->user;
         $settings = \CJavaScript::encode(
             [
             'baseUrl'       => Yii()->baseUrl,
             'MAX_POST_SIZE' => Post::MAX_POST_SIZE,
             'user'          => [
-                'id'      => Yii()->user->id,
-                'isGuest' => Yii()->user->isGuest,
+                'id'      => $inpostedUser->id,
+                'isGuest' => $inpostedUser->isGuest,
+                'email'   => $inpostedUser->model ? $inpostedUser->model->email : null,
             ],
             'page'          => $page,
             ]

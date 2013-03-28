@@ -82,7 +82,7 @@
                 }, 100))
             }
         }).
-        directive('inNewPost', function () {
+        directive('inNewPost',function () {
             return function (scope, element, attrs) {
                 element.on('hide', function () {
                     if (!scope.$$phase) {
@@ -93,7 +93,42 @@
                     element.modal(value ? 'show' : 'hide');
                 });
             }
-        })
+        }).
+        directive('inDots', ['$timeout', function ($timeout) {
+            return function (scope, element, attrs) {
+                var text = element.text().trim();
+                var dots = '';
+
+                var addDot = function () {
+                    if ('...' == dots) {
+                        dots = '';
+                    }
+                    else {
+                        dots += '.';
+                    }
+
+                    if (scope.$eval(attrs.ngShow)) {
+                        $timeout(function () {
+                            addDot();
+                        }, 300);
+                    }
+                    else {
+                        dots = '';
+                    }
+
+                    element.text(text + dots);
+
+                };
+
+                scope.$watch(attrs.ngShow, function (value) {
+                    if (value) {
+                        addDot();
+                    }
+                });
+
+
+            }
+        }])
 
 
     //ajax widget

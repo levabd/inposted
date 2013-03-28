@@ -68,17 +68,17 @@ class AuthController extends components\WidgetController
         return array(
             'oauth' => array(
                 // the list of additional properties of this action is below
-                'class'         => 'site\components\oauth\OAuthAction',
+                'class'             => 'site\components\oauth\OAuthAction',
                 // Yii alias for your user's model, or simply class name, when it already on yii's import path
                 // default value of this property is: User
-                'model'         => 'site\models\User',
-                'identityClass' => 'shared\components\UserIdentity',
-                'formView'      => 'oauth-form',
+                'model'             => 'site\models\User',
+                'identityClass'     => 'shared\components\UserIdentity',
+                'formView'          => 'oauth-form',
                 'usernameAttribute' => 'nickname',
                 // map model attributes to attributes of user's social profile
                 // model attribute => profile attribute
                 // the list of available attributes is below
-                'attributes'    => array(
+                'attributes'        => array(
                     'email'        => 'email',
                     'name'         => function ($profile) {
                         return $profile->firstName . ' ' . $profile->lastName;
@@ -300,6 +300,15 @@ class AuthController extends components\WidgetController
         $this->goHome();
     }
 
+    public function actionSendVerificationLink() {
+        if ($model = Yii()->user->model) {
+            $this->sendVerificationLink($model);
+            $this->renderJson(true);
+        } else {
+            $this->renderJson(false);
+        }
+    }
+
     public function sendVerificationLink(\shared\models\User $user) {
         $verificationLink = $this->createSignedUrl('site:/auth/verify', array('email' => $user->email));
         Messenger()->send(
@@ -310,7 +319,7 @@ class AuthController extends components\WidgetController
                  'link'      => $verificationLink
             )
         );
-        User()->setSuccess("Verification link was sent to {$user->email}.");
+//        User()->setSuccess("Verification link was sent to {$user->email}.");
     }
 
     protected function sendRestorePasswordLink(Restore $form) {

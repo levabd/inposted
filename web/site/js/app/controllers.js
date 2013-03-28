@@ -2,7 +2,27 @@
 
 /* Controllers */
 
-app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings) {
+app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings, $http) {
+    $scope.user = settings.user;
+
+    $scope.verification = {
+        state: 'initial',
+        sendEmail: function () {
+            this.state = 'pending';
+            $http.get(settings.baseUrl + '/auth/sendVerificationLink').
+                success(function (data, status, headers, config) {
+                    $scope.verification.state = 'sent';
+                }).
+                error(function (data, status, headers, config) {
+                    $scope.verification.state = 'error';
+                    $timeout(function () {
+                        $scope.verification.state = 'initial';
+                    }, 3000);
+                });
+        }
+    };
+
+
     $scope.newPost = new Post();
 
     $scope.createNewPost = function () {
@@ -84,18 +104,18 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         limit: 10,
         offset: 0,
 
-        shift: function(){
+        shift: function () {
             this.offset += this.limit;
         },
-        reset: function(){
+        reset: function () {
             this.enable();
             this.limit = 10;
             this.offset = 0;
         },
-        disable: function(){
+        disable: function () {
             this.enabled = false;
         },
-        enable: function(){
+        enable: function () {
             this.enabled = true;
         }
     };
@@ -117,7 +137,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                 },
                 function (data) {
                     pager.shift();
-                    if(data.length == pager.limit){
+                    if (data.length == pager.limit) {
                         pager.enable();
                     }
 
@@ -129,8 +149,8 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     };
     loadPosts();
 
-    $scope.loadMorePosts = function(){
-        if(pager.enabled){
+    $scope.loadMorePosts = function () {
+        if (pager.enabled) {
             pager.disable();
             Post.query(
                 {
@@ -141,8 +161,10 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                     offset: pager.offset
                 },
                 function (data) {
-                    _(data).each(function(item){$scope.posts.push(item)});
-                    if(data.length == pager.limit){
+                    _(data).each(function (item) {
+                        $scope.posts.push(item)
+                    });
+                    if (data.length == pager.limit) {
                         pager.shift();
                         pager.enable();
                     }
@@ -316,7 +338,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         });
     };
 
-    var favoritePosts = settings.user.isGuest? [] : Post.favorites({}, prepareFavorites);
+    var favoritePosts = settings.user.isGuest ? [] : Post.favorites({}, prepareFavorites);
 
     $scope.toggleFavorite = function (post, add) {
         var i;
