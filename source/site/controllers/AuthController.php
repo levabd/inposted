@@ -300,7 +300,7 @@ class AuthController extends components\WidgetController
         $this->goHome();
     }
 
-    protected function sendVerificationLink(\shared\models\User $user) {
+    public function sendVerificationLink(\shared\models\User $user) {
         $verificationLink = $this->createSignedUrl('site:/auth/verify', array('email' => $user->email));
         Messenger()->send(
             'email-verification',

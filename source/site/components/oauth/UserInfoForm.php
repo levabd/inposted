@@ -279,8 +279,8 @@ class UserInfoForm extends \CFormModel
             );
 
 
-            if (method_exists($this->model, 'sendActivationMail')) {
-                $this->model->sendActivationMail();
+            if (!$this->model->verified) {
+                Yii()->controller->sendVerificationLink($this->model);
             }
         }
     }
