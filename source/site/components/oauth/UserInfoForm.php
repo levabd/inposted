@@ -99,6 +99,9 @@ class UserInfoForm extends \CFormModel
             $this->addError('password', OAuthAction::t('Sorry, but password is incorrect'));
         } else {
             // setting up the current model, to use it later in OAuthAction
+            if ($this->nameAtt && !isset($this->getPost()['username'])) {
+                $this->username = $user->{$this->nameAtt};
+            }
             $this->model = $user;
         }
     }
@@ -108,7 +111,15 @@ class UserInfoForm extends \CFormModel
      */
     public function afterConstruct() {
         parent::afterConstruct();
-        if (isset($_POST) && !empty($_POST[$this->formName()]['password'])) {
+        $post = $this->getPost();
+
+        foreach (['email' => 'username', 'username' => 'email'] as $attribute => $scenario) {
+            if (isset($post[$attribute])) {
+                $this->scenario = str_replace($scenario, 'both', $this->scenario);
+            }
+        }
+
+        if (!empty($post['password'])) {
             $this->scenario .= '_pass';
         }
     }
@@ -180,6 +191,7 @@ class UserInfoForm extends \CFormModel
         }
 
         $user = $this->model;
+        $user->clearErrors();
 
         $validators = array();
 
@@ -206,13 +218,18 @@ class UserInfoForm extends \CFormModel
 
                 if ($user->hasErrors()) {
                     foreach (array_keys($user->getErrors()) as $attribute) {
-                        $this->addError(
-                            $attribute == $nameAtt ? 'username' : 'email', OAuthAction::t(
-                                "This $attribute is taken by another user. If this is your account, enter password in field below or change $attribute and leave password blank."
-                            )
-                        );
+                        if ($attribute == $emailAtt) {
+                            $this->addError(
+                                'email', OAuthAction::t(
+                                    "This $attribute is taken by another user. If this is your account, enter password in field below or change $attribute and leave password blank."
+                                )
+                            );
+                            $passwordRequired = true;
+                        } else {
+                            $this->addError('username', $user->getError($nameAtt));
+                        }
                     }
-                    $passwordRequired = true;
+
                 }
 
                 $user->clearErrors();
@@ -221,9 +238,7 @@ class UserInfoForm extends \CFormModel
             // we ignore uniqness checks (this checks if user with specified email or username registered),
             // because we will ask user for password, to check if this account belongs to him
         }
-        if ($passwordRequired && strpos($this->scenario, '_pass') === false) {
-            $this->scenario .= '_pass';
-        }
+
 
         $this->addErrors(
             array_filter(
@@ -233,6 +248,16 @@ class UserInfoForm extends \CFormModel
                 ]
             )
         );
+
+        foreach (['email' => 'username', 'username' => 'email'] as $attribute => $scenario) {
+            if ($this->hasErrors($attribute)) {
+                $this->scenario = str_replace($scenario, 'both', $this->scenario);
+            }
+        }
+
+        if ($passwordRequired && strpos($this->scenario, '_pass') === false) {
+            $this->scenario .= '_pass';
+        }
 
         return !$this->hasErrors();
     }

@@ -74,7 +74,7 @@ class AuthController extends components\WidgetController
                 'model'         => 'site\models\User',
                 'identityClass' => 'shared\components\UserIdentity',
                 'formView'      => 'oauth-form',
-//                'usernameAttribute' => 'nickname',
+                'usernameAttribute' => 'nickname',
                 // map model attributes to attributes of user's social profile
                 // model attribute => profile attribute
                 // the list of available attributes is below

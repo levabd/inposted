@@ -6,6 +6,7 @@
 namespace site\components\oauth;
 use CException;
 use Yii, Exception, CLogger, UserOAuth;
+use site\models\User;
 
 \Yii::import('ext.hoauth.HOAuthAction');
 class OAuthAction extends \HOAuthAction
@@ -77,6 +78,7 @@ class OAuthAction extends \HOAuthAction
             } else {
                 if (!$oAuth->isBond) {
                     // checking whether we already have a user with specified email
+                    /** @var $user User */
                     $user = $userProfile->emailVerified ? call_user_func([$this->model, 'model'])->findByEmail($userProfile->emailVerified) : null;
 
                     if (!$user) {
@@ -86,8 +88,15 @@ class OAuthAction extends \HOAuthAction
 
                         // trying to fill email and username fields
                         if (empty($email) || $this->usernameAttribute || !$user->validate()) {
-                            $scenario = empty($email) && $this->usernameAttribute
-                                ? 'both' : (empty($email) ? 'email' : 'username');
+//                            if($this->usernameAttribute && $user->hasErrors($this->usernameAttribute) ){
+//                                $scenario = 'both';
+//                            }
+//                            else{
+                            $scenario = 'email';
+//                            }
+
+//                            $scenario = empty($email) && $this->usernameAttribute
+//                                ? 'both' : (empty($email) ? 'email' : 'username');
 
                             $form = new UserInfoForm($scenario, $user, $this->_emailAttribute, $this->usernameAttribute);
 

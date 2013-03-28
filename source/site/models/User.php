@@ -160,8 +160,9 @@ class User extends \shared\models\User
         ];
     }
 
+    //This will avoid importing of avatar from social network if it is already set in account
     public function getAvatarSource() {
-        return null;
+        return $this->avatar;
     }
 
     public function setAvatarSource($url) {
