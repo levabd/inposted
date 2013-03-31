@@ -14,7 +14,7 @@ class InterestController extends WidgetController
     public $layout = '//interest/layout';
     public $restActions = ['create'];
 
-    public function actionCreate($name, $parentId = null) {
+    public function actionCreate($name, $parentId = null, $attach) {
         if (!($interest = Interest::model()->findByName($name))) {
             $interest = new Interest();
             $interest->name = $name;
@@ -28,7 +28,9 @@ class InterestController extends WidgetController
             $interest->addParent($parent);
         }
 
-        Yii()->user->model->addInterest($interest);
+        if($attach){
+            Yii()->user->model->addInterest($interest);
+        }
 
         $this->renderModels($interest);
     }

@@ -5,11 +5,14 @@ use site\models\Post;
 /** @var $model Post */
 
 ?>
-<div class="modal hide" in-new-post="newPost.active" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel"
-     aria-hidden="true">
+<div class="modal"
+     style="background:#efefef;"
+     tabindex="-1"
+     aria-labelledby="createPostLabel"
+    >
 
     <div class="modal-header my_modal1">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <button type="button" class="close" ng-click="close()" aria-hidden="true">x</button>
 
         <h3 id="createPostLabel" class="my_modal3">
             <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
@@ -30,7 +33,6 @@ use site\models\Post;
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

@@ -69,7 +69,7 @@ Yii()->clientScript->registerPackage('main');
                         ['label' => '<i class="icon-1star-empty"></i>', 'url' => ['/user/settings']],
                         ['label' => '<i class="icon-1nat"></i>', 'url' => ['/site/share'], 'linkOptions' => ['in-disabled' => 'true']],
                         ['label'       => '<i class="icon-1pencil"></i>', 'url' => '#',
-                         'linkOptions' => ['ng-click' => 'newPost.active = true; $event.preventDefault()']],
+                         'linkOptions' => ['ng-click' => 'createNewPost(); $event.preventDefault()']],
                     ]
                     ]
                 );
@@ -85,7 +85,6 @@ Yii()->clientScript->registerPackage('main');
 <!--конец общий контейнер-->
 <?php
 if (!Yii()->user->isGuest) {
-    $this->controllerWidget('post/create');
     $this->controllerWidget('pm/widget');
 }
 ?>

@@ -23,36 +23,19 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         }
     };
 
-
-    $scope.newPost = new Post();
-
     $scope.createNewPost = function () {
-        var interests = [];
-        _($scope.interests).each(function (interest) {
-            if (interest.checked) interests.push(interest.id)
+        var newPost = $dialog.dialog(
+            {
+                controller: 'inposted.controllers.newPost',
+                templateUrl: settings.baseUrl + '/post/new'
+            }
+        );
+
+        newPost.open().then(function (refreshPosts) {
+            if (refreshPosts) {
+                loadPosts()
+            }
         });
-
-        var post = $scope.newPost;
-        if (!(post.content && post.content.length)) {
-            post.error = 'Write something';
-        }
-        else if (interests.length) {
-            post.inInterests = interests;
-            post.$save(
-                function (saved) {
-                    if (saved.success) {
-                        if(!saved.isModerated){
-                            $scope.posts.unshift(saved);
-                        }
-
-                        $scope.newPost = new Post();
-                    }
-                }
-            );
-        }
-        else {
-            post.error = 'Select some interests';
-        }
     };
 
     $scope.settings = settings;
@@ -208,7 +191,12 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         },
         pushParent: function (interest) {
             this.parents.push(interest);
-            this.main = this.additional;
+            if (_(this.main).indexOf(interest) !== -1) {
+                this.main = this.additional;
+            }
+            else {
+                this.main = [];
+            }
             this.additional = [];
             $scope.search.term = '';
         },
@@ -286,6 +274,9 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         if ($scope.suggestions.parents.length) {
             i.parentId = _($scope.suggestions.parents).last().id;
         }
+
+        i.attach = true;
+
         i.$save(function (i) {
             $scope.interests.push(i);
         });
@@ -501,4 +492,160 @@ app.controller('inposted.controllers.hints', function ($scope, dialog, User, Hin
             dialog.close();
         }
     });
+});
+
+
+app.controller('inposted.controllers.newPost', function ($scope, Interest, Post, dialog, $timeout) {
+    $scope.newPost = new Post();
+
+    $scope.interests = Interest.query();
+
+    $scope.createNewPost = function () {
+        var interests = [];
+        _($scope.interests).each(function (interest) {
+            if (interest.checked) interests.push(interest.id)
+        });
+
+        var post = $scope.newPost;
+        if (!(post.content && post.content.length)) {
+            post.error = 'Write something';
+        }
+        else if (interests.length) {
+            post.inInterests = interests;
+            post.$save(
+                function (saved) {
+                    if (saved.success) {
+                        dialog.close(!saved.isModerated);
+                        $scope.newPost = new Post();
+                    }
+                }
+            );
+        }
+        else {
+            post.error = 'Select some interests';
+        }
+    };
+
+    $scope.createInterest = function () {
+        var i = new Interest;
+        i.name = $scope.search.term;
+
+        if ($scope.suggestions.parents.length) {
+            i.parentId = _($scope.suggestions.parents).last().id;
+        }
+
+        i.attach = false;
+
+        i.$save(function (i) {
+            $scope.interests.push(i);
+        });
+        $scope.search.term = '';
+        $scope.suggestions.clear();
+    };
+
+    $scope.detachInterest = function (interest) {
+        $scope.interests = _($scope.interests).without(interest);
+    };
+
+    $scope.attachInterest = function (interest) {
+        _($scope.interests).each(function (i) {
+            i.checked = false;
+        });
+        interest.checked = true;
+        $scope.interests.push(interest);
+    };
+
+    $scope.hasInterest = function (interest) {
+        for (var i = 0; i < $scope.interests.length; i++) {
+            if ($scope.interests[i].id == interest.id) return true;
+        }
+
+        return false;
+    };
+
+    $scope.close = function () {
+        dialog.close();
+    };
+
+    $scope.isFilterDisabled = function (id, group) {
+        var filters = [];
+        _(group).each(function (interest) {
+            if (interest.checked) filters.push(interest.id)
+        });
+        return (filters.length > 2) && (_(filters).indexOf(id) == -1);
+    };
+
+
+    //====Copypaste of suggestions logic. Need to be rethinked
+
+    $scope.existsInterest = false;
+
+    $scope.suggestions = {
+        main: [],
+        additional: [],
+        parents: [],
+        promises: {},
+        getActive: function () {
+            for (var i in this.main) {
+                if (this.main[i].active) {
+                    return this.main[i];
+                }
+            }
+            return null;
+        },
+        pushParent: function (interest) {
+            this.parents.push(interest);
+            if (_(this.main).indexOf(interest) !== -1) {
+                this.main = this.additional;
+            }
+            else {
+                this.main = [];
+            }
+            this.additional = [];
+            $scope.search.term = '';
+        },
+        popParent: function () {
+            this.parents.pop();
+            this.main = [];
+            this.additional = [];
+        },
+        clear: function (parents) {
+            this.main = [];
+            this.additional = [];
+            if (parents) {
+                this.parents = [];
+            }
+        }
+    };
+
+    $scope.search = function () {
+        $scope.suggestions.additional = [];
+        if ($scope.search.term.length >= 3) {
+            $scope.suggestions.promises = {};
+            $scope.suggestions.main = Interest.search({term: $scope.search.term});
+
+            Interest.exists({name: $scope.search.term}).$then(
+                function (response) {
+                    $scope.existsInterest = response.data == 'true';
+                });
+        }
+        else {
+            $scope.suggestions.main = [];
+        }
+
+    };
+
+    $scope.search.term = '';
+    $scope.showAdditionalSuggestions = function (parent) {
+        if ($scope.suggestions.promises[parent.id]) {
+            $timeout.cancel($scope.suggestions.promises[parent.id]);
+        }
+
+        _($scope.suggestions.main).each(function (i) {
+            i.active = false;
+        });
+        parent.active = true;
+        $scope.suggestions.additional = Interest.children({parentId: parent.id});
+    };
+
 });

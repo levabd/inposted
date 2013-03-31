@@ -40,24 +40,23 @@ class PostController extends \site\components\WidgetController
 
     public function actionVote($id, $userVote) {
         $post = Post::model()->findByPk($id);
-        if(Yii()->user->id != $post->author->id){
+        if (Yii()->user->id != $post->author->id) {
             Yii()->user->model->vote($id, $userVote);
         }
         $this->renderModels($post, ['thanks' => true]);
     }
 
     public function actionCreate() {
-        if($this->isWidget){
-            $this->renderPartial('create');
+        $model = new Post;
+        if ($model->attributes = $this->getJson()) {
+            $model->User_id = Yii()->user->id;
+            $model->save();
         }
-        else{
-            $model = new Post;
-            if ($model->attributes = $this->getJson()) {
-                $model->User_id = Yii()->user->id;
-                $model->save();
-            }
-            $this->renderModels($model);
-        }
+        $this->renderModels($model);
+    }
+
+    public function actionNew() {
+        $this->renderPartial('create');
     }
 
     public function actionView($id) {
