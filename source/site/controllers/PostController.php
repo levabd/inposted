@@ -4,6 +4,7 @@
  */
 namespace site\controllers;
 use site\components\RestTrait;
+use site\models\Interest;
 use site\models\Post;
 
 class PostController extends \site\components\WidgetController
@@ -17,10 +18,17 @@ class PostController extends \site\components\WidgetController
         $criteria->limit = $limit;
         $criteria->offset = $offset;
 
-        if ($interests) {
+//        if ($interests) {
+//            foreach ($interests as $index => $interest) {
+//                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
+//                $criteria->params["interest$index"] = $interest;
+//            }
+//        }
+
+        if ($interests = Interest::model()->findAllByPk($interests)) {
             foreach ($interests as $index => $interest) {
-                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
-                $criteria->params["interest$index"] = $interest;
+                $in = implode(',', array_merge($interest->getIndirectChildrenIds(), [$interest->id]));
+                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id in ($in))");
             }
         }
 

@@ -85,6 +85,42 @@ class Interest extends \shared\models\Interest
 
     }
 
+
+    public function getIndirectChildrenIds() {
+        $table = static::PARENT_RELATION_TABLE;
+
+        $children = [];
+
+        $map = $this->dbConnection->createCommand("SELECT * FROM $table")->queryAll();
+
+        foreach ($map as $link) {
+            if (!isset($children[$link['Parent_id']])) {
+                $children[$link['Parent_id']] = [];
+            }
+
+            $children[$link['Parent_id']][] = $link['Interest_id'];
+        }
+
+        $processed = [];
+
+        $getChildren = function ($id) use ($children, &$processed, &$getChildren) {
+            if (in_array($id, $processed) || !isset($children[$id])) {
+                return [];
+            }
+
+            $processed[] = $id;
+            $result = $children[$id];
+            foreach ($children[$id] as $parentId) {
+                $result = array_merge($result, $getChildren($parentId));
+            }
+
+            return array_unique($result);
+        };
+
+        return $getChildren($this->id);
+
+    }
+
     public function getRestAttributes() {
         return [
             'id'       => $this->id,
