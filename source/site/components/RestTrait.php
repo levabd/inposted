@@ -6,6 +6,8 @@
 namespace site\components;
 
 
+use base\ActiveRecord;
+
 trait RestTrait {
 
 
@@ -18,6 +20,9 @@ trait RestTrait {
     }
 
 
+    /**
+     * @param array|ActiveRecord $models
+     */
     public function renderModels($models = []) {
         if(is_array($models)){
             $data = [];

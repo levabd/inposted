@@ -123,6 +123,7 @@ class User extends ActiveRecord
             'interests' => [self::MANY_MANY, $this->ns('Interest'), self::INTEREST_RELATION_TABLE . '(User_id, Interest_id)'],
             'posts'     => [self::HAS_MANY, $this->ns('Post'), 'User_id'],
             'favorites' => [self::MANY_MANY, $this->ns('Post'), self::FAVORITES_RELATION_TABLE . '(User_id, Post_id)'],
+            'privateMessages' => [self::HAS_MANY, $this->ns('PrivateMessage'), 'User_id_to', 'order' => 'privateMessages.date DESC'],
         ];
     }
 
@@ -169,6 +170,17 @@ class User extends ActiveRecord
      */
     public function findByEmail($email, $condition = '', $params = array()) {
         return parent::findByAttributes(compact('email'), $condition, $params);
+    }
+
+    /**
+     * @param string $nickname
+     * @param string $condition
+     * @param array  $params
+     *
+     * @return User
+     */
+    public function findByNickname($nickname, $condition = '', $params = array()) {
+        return parent::findByAttributes(compact('nickname'), $condition, $params);
     }
 
     public function markAccessed() {

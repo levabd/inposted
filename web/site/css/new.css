@@ -34,7 +34,6 @@ body {
 }
 
 .head_left  ul li {
-    text-decoration: underline;
     font-size: 18px;
     font-weight: bold;
     float: left;
@@ -42,11 +41,13 @@ body {
     margin-top: 10px;
     float: left;
     text-align: center;
+
 }
 
 .head_left  ul li a {
+    padding: 9px 18px 8px 18px;
+    text-decoration: underline;
     color: #ffffff !important;
-    padding: 9px 15px 8px 15px;
 }
 
 .head_left ul li a:hover,
@@ -569,7 +570,7 @@ a.sort_post:hover, a.sort_post.active {
     height: 25px !important;
 }
 
-.result_search li.suggestion:hover{
+.result_search li.suggestion:hover {
     background-color: #ffffc8;
     cursor: pointer;
 }
@@ -842,7 +843,7 @@ input.go {
 .search_block.with-focus {
     border-color: rgba(82, 168, 236, 0.8);
     outline: 0;
-    outline: thin dotted \9;
+    outline: thin dotted  \9;
     /* IE6-9 */
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
@@ -850,10 +851,24 @@ input.go {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 }
 
-.clickable{
+.clickable {
     cursor: pointer;
 }
 
-.soc_seti a, .soc_seti a:hover{
+.soc_seti a, .soc_seti a:hover {
     text-decoration: none;
+}
+
+.reply{
+    margin:5px 2px 0px 2px;
+}
+.unread{
+    border-radius: 2px !important;
+    background:#f76a0e !important;
+    font-weight:normal;
+    font-size:7.3pt !important;
+    color:#fff !important;
+    text-decoration:none !important;
+    padding:0px 1px 0px 1px;
+    margin-left:-15px;
 }

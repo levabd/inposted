@@ -30,5 +30,11 @@ angular.module('inposted.services', ['ngResource']).
 //            query: {method: 'GET', params: {}, isArray: true}
 
         });
+    }).
+    factory('PM', function ($resource, settings) {
+        return $resource(settings.baseUrl + '/pm/:action/', {}, {
+            query: {method: 'GET', params: {action: 'query'}, isArray: true},
+            send: {method: 'POST', params: {action: 'send'}}
+        });
     })
 ;

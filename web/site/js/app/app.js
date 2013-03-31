@@ -2,7 +2,10 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('inposted', [/*'inposted.filters', */'inposted.services', 'inposted.directives', 'ngSanitize']);
+var app = angular.module('inposted', [/*'inposted.filters', */'inposted.services', 'inposted.directives', 'ngSanitize']).
+    config(function($httpProvider){
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    })
 //.
 //  config(['$routeProvider', function($routeProvider) {
 //    $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: MyCtrl1});

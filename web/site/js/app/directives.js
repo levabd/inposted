@@ -82,11 +82,15 @@
                 }, 100))
             }
         }).
-        directive('inNewPost',function () {
+        directive('inNewPost',function ($parse) {
             return function (scope, element, attrs) {
                 element.on('hide', function () {
                     if (!scope.$$phase) {
-                        scope.$apply(attrs.inNewPost + ' = false');
+                        scope.$apply(
+                            function () {
+                                $parse(attrs.inNewPost).assign(scope, false);
+                            }
+                        );
                     }
                 });
                 scope.$watch(attrs.inNewPost, function (value) {

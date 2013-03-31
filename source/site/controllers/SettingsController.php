@@ -17,7 +17,10 @@ class SettingsController extends Controller
         $page = [];
 
         if (isset($path[0])) {
-            if ('profile' === $path[0]) {
+            if('pm' === $path[0]){
+                $page['loadPms'] = true;
+            }
+            elseif ('profile' === $path[0]) {
                 if (isset($path[1])) {
                     $page['owner'] = User::model()->findByAttributes(['nickname' => $path[1]]);
                 } else {

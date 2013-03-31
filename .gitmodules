@@ -7,3 +7,9 @@
 [submodule "source/site/extensions/hoauth"]
 	path = source/site/extensions/hoauth
 	url = https://github.com/SleepWalker/hoauth.git
+[submodule "source/vendors/angular-ui-bootstrap"]
+	path = source/vendors/angular-ui-bootstrap
+	url = https://github.com/angular-ui/bootstrap.git
+[submodule "source/vendors/angular-ui"]
+	path = source/vendors/angular-ui
+	url = https://github.com/angular-ui/angular-ui.git

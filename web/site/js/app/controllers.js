@@ -2,7 +2,8 @@
 
 /* Controllers */
 
-app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings, $http) {
+app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings, $http, PM) {
+    $scope.settings = settings;
     $scope.user = settings.user;
 
     $scope.verification = {
@@ -366,6 +367,65 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         }
 
 
+    }
+
+
+    //==============================PM==============================
+    if (!settings.user.isGuest) {
+        $scope.pm = new PM(
+            {
+                topic: '',
+                body: ''
+            }
+        );
+
+        var loadPms = function () {
+            if (settings.page.loadPms) {
+                PM.query(function(data){
+                    $scope.pms = data;
+                    $scope.unreadPmsCount = 0;
+                    $timeout(loadPms, 30000);
+                });
+            }
+            else {
+                $http.get(settings.baseUrl + '/pm/unreadCount').then(function (response) {
+                    $scope.unreadPmsCount = response.data;
+                    $timeout(loadPms, 30000);
+                })
+            }
+        };
+
+        loadPms();
+
+
+        $scope.showPM = function (to, topic) {
+            $scope.pm.to = to;
+            if(topic){
+                $scope.pm.topic = topic;
+            }
+            //not angular way but whatever
+            $('#modalMessage').modal('show');
+        };
+
+        $scope.sendPM = function () {
+            var to = $scope.pm.to;
+            $scope.pm.$send(function (sent) {
+                sent.to = to;
+                if (_(sent.errors).isEmpty()) {
+                    $scope.pm = new PM(
+                        {
+                            topic: '',
+                            body: ''
+                        }
+                    );
+
+                    //not angular way but whatever
+                    $('#modalMessage').modal('hide');
+                }
+            }, function (response) {
+                $scope.pm.error = response.data.message;
+            });
+        }
     }
 
 

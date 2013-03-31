@@ -5,9 +5,8 @@ use site\models\Post;
 /** @var $model Post */
 
 ?>
-
-
-<div class="modal hide" in-new-post="newPost.active" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel" aria-hidden="true">
+<div class="modal hide" in-new-post="newPost.active" style="background:#efefef;" id="createPost" tabindex="-1" role="dialog" aria-labelledby="createPostLabel"
+     aria-hidden="true">
 
     <div class="modal-header my_modal1">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -33,4 +32,5 @@ use site\models\Post;
         </div>
 
     </div>
+</div>
 
