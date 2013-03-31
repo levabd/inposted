@@ -1,11 +1,14 @@
 <?php
 namespace site\controllers;
 
+use site\components\RestTrait;
 use site\models\User;
 use site\models\Post;
 
 class UserController extends \site\components\Controller
 {
+    use RestTrait;
+
     public $showTopMenu = false;
 
     public function filters() {
@@ -53,6 +56,15 @@ class UserController extends \site\components\Controller
             $this->refresh();
         }
         $this->render('settings', ['user' => $user]);
+    }
+
+    public function actionSave() {
+        $model = Yii()->user->model;
+        if ($model->attributes = $this->getJson()) {
+            $model->save();
+        }
+
+        $this->renderModels($model);
     }
 
     public function actionView($nickname = null) {

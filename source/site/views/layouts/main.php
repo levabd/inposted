@@ -47,7 +47,7 @@ Yii()->clientScript->registerPackage('main');
                     ['label' => '<b class="icon-1home">Home</b>', 'url' => ['/site/index']],
                     ['label' => '<b class="icon-1me">Me </b>', 'url' => ['/user/view'], 'visible' => !Yii()->user->isGuest],
                     ['label' => 'Messages</a><sub class="unread" ng-show="unreadPmsCount">{{unreadPmsCount}}</sub>',
-                     'url'   => ['/pm'], 'visible' => !Yii()->user->isGuest],
+                     'url'   => ['/pm/index'], 'visible' => !Yii()->user->isGuest],
                 ]
                 ]
             );

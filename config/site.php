@@ -1,7 +1,7 @@
 <?php
 /** @var $name string Name of sub-application */
 
-$js = function($script, $min = null){
+$js = function ($script, $min = null) {
     null === $min && $min = !YII_DEBUG;
     return $min ? "$script.min.js" : "$script.js";
 };
@@ -26,29 +26,29 @@ return [
 
         'clientScript' => [
             'packages' => [
-                'app' => [
+                'app'                  => [
                     'baseUrl' => 'js/app',
-                    'js' => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js?path=' . trim($_SERVER['REQUEST_URI'], '/') ],
+                    'js'      => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js?path=' . trim($_SERVER['REQUEST_URI'], '/')],
                 ],
 
-                'main'      => [
+                'main'                 => [
                     'baseUrl' => '',
                     'js'      => [$js('js/viewport/jquery.viewport')],
 
                     'css'     => ['css/new.css'],
-                    'depends' => ['bootstrap', 'angular', 'underscore', 'app'],
+                    'depends' => ['bootstrap', 'angular','angular-ui-bootstrap', 'underscore', 'app'],
                 ],
 //                'jquery'     => [
 //                    'baseUrl' => '',
 //                    'js'      => ['js/jquery.min.js'],
 //                ],
-                'bootstrap' => [
+                'bootstrap'            => [
                     'baseUrl' => '',
                     'css'     => ['css/bootstrap.min.css'],
                     'js'      => [$js('js/bootstrap')],
                     'depends' => ['jquery'],
                 ],
-                'angular'    => [
+                'angular'              => [
                     'baseUrl' => 'js/angular',
                     'js'      => [
                         $js('angular'),
@@ -56,7 +56,13 @@ return [
                         $js('angular-sanitize'),
                     ],
                 ],
-                'underscore' => [
+                'angular-ui-bootstrap' => [
+                    'basePath' => 'vendors.angular-ui-bootstrap',
+                    'js'       => [
+                        $js('ui-bootstrap-tpls-0.2.0'),
+                    ],
+                ],
+                'underscore'           => [
                     'baseUrl' => 'js/underscore',
                     'js'      => [$js('underscore')],
                 ],

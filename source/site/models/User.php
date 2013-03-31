@@ -23,7 +23,7 @@ class User extends \shared\models\User
 
             //            ['password', 'required', 'on' => 'settings'],
             ['newPassword', 'checkPassword', 'on' => 'settings'],
-            ['password', 'safe'],
+            ['password, lastHint', 'safe'],
             ]
         );
     }
@@ -45,7 +45,7 @@ class User extends \shared\models\User
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */
-        if($this->hashedPassword){
+        if ($this->hashedPassword) {
             if ($this->$attribute || !$skipEmpty) {
                 if (!$this->validatePassword($this->$passwordAttribute)) {
                     $this->addError($passwordAttribute, $message);
@@ -58,9 +58,9 @@ class User extends \shared\models\User
         if ($this->newPassword) {
             $this->hashedPassword = Randomizr::hashPassword($this->newPassword);
         }
-        if(is_string($this->country)){
-            $this->country  = Country::model()->findByAttributes(['name' => $this->country]);
-            if($this->country){
+        if (is_string($this->country)) {
+            $this->country = Country::model()->findByAttributes(['name' => $this->country]);
+            if ($this->country) {
                 $this->Country_id = $this->country->id;
             }
         }
@@ -150,11 +150,13 @@ class User extends \shared\models\User
 
     public function getRestAttributes() {
         return [
-            'id'         => $this->id,
-            'name'       => $this->firstName,
-            'nickname'   => $this->nickname,
-            'url'        => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
-            'avatarUrls' => [
+            'id'           => $this->id,
+            'name'         => $this->firstName,
+            'nickname'     => $this->nickname,
+            'url'          => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
+            'enabledHints' => (bool)$this->enabledHints,
+            'lastHint'     => $this->lastHint,
+            'avatarUrls'   => [
                 56 => Yii()->avatarStorage->getAvatarUrl($this, 56)
             ],
         ];
@@ -168,7 +170,7 @@ class User extends \shared\models\User
     public function setAvatarSource($url) {
         $handler = $this->onAfterSave = function () use ($url, &$handler) {
             $this->detachEventHandler('onAfterSave', $handler);
-            if($this->isNewRecord){
+            if ($this->isNewRecord) {
                 $this->setIsNewRecord(false);
                 $this->setScenario('update');
             }

@@ -23,7 +23,9 @@ $this->beginContent('//layouts/main');
                 $this->controllerWidget('auth/signup');
             }
             if ($this->author) {
-                $this->controllerWidget('interest/ofUser', ['actionParams' => ['id' => $this->author->id]]);
+                if(!($this->id == 'pm' && $this->getAction()->id == 'index')){
+                    $this->controllerWidget('interest/ofUser', ['actionParams' => ['id' => $this->author->id]]);
+                }
             } elseif (!Yii()->user->isGuest) {
                 $this->widget('site\widgets\user\User');
                 $this->controllerWidget('interest/own', ['widgetId' => 'sidebar-interests', 'actionParams' => ['filter' => true]]);

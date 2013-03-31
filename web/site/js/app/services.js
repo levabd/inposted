@@ -36,5 +36,16 @@ angular.module('inposted.services', ['ngResource']).
             query: {method: 'GET', params: {action: 'query'}, isArray: true},
             send: {method: 'POST', params: {action: 'send'}}
         });
+    }).
+    factory('User', function ($resource, settings) {
+        return $resource(settings.baseUrl + '/user/:action/', {}, {
+            query: {method: 'GET', params: {action: 'query'}, isArray: true},
+            save: {method: 'POST', params: {action: 'save'}}
+        });
+    }).
+    factory('Hint', function ($resource, settings) {
+        return $resource(settings.baseUrl + '/hint/:action/', {}, {
+            query: {method: 'GET', params: {action: 'query'}, isArray: true}
+        });
     })
 ;

@@ -42,6 +42,15 @@ class SettingsController extends Controller
 
 
         $inpostedUser = Yii()->user;
+
+        if($inpostedUser->hasState('showHint')){
+            $showHint = true;
+            $inpostedUser->setState('showHint', null);
+        }
+        else{
+            $showHint = false;
+        }
+
         $settings = \CJavaScript::encode(
             [
             'baseUrl'       => Yii()->baseUrl,
@@ -49,8 +58,8 @@ class SettingsController extends Controller
             'user'          => [
                 'id'      => $inpostedUser->id,
                 'isGuest' => $inpostedUser->isGuest,
-                'email'   => $inpostedUser->model ? $inpostedUser->model->email : null,
-            ],
+                'showHint' => $showHint,
+            ] + ($inpostedUser->model ? $inpostedUser->model->restAttributes : []),
             'page'          => $page,
             ]
         );

@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings, $http, PM) {
+app.controller('inposted.controllers.main', function ($scope, $timeout, Interest, Post, settings, $http, PM, $dialog) {
     $scope.settings = settings;
     $scope.user = settings.user;
 
@@ -381,7 +381,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
         var loadPms = function () {
             if (settings.page.loadPms) {
-                PM.query(function(data){
+                PM.query(function (data) {
                     $scope.pms = data;
                     $scope.unreadPmsCount = 0;
                     $timeout(loadPms, 30000);
@@ -400,7 +400,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
         $scope.showPM = function (to, topic) {
             $scope.pm.to = to;
-            if(topic){
+            if (topic) {
                 $scope.pm.topic = topic;
             }
             //not angular way but whatever
@@ -429,4 +429,71 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     }
 
 
+    //=====Hints======
+    if (settings.user.showHint) {
+        var hints = $dialog.dialog(
+            {
+                controller: 'inposted.controllers.hints',
+                templateUrl: settings.baseUrl + '/hint/template'
+            }
+        );
+
+        hints.open();
+    }
+
+});
+
+app.controller('inposted.controllers.hints', function ($scope, dialog, User, Hint, settings) {
+    Hint.query(function (hints) {
+        var i;
+        var index = 0;
+        if (!hints.length) {
+            dialog.close();
+        }
+
+        if (settings.user.lastHint) {
+            for (i = 0; i < hints.length; i++) {
+                if (hints[i].id == settings.user.lastHint) {
+                    index = i + 1;
+                    break;
+                }
+            }
+        }
+
+        var showHint = function (shift) {
+            if ('next' == shift) {
+                index += 1;
+            }
+            else if ('previous' == shift) {
+                index += -1;
+            }
+
+            if (index < 0) {
+                index = hints.length - 1;
+            }
+            else if (index >= hints.length) {
+                index = 0;
+            }
+
+            $scope.hint = hints[index];
+            User.save({lastHint: $scope.hint.id});
+        };
+
+        showHint();
+
+        $scope.next = function () {
+            showHint('next');
+        };
+
+        $scope.previous = function () {
+            showHint('previous');
+        };
+
+        $scope.close = function (disable) {
+            if (disable) {
+                User.save({enabledHints: false});
+            }
+            dialog.close();
+        }
+    });
 });

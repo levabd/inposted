@@ -2,7 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('inposted', [/*'inposted.filters', */'inposted.services', 'inposted.directives', 'ngSanitize']).
+var app = angular.module('inposted', [/*'inposted.filters', */'inposted.services', 'inposted.directives', 'ngSanitize', 'ui.bootstrap']).
     config(function($httpProvider){
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     })

@@ -108,6 +108,7 @@ return [
                         '<id:\d+>'                 => 'post/view',
                         'vote/<id:\d+>/<type>'     => 'post/vote',
                         'go/<eid:\w+>'             => ['go/go', 'urlSuffix' => false],
+                        'pm'                       => 'pm/index',
                     ]
                 ],
                 'admin' => [
