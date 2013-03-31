@@ -24,6 +24,8 @@ use site\models\Post;
     <!-- конец сортировка-->
 
     <div class="well mini_post_ser post" ng-repeat="post in posts" in-hide="!post.isGood"><!--мини-пост-->
+        <div class="necessarily" ng-show="post.isModerated && !post.thanks && !post.userVote">Compulsory voting! We are interested in your opinion.</div>
+        <div class="thanks" ng-show="post.thanks" in-hide="post.thanks">Thanks for rating! </div>
         <div class="row-fluid">
             <div class="span1"><!--имя пользователя и аватарка-->
                 <a ng-href="{{post.author.url}}" class="ref_avat">

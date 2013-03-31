@@ -19,6 +19,7 @@ class Post extends \base\ActiveRecord
     public $content;
     public $htmlContent;
     public $ip;
+    public $moderatedUntil;
 
     public function rules() {
         return [
@@ -42,6 +43,4 @@ class Post extends \base\ActiveRecord
             'likesCount' => [self::STAT, $this->ns('Vote'), 'Post_id', 'condition' => 'type = "like"'],
         ];
     }
-
-
 }

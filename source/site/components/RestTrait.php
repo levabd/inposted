@@ -23,17 +23,22 @@ trait RestTrait {
     /**
      * @param array|ActiveRecord $models
      */
-    public function renderModels($models = []) {
+    public function renderModels($models = [], $additionlaData = []) {
         if(is_array($models)){
             $data = [];
             foreach ($models as $model) {
-                $data[] = $model->restAttributes;
+                $restAttributes = $model->restAttributes;
+                $restAttributes = array_merge($restAttributes, $additionlaData);
+                $data[] = $restAttributes;
+
             }
             $this->renderJson($data);
         }
         else{
             if(is_object($models)){
-                $this->renderJson($models->restAttributes);
+                $restAttributes = $models->restAttributes;
+                $restAttributes = array_merge($restAttributes, $additionlaData);
+                $this->renderJson($restAttributes);
             }
             else{
                 $this->renderJson($models);

@@ -13,7 +13,7 @@ class Signin extends \base\FormModel
 {
     public $username;
     public $password;
-    public $rememberMe;
+    public $rememberMe = true;
 
     /**
      * @var Identity

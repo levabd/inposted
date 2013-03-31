@@ -41,7 +41,10 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             post.$save(
                 function (saved) {
                     if (saved.success) {
-                        $scope.posts.unshift(saved);
+                        if(!saved.isModerated){
+                            $scope.posts.unshift(saved);
+                        }
+
                         $scope.newPost = new Post();
                     }
                 }
@@ -183,6 +186,8 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             post.isGood = false;
         }
         post.$vote();
+
+        post.thanks = true;
     }
 
 

@@ -4,6 +4,8 @@
  */
 namespace site\models;
 
+use yii_core\CHtml;
+
 /**
  * @property Interest[] $interests
  */
@@ -38,6 +40,27 @@ class Post extends \shared\models\Post
 //            'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) <= (SELECT COUNT(`Post_id`) FROM `Vote` where `type` = 'like' AND $this->tableAlias.id = `Vote`.`Post_id`)"],
             'good'   => ['condition' => "(SELECT COUNT(`Post_id`) FROM `Vote` where `type` != 'like' AND $this->tableAlias.id = `Vote`.`Post_id`) = 0"],
         ];
+    }
+
+    /**
+     * Scope
+     */
+    public function moderate() {
+        $criteria = new \CDbCriteria();
+        $criteria->addCondition($this->tableAlias . '.`moderatedUntil` IS NULL');
+        $criteria->addCondition($this->tableAlias . '.`moderatedUntil` <= NOW()', 'OR');
+
+        if (!Yii()->user->isGuest) {
+            $criteria->addInCondition(
+                $this->tableAlias . '.id',
+                CHtml::listData(Yii()->user->model->getModeratedPosts(), 'id', 'id'),
+                'OR'
+            );
+        }
+
+        $this->dbCriteria->mergeWith($criteria);
+
+        return $this;
     }
 
     public function getIsGood() {
@@ -89,6 +112,11 @@ class Post extends \shared\models\Post
             }
             $this->interests = array_values($interests);
         }
+
+        if ($this->isNewRecord && $this->getIsModerated()) {
+            $this->moderatedUntil = new \CDbExpression('ADDDATE(NOW(), INTERVAL 5 MINUTE)');
+        }
+
         return parent::beforeValidate();
     }
 
@@ -158,36 +186,81 @@ class Post extends \shared\models\Post
 
     public function getRestAttributes() {
         $user = Yii()->user->model;
-        if($user && ($vote = $user->getVote($this))){
+        if ($user && ($vote = $user->getVote($this))) {
             $vote = $vote->type;
-        }
-        else{
+        } else {
             $vote = null;
         }
 
         $interests = [];
-        foreach($this->interests as $interest){
+        foreach ($this->interests as $interest) {
             $interests[] = $interest->getRestAttributes();
         }
 
         return [
-            'id' => $this->id,
-            'content' => $this->content,
+            'id'          => $this->id,
+            'content'     => $this->content,
             'htmlContent' => $this->htmlContent,
-            'date' => gmdate('c', strtotime($this->dateSubmitted . ' UTC')),//Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
+            'date'        => gmdate('c', strtotime($this->dateSubmitted . ' UTC')), //Yii()->dateFormatter->format('HH:mm dd MMM yyy', $this->dateSubmitted),
 //            'date' => Yii()->dateFormatter->format('HH:mm dd MMM yyyy', $this->dateSubmitted),
-            'isFavorite' => $user && $user->isFavorite($this),
-            'likesCount' => $this->likesCount,
-            'isGood' => $this->getIsGood(),
-            'isModerated' => false,
-            'userVote' => $vote,
-            'author' => $this->author->restAttributes,
-            'interests' => $interests,
+            'isFavorite'  => $user && $user->isFavorite($this),
+            'likesCount'  => $this->likesCount,
+            'isGood'      => $this->getIsGood(),
+            'isModerated' => $this->getIsModerated(),
+            'userVote'    => $vote,
+            'author'      => $this->author->restAttributes,
+            'interests'   => $interests,
 
-            'error' => $this->getError('content'),
-            'success' => !$this->isNewRecord,
+            'error'       => $this->getError('content'),
+            'success'     => !$this->isNewRecord,
 
-            'viewUrl' => $this->id ?  Yii()->createUrl('post/view', ['id' => $this->id] ) : null,
+            'viewUrl'     => $this->id ? Yii()->createUrl('post/view', ['id' => $this->id]) : null,
         ];
+    }
+
+    protected function getIsModerated() {
+        if ($this->isNewRecord) {
+            $interests = CHtml::listData($this->interests, 'id', 'id');
+
+            if ($interests) {
+                $interests = implode(', ', $interests);
+                $moderators = $this->dbConnection->createCommand(
+                    "SELECT COUNT(DISTINCT iu.User_id)
+                    FROM `Interest_User` iu LEFT JOIN `User` u ON(iu.User_id = u.id)
+                    WHERE iu.`Interest_id` IN ($interests)
+                    AND ADDDATE(u.`lastOnline`, INTERVAL 10 MINUTE) > NOW()
+                    AND iu.User_id != :author
+                    "
+                )->queryScalar(['author' => $this->User_id]);
+
+                return intval($moderators) > intval(Yii()->params->itemAt('moderatorsLimit'));
+            }
+
+            return false;
+        }
+
+        return $this->moderatedUntil && $this->moderatedUntil > Yii()->format->formatDateMysql();
+    }
+
+    public function isModerator($id) {
+        if (!$this->getIsModerated()) {
+            return false;
+        }
+
+        $interests = implode(', ', CHtml::listData($this->interests, 'id', 'id'));
+
+        $moderators = $this->dbConnection->createCommand(
+            "SELECT iu.User_id, COUNT(iu.Interest_id) AS interests_count, u.reputation
+            FROM `Interest_User` iu INNER JOIN `User` u ON(iu.User_id = u.id)
+            WHERE Interest_id IN ($interests)
+            AND User_id != :author
+            AND ADDDATE(u.`lastOnline`, INTERVAL 10 MINUTE) > NOW()
+            GROUP BY User_id
+            ORDER BY interests_count DESC, reputation DESC
+            LIMIT 50
+            "
+        )->queryColumn(['author' => $this->User_id]);
+
+        return in_array($id, $moderators);
     }
 }

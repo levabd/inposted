@@ -178,4 +178,17 @@ class User extends \shared\models\User
             Yii()->avatarStorage->importAvatar($this, $url);
         };
     }
+
+    public function getModeratedPosts(){
+        $allModeratedPosts = Post::model()->findAll(['condition' => 'moderatedUntil IS NOT NULL AND moderatedUntil > NOW()']);
+        $myModeratedPosts = [];
+
+        foreach($allModeratedPosts as $post){
+            if($post->isModerator($this->id)){
+                $myModeratedPosts[] = $post;
+            }
+        }
+
+        return $myModeratedPosts;
+    }
 }

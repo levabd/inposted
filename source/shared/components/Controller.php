@@ -9,6 +9,16 @@
 namespace shared\components;
 class Controller extends \base\Controller
 {
+    public function init() {
+        parent::init();
+
+        if(!Yii()->user->isGuest){
+            Yii()->user->model->lastOnline = new \CDbExpression('NOW()');
+            Yii()->user->model->update(['lastOnline']);
+        }
+    }
+
+
     public function goBack($default = null) {
         if (Yii()->getRequest()->getIsAjaxRequest()) {
             return;

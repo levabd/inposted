@@ -25,7 +25,7 @@ class PostController extends \site\components\WidgetController
         }
 
         $criteria->compare('User_id', $userId);
-        $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
+        $posts = Post::model()->moderate()->good()->sortBy($sort)->findAll($criteria);
         $this->renderModels($posts);
     }
 
@@ -35,7 +35,7 @@ class PostController extends \site\components\WidgetController
         if(Yii()->user->id != $post->author->id){
             Yii()->user->model->vote($id, $userVote);
         }
-        $this->renderModels($post);
+        $this->renderModels($post, ['thanks' => true]);
     }
 
     public function actionCreate() {
