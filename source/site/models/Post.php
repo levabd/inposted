@@ -130,7 +130,7 @@ class Post extends \shared\models\Post
         try {
             if (parent::save($runValidation, $attributes)) {
                 foreach ($this->interests as $index => $interest) {
-                    $index < 3 ? $this->addInterest($interest) : $this->removeInterest($interest);
+                    $this->addInterest($interest);
                 }
                 $transaction && $transaction->commit();
 

@@ -190,6 +190,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             return null;
         },
         pushParent: function (interest) {
+            _(this.promises).each(function(promise){$timeout.cancel(promise);});
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
@@ -294,11 +295,13 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     $scope.attachInterest = function (interest) {
         Interest.attach({id: interest.id});
-        _($scope.interests).each(function (i) {
-            i.checked = false;
-        });
+//        _($scope.interests).each(function (i) {
+//            i.checked = false;
+//        });
         interest.checked = true;
         $scope.interests.push(interest);
+
+        _(_($scope.interests).filter(function (item) {return item.checked == true;}).slice(0, -3)).each(function (item) {item.checked = false;});
 
         loadPosts();
     };
@@ -537,6 +540,7 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
         i.attach = false;
 
         i.$save(function (i) {
+            i.checked = true;
             $scope.interests.push(i);
         });
         $scope.search.term = '';
@@ -548,9 +552,6 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
     };
 
     $scope.attachInterest = function (interest) {
-        _($scope.interests).each(function (i) {
-            i.checked = false;
-        });
         interest.checked = true;
         $scope.interests.push(interest);
     };
@@ -568,11 +569,7 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
     };
 
     $scope.isFilterDisabled = function (id, group) {
-        var filters = [];
-        _(group).each(function (interest) {
-            if (interest.checked) filters.push(interest.id)
-        });
-        return (filters.length > 2) && (_(filters).indexOf(id) == -1);
+        return false;
     };
 
 
@@ -594,6 +591,8 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
             return null;
         },
         pushParent: function (interest) {
+            _(this.promises).each(function(promise){$timeout.cancel(promise);});
+
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
