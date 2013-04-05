@@ -132,7 +132,19 @@
 
 
             }
-        }])
+        }]).
+        directive('inKeyUp', function () {
+            return function (scope, element, attributes) {
+                var mod = attributes.inKeyUpMod;
+                var key = attributes.inKeyUpKey;
+
+                element.bind('keyup', function(event){
+                    if ((!key || key == event.which) && (!mod || event[mod + 'Key'])) {
+                        scope.$apply(attributes.inKeyUp);
+                    }
+                });
+            }
+        })
 
 
     //ajax widget

@@ -190,7 +190,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             return null;
         },
         pushParent: function (interest) {
-            _(this.promises).each(function(promise){$timeout.cancel(promise);});
+            _(this.promises).each(function (promise) {$timeout.cancel(promise);});
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
@@ -503,7 +503,13 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
 
     $scope.interests = Interest.query();
 
+    $scope.enabled = true;
+
     $scope.createNewPost = function () {
+        if(!$scope.enabled){
+            return;
+        }
+
         var interests = [];
         _($scope.interests).each(function (interest) {
             if (interest.checked) interests.push(interest.id)
@@ -514,12 +520,16 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
             post.error = 'Write something';
         }
         else if (interests.length) {
+            $scope.enabled = false;
             post.inInterests = interests;
             post.$save(
                 function (saved) {
                     if (saved.success) {
                         dialog.close(!saved.isModerated);
                         $scope.newPost = new Post();
+                    }
+                    else {
+                        $scope.enabled = true;
                     }
                 }
             );
@@ -591,7 +601,7 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
             return null;
         },
         pushParent: function (interest) {
-            _(this.promises).each(function(promise){$timeout.cancel(promise);});
+            _(this.promises).each(function (promise) {$timeout.cancel(promise);});
 
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
