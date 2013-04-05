@@ -10,5 +10,6 @@
         class="btn btn-1mini attach-interest"
         ng-click="attachInterest(interest); $event.stopPropagation(); $event.preventDefault()"
         ng-show="!settings.user.isGuest && !hasInterest(interest)"
+        title="Add interest"
         >+</button>
 </label>

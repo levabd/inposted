@@ -13,6 +13,7 @@
     <button
         class="btn btn-1mini"
         ng-click="detachInterest(interest); $event.stopPropagation()"
+        title="Delete interest"
         >
         x
     </button>
@@ -33,6 +34,7 @@
             class="btn btn-2mini"
             ng-click="createInterest(); $event.stopPropagation()"
             ng-show="search.term && search.term.length >= 3 && !existsInterest"
+            title="Create interest"
             >+
         </button>
     </div>
@@ -51,13 +53,17 @@
                 <button
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
-                    ng-click="attachInterest(interest); $event.stopPropagation()">+
+                    ng-click="attachInterest(interest); $event.stopPropagation()"
+                    title="Add interest"
+                    >+
                 </button>
                 {{interest.name}}
                 <button
                     class="btn btn-2mini"
                     class="but_sear"
-                    ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()">
+                    ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()"
+                    title="Show additional suggestions"
+                    >
                     <img src="<?= Yii()->baseUrl ?>/img/sear.png">
                 </button>
             </li>

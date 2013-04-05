@@ -21,7 +21,11 @@ $user = Yii()->user->model;
                 <li ng-repeat="post in favorite.posts">
                     <a ng-href="{{post.author.url}}"><b>{{post.author.nickname}}</b></a>
                     <span class="clickable" ng-click="toggleFavorite(post, false)">
-                        <img ng-src="{{post.isFavorite && '<?= Yii()->baseUrl ?>/img/star_full.png' || '<?= Yii()->baseUrl ?>/img/star_null.png'}}" class="star">
+                        <img
+                            ng-src="{{post.isFavorite && '<?= Yii()->baseUrl ?>/img/star_full.png' || '<?= Yii()->baseUrl ?>/img/star_null.png'}}"
+                            class="star"
+                            title="{{post.isFavorite && 'Delete from favorites' || 'Add to favorites'}}"
+                            >
                     </span>
                     <br>
                     <a ng-href="{{post.viewUrl}}" ng-bind-html-unsafe="post.htmlContent"></a>

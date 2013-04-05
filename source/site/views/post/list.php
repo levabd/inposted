@@ -46,6 +46,7 @@ use site\models\Post;
                         class="btn btn-1mini attach-interest"
                         ng-click="attachInterest(interest)"
                         ng-hide="settings.user.isGuest || hasInterest(interest)"
+                        title="Add interest"
                         >+</button><span ng-show="!$last">,</span>
                 </b>
                 <i class="float_right">{{post.date | date:'HH:mm dd MMM yyyy'}}</i>
@@ -56,7 +57,11 @@ use site\models\Post;
 
             <div class="span2 adm_butt" ng-hide="settings.user.isGuest"><!--рейтинг-->
                 <span class="clickable" ng-click="toggleFavorite(post, true)">
-                    <img ng-src="{{post.isFavorite && '<?=Yii()->baseUrl?>/img/star_full.png' || '<?=Yii()->baseUrl?>/img/star_null.png'}}" class="star">
+                    <img
+                        ng-src="{{post.isFavorite && '<?=Yii()->baseUrl?>/img/star_full.png' || '<?=Yii()->baseUrl?>/img/star_null.png'}}"
+                        class="star"
+                        title="{{post.isFavorite && 'Delete from favorites' || 'Add to favorites'}}"
+                        >
                 </span>
                 <br>
                 <div class="adm_butt_left" ng-hide="settings.user.id == post.author.id">
@@ -78,6 +83,7 @@ use site\models\Post;
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"
                         ng-class="{'btn-success': 'like' == post.userVote, 'disabled': (post.userVote && 'like' != post.userVote) || settings.user.id == post.author.id}"
+                        title="Like"
                         >
                         <i class="icon-thumbs-up"></i>
                     </button>
@@ -86,10 +92,11 @@ use site\models\Post;
 
                     <button
                         class="btn btn-mini"
-                        ng-repeat="type in ['spam', 'abuse']"
+                        ng-repeat="(type, text) in {'spam': 'Spam', 'abuse': 'Abuse'}"
                         ng-click="vote(post, type)"
                         ng-class="{'btn-warning': post.userVote=='spam', 'btn-danger': post.userVote=='abuse'}"
                         ng-show="(!post.userVote || post.userVote == type) && settings.user.id != post.author.id"
+                        title="{{text}}"
                         >
                         <i ng-class="{'icon-ban-circle': type=='spam', 'icon-warning-sign': type=='abuse'}"></i>
                     </button>
