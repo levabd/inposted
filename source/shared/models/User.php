@@ -21,7 +21,7 @@ namespace shared\models;
  * @property string     $reputation
  * @property string     $level
  * @property string     $info
- * @property bool       $enabledTooltips
+ * @property bool       $enabledHints
  * @property bool       $enabledNotifications
  * @property float      $timezone
  *

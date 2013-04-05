@@ -5,6 +5,8 @@ class InpostedUser extends \shared\components\InpostedUser
 {
     protected function afterLogin($fromCookie) {
         parent::afterLogin($fromCookie);
-        $this->setState('showHint', true);
+        if($this->model->enabledHints){
+            $this->setState('showHint', true);
+        }
     }
 }

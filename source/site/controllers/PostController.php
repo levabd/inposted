@@ -6,6 +6,7 @@ namespace site\controllers;
 use site\components\RestTrait;
 use site\models\Interest;
 use site\models\Post;
+use yii_core\CHtml;
 
 class PostController extends \site\components\WidgetController
 {
@@ -27,7 +28,13 @@ class PostController extends \site\components\WidgetController
 
         if ($interests = Interest::model()->findAllByPk($interests)) {
             foreach ($interests as $index => $interest) {
-                $in = implode(',', array_merge($interest->getIndirectChildrenIds(), [$interest->id]));
+                $in = implode(
+                    ',',
+                    array_merge(
+                        array_values(CHtml::listData($interest->children, 'id', 'id')),
+                        [$interest->id]
+                    )
+                );
                 $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id in ($in))");
             }
         }

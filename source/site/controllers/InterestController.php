@@ -14,7 +14,7 @@ class InterestController extends WidgetController
     public $layout = '//interest/layout';
     public $restActions = ['create'];
 
-    public function actionCreate($name, $parentId = null, $attach) {
+    public function actionCreate($name, $attach, $parentId = null) {
         if (!($interest = Interest::model()->findByName($name))) {
             $interest = new Interest();
             $interest->name = $name;
