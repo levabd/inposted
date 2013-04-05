@@ -40,7 +40,7 @@ use site\models\Post;
             </div>
             <!--конец имя пользователя и аватарка-->
 
-            <div class="span9 padding_left_20px">
+            <div class="padding_left_20px"  ng-class="{span9: !settings.user.isGuest, span11: settings.user.isGuest}">
                 <b ng-repeat="interest in post.interests">
                     {{interest.name}}<button
                         class="btn btn-1mini attach-interest"
