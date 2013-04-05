@@ -12,7 +12,8 @@ class Country extends \base\ActiveRecord
     public $name;
 
     public function getFlagUrl() {
-        return Yii()->urlManager->getBaseUrl('site') . "/img/flags/$this->code.jpg";
+        $name = str_replace(' ', '_', $this->name);
+        return Yii()->urlManager->getBaseUrl('site') . "/img/flags/$name.svg";
     }
 
     function __toString() {
