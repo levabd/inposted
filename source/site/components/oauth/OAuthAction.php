@@ -146,6 +146,7 @@ class OAuthAction extends \HOAuthAction
         } catch (Exception $e) {
             if (YII_DEBUG) {
                 // Display the received error
+                $code = 500;
                 switch ($e->getCode()) {
                     case 0 :
                         $error = "Unspecified error.";
@@ -164,6 +165,7 @@ class OAuthAction extends \HOAuthAction
                         break;
                     case 5 :
                         $error = "Authentication failed. The user has canceled the authentication or the provider refused the connection.";
+                        $code = 403;
                         break;
                     case 6 :
                         $error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again.";
@@ -178,9 +180,8 @@ class OAuthAction extends \HOAuthAction
                         $error = '';
                 }
 
-                $error .= "\n\n<br /><br /><b>Original error message:</b> " . $e->getMessage();
-                Yii::log($error, CLogger::LEVEL_INFO, 'hoauth.' . __CLASS__);
-                throw new CException($error);
+                Yii::log($error . "\n\n<br /><br /><b>Original error message:</b> " . $e->getMessage(), CLogger::LEVEL_WARNING, 'hoauth.' . __CLASS__);
+                throw new \CHttpException($code, $error);
             }
         }
         Yii::app()->controller->redirect(Yii::app()->user->returnUrl);
