@@ -506,7 +506,7 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
     $scope.enabled = true;
 
     $scope.createNewPost = function () {
-        if(!$scope.enabled){
+        if (!$scope.enabled) {
             return;
         }
 
@@ -657,4 +657,59 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
         $scope.suggestions.additional = Interest.children({parentId: parent.id});
     };
 
+});
+
+app.controller('inposted.controllers.share', function ($scope, settings, $http, $timeout) {
+    var promise;
+
+    $scope.share = {
+        emails: '',
+        message: ''
+    };
+
+    $scope.errors = {};
+    $scope.error = null;
+
+    $scope.state = null;
+
+    $scope.send = function () {
+        $scope.state = null;
+        $scope.errors = {};
+        $scope.error = null;
+
+        if ($scope.share.emails.length) {
+            $scope.state = 'pending';
+            $http.post(settings.baseUrl + '/share', $scope.share)
+                .success(function (response) {
+                    $scope.errors = response;
+                    if (!$scope.errorsLength()) {
+                        $scope.state = 'success';
+                    }
+                    else {
+                        $scope.state = 'error';
+                    }
+                })
+                .error(function (response) {
+                    $scope.error = response.data;
+                    $scope.state = 'error';
+                });
+        }
+        else {
+            $scope.error = 'Please provide emails';
+            $scope.state = 'error';
+            console.log($scope.error);
+            if (promise) {
+                $timeout.cancel(promise);
+            }
+            promise = $timeout(function () {
+                $scope.error = null;
+                $scope.state = null;
+                promise = null;
+            }, 2000);
+        }
+    }
+
+    $scope.errorsLength = function () {
+        return _($scope.errors).keys().length;
+    }
 });

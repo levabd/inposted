@@ -9,6 +9,7 @@
  * @property \base\url\ManagerCollection $urlManager
  * @property \shared\components\AvatarStorage $avatarStorage
  * @property \shared\components\Fs $fs
+ * @property \shared\extensions\mail\Mailer $mailer
  *
  * @method string createProfileUrl($user)
  */

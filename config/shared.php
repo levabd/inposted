@@ -109,6 +109,7 @@ return [
                         'vote/<id:\d+>/<type>'     => 'post/vote',
                         'go/<eid:\w+>'             => ['go/go', 'urlSuffix' => false],
                         'pm'                       => 'pm/index',
+			'share' => 'site/share',
                     ]
                 ],
                 'admin' => [

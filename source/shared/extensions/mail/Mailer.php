@@ -48,8 +48,8 @@ class Mailer extends \CApplicationComponent
             ->setFrom($this->_message['from']);
     }
 
-    public function send(\Swift_Message $message){
-        $this->getMailer()->send($message);
+    public function send(\Swift_Message $message, &$failures = null){
+        return $this->getMailer()->send($message, $failures);
     }
 
     public function getMailer(){

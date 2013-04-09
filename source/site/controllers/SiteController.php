@@ -1,10 +1,15 @@
 <?php
 namespace site\controllers;
 use Yii, CHtml, Exception;
+use site\components\RestTrait;
 use site\models\Post;
 
 class SiteController extends \site\components\Controller
 {
+    use RestTrait;
+
+    public $restActions = ['share'];
+
     public function actions() {
         return array(
             'page'    => array(
@@ -91,7 +96,28 @@ class SiteController extends \site\components\Controller
         }
     }
 
-    public function actionShare() {
-        $this->renderText('');
+    public function actionShare($emails = null, $message = null) {
+        $link = 'http://lnc.hr/q8dz';
+        if ($emails) {
+            $mailer = Yii()->mailer;
+
+            $title = 'Invitation to Inposted.com';
+            $body = ($message ? : 'Check this out:') . "\n\n" . $link;
+
+            $errors = (object)[];
+            foreach (array_unique(preg_split('/[,\s]+/', $emails)) as $email) {
+                try {
+                    $message = $mailer->create($title, $body, 'text/plain', Yii()->charset)->setTo($email);
+                    if (!$mailer->send($message, $failures)) {
+                        $errors->$email = 'Failed to send message';
+                    }
+                } catch (Exception $e) {
+                    $errors->$email = $e->getMessage();
+                }
+            }
+            $this->renderJson($errors);
+        } else {
+            $this->render('share', compact('link'));
+        }
     }
 }

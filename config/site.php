@@ -36,8 +36,9 @@ return [
                     'js'      => [$js('js/viewport/jquery.viewport')],
 
                     'css'     => ['css/new.css'],
-                    'depends' => ['bootstrap', 'angular','angular-ui-bootstrap', 'underscore', 'app'],
+                    'depends' => ['bootstrap', 'angular', 'angular-ui-bootstrap', 'underscore', 'app'],
                 ],
+
 //                'jquery'     => [
 //                    'baseUrl' => '',
 //                    'js'      => ['js/jquery.min.js'],
@@ -56,11 +57,21 @@ return [
                         $js('angular-sanitize'),
                     ],
                 ],
+                'angular-ui'           => [
+                    'basePath' => 'vendors.angular-ui.build',
+                    'css'      => ['angular-ui.min.css'],
+                    'js'       => [$js('angular-ui')],
+                ],
                 'angular-ui-bootstrap' => [
                     'basePath' => 'vendors.angular-ui-bootstrap',
-                    'js'       => [
-                        $js('ui-bootstrap-tpls-0.2.0'),
-                    ],
+                    'js'       => [$js('ui-bootstrap-tpls-0.2.0')],
+                ],
+
+                'select2'              => [
+                    'basePath' => 'vendors.select2',
+                    'css'      => ['select2.css'],
+                    'js'       => ['select2.js'],
+                    'depends'  => ['angular-ui'],
                 ],
                 'underscore'           => [
                     'baseUrl' => 'js/underscore',
@@ -79,6 +90,14 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+    ],
+
+    'params'        => [
+        'share' => [
+            'url'         => 'http://inposted.com',
+            'title'       => 'Inposted',
+            'description' => 'Stay in touch with your interests.',
         ],
     ],
 ];
