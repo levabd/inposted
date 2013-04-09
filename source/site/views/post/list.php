@@ -23,7 +23,7 @@ use site\models\Post;
     </div>
     <!-- конец сортировка-->
 
-    <div class="well post" ng-class="{mini_post_ser: $index%2, mini_post_ser: !($index%2)}" ng-repeat="post in posts" in-hide="!post.isGood"><!--мини-пост-->
+    <div class="well post" ng-class="{mini_post_ser: !($index%2), mini_post_white: $index%2}" ng-repeat="post in posts" in-hide="!post.isGood"><!--мини-пост-->
         <div class="necessarily" ng-show="post.isModerated && !post.thanks && !post.userVote">Compulsory voting! We are interested in your opinion.</div>
         <div class="thanks" ng-show="post.thanks" in-hide="post.thanks">Thanks for rating! </div>
         <div class="row-fluid">
