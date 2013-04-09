@@ -13,6 +13,10 @@ class Controller extends \base\Controller
         parent::init();
 
         if(!Yii()->user->isGuest){
+            if(!Yii()->user->model){
+                Yii()->user->logout();
+                $this->redirect(['site/index']);
+            }
             Yii()->user->model->lastOnline = new \CDbExpression('NOW()');
             Yii()->user->model->update(['lastOnline']);
         }
