@@ -1,6 +1,6 @@
 [submodule "yii"]
 	path = yii
-	url = git@github.com:yiisoft/yii.git
+	url = https://github.com/yiisoft/yii.git
 [submodule "source/vendors/swift"]
 	path = source/vendors/swift
 	url = https://github.com/swiftmailer/swiftmailer.git
