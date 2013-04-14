@@ -69,6 +69,7 @@ return [
 
         'cache'          => [
             'class'        => 'CMemCache',
+            'behaviors' => ['\base\CacheBehavior'],
             'useMemcached' => true,
             'servers'      => [
                 'one' => [

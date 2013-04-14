@@ -12,8 +12,24 @@ class Country extends \base\ActiveRecord
     public $name;
 
     public function getFlagUrl() {
-        $name = str_replace(' ', '_', $this->name);
-        return Yii()->urlManager->getBaseUrl('site') . "/img/flags/$name.svg";
+        $baseUrl = Yii()->urlManager->getBaseUrl('site') . '/img/flags';
+
+        return Yii()->cache->load(
+            "country:flag:$this->code",
+            function () use ($baseUrl) {
+                $basePath = path(dirname(Yii()->request->scriptFile), 'img', 'flags');
+
+                $id = strtoupper($this->code);
+                foreach (['svg', 'png', 'jpg'] as $extension) {
+                    $file = "$id.$extension";
+                    if (file_exists(path($basePath, $file))) {
+                        return "$baseUrl/$file";
+                    }
+                }
+
+                return false;
+            }
+        ) ? : "$baseUrl/missing.png";
     }
 
     function __toString() {
