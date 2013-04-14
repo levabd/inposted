@@ -103,6 +103,7 @@ class User extends ActiveRecord
             ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
             ['avatarUpload', 'validImage'],
             ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true],
+            ['birthYear', 'default', 'setOnEmpty' => true, 'value' => null],
         ];
     }
 
