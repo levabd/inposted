@@ -92,6 +92,8 @@ $form = $this->beginWidget(
                     <?=$form->error($user, 'homepage')?>
                     <?=$form->textField($user, 'birthYear', ['class' => 'span6'])?><br>
                     <?=$form->error($user, 'birthYear')?>
+                    <?=$form->dropDownList($user, 'gender', ['male' => 'Male', 'female' => 'Female'], ['class' => 'span6', 'prompt' => 'Your gender...'])?><br>
+                    <?=$form->error($user, 'gender')?>
                     <?//$form->dropDownList(
 //                        $user, 'timezone', $timezoneTable,
 //                        [

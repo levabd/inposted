@@ -15,7 +15,7 @@
         <div class="span5">
             <div class="avat">
                 <a href="<?= Yii()->createProfileUrl($user) ?>">
-                    <img alt="<?= $user->nickname ?>" src="<?= $user->getAvatarUrl(56) ?>" title="bender" align="middle">
+                    <img alt="<?= $user->nickname ?>" src="<?= $user->getAvatarUrl(56) ?>" title="<?=$user->nickname?>" align="middle">
                 </a>
             </div>
         </div>
