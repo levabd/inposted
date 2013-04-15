@@ -15,6 +15,8 @@ class AvatarStorage extends \CApplicationComponent
 
     public $sizes = [64];
 
+    private $_defaultAvatars = [];
+
     /**
      * @param User $user
      * @param null $size
@@ -28,11 +30,12 @@ class AvatarStorage extends \CApplicationComponent
             }
 
             if (is_file($this->getFileName($user, $size)) || $this->createResizedAvatar($user, $size)) {
-                return Yii()->urlManager->getBaseUrl($this->appId) . "/$this->baseUrl/{$this->formPath($user)}/{$this->formFileName($size)}";
+                return $this->getBaseUrl() . "/$this->baseUrl/{$this->formPath($user)}/{$this->formFileName($size)}";
             }
         }
 
-        return Yii()->urlManager->getBaseUrl('site') . '/img/empty_avatar.jpg';
+
+        return $this->getBaseUrl() . $this->getDefaultAvatar($user->gender);
     }
 
     protected function formPath(User $user) {
@@ -55,7 +58,7 @@ class AvatarStorage extends \CApplicationComponent
 
             $image = new \Imagick($user->avatarUpload->tempName);
             $background = new \Imagick();
-            $background->newImage($image->getImageWidth(), $image->getImageHeight(), new \ImagickPixel( "white" ));
+            $background->newImage($image->getImageWidth(), $image->getImageHeight(), new \ImagickPixel("white"));
             $background->compositeimage($image, \Imagick::COMPOSITE_COPY, 0, 0);
             $background->flattenImages();
             $background->writeimage($this->getFileName($user));
@@ -76,8 +79,8 @@ class AvatarStorage extends \CApplicationComponent
 
             $image = new \Imagick($originalFile);
             $image->scaleimage($size, $size, true);
-            $x = $size == $image->getimagewidth() ? 0 : ($size - $image->getimagewidth())/2;
-            $y = $size == $image->getimageheight() ? 0 : ($size - $image->getimageheight())/2;
+            $x = $size == $image->getimagewidth() ? 0 : ($size - $image->getimagewidth()) / 2;
+            $y = $size == $image->getimageheight() ? 0 : ($size - $image->getimageheight()) / 2;
             $background->compositeimage($image, \Imagick::COMPOSITE_COPY, $x, $y);
             return $background->writeimage($this->getFileName($user, $size));
         }
@@ -85,7 +88,7 @@ class AvatarStorage extends \CApplicationComponent
     }
 
     public function importAvatar(User $user, $source) {
-        if($source){
+        if ($source) {
             $temporaryFile = path(Yii()->runtimePath, md5($source) . basename($source));
             copy($source, $temporaryFile);
             //here I imitate CUploadedFile api
@@ -93,5 +96,31 @@ class AvatarStorage extends \CApplicationComponent
             $this->processAvatarUpload($user);
             unlink($temporaryFile);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseUrl() {
+        return Yii()->urlManager->getBaseUrl($this->appId);
+    }
+
+    private function getDefaultAvatar($gender) {
+        $gender = $gender ?: 'male';
+
+        if(!isset($this->_defaultAvatars[$gender])){
+            throw new \CException("Avatar for gender $gender is not configured");
+        }
+        return $this->_defaultAvatars[$gender];
+    }
+
+    public function setDefaultAvatars($defaultAvatars) {
+        if (!is_array($defaultAvatars)) {
+            $defaultAvatars = [
+                'male'   => $defaultAvatars,
+                'female' => $defaultAvatars,
+            ];
+        }
+        $this->_defaultAvatars = $defaultAvatars;
     }
 }

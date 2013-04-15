@@ -97,6 +97,7 @@ class AuthController extends components\WidgetController
                         return $profile->photoURL;
                     },
                     'birthYear'    => 'birthYear',
+                    'gender'       => 'gender',
                     // you can also specify additional values,
                     // that will be applied to your model (eg. account activation status)
                     'verified'     => function ($profile) {

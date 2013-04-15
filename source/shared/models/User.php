@@ -25,6 +25,7 @@ namespace shared\models;
  * @property bool       $enabledNotifications
  * @property float      $timezone
  * @property int        $birthYear
+ * @property string     $gender
  *
  * @property Interest[] $interests
  * @property Post[]     $posts
@@ -103,7 +104,8 @@ class User extends ActiveRecord
             ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
             ['avatarUpload', 'validImage'],
             ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true],
-            ['birthYear', 'default', 'setOnEmpty' => true, 'value' => null],
+            ['gender', 'in', 'range' => ['male', 'female']],
+            ['birthYear,gender', 'default', 'setOnEmpty' => true, 'value' => null],
         ];
     }
 

@@ -170,6 +170,10 @@ return [
             'basePath' => ROOT . '/web/site/avatars',
             'baseUrl'  => 'avatars',
             'sizes'    => [56, 73, 210],
+            'defaultAvatars' => [
+                'male' => '/img/empty_avatar_men.svg',
+                'female' => '/img/empty_avatar_girl.svg',
+            ],
         ],
 
         'fs'             => [
