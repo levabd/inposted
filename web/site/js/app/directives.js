@@ -145,12 +145,36 @@
                 });
             }
         }).
-        directive('inBlur', function () {
+        directive('inBlur',function () {
             return function (scope, elem, attrs) {
                 elem.bind('blur', function () {
                     scope.$apply(attrs.inBlur);
                 });
             };
+        }).
+        directive('inFileUpload', function ($q) {
+            return function (scope, element, attributes) {
+                var deferred;
+
+                element.fileupload({
+//                    dataType: 'json',
+                    add: function (e, data) {
+                        scope[attributes.inFileUpload] = function () {
+                            deferred = $q.defer();
+                            data.submit();
+                            return deferred.promise;
+                        }
+                    },
+                    done: function (e, data) {
+                        scope[attributes.inFileUpload] = null;
+                        deferred.resolve(data);
+                    },
+                    fail: function (e, data) {
+                        scope[attributes.inFileUpload] = null;
+                        deferred.reject(data);
+                    }
+                });
+            }
         });
 
 

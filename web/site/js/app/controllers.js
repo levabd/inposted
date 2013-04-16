@@ -741,6 +741,8 @@ app.controller('inposted.controllers.signup', function ($scope, User, dialog, se
     };
 
     $scope.submit = function () {
+        var save;
+
         $scope._wait = true;
         if (1 === $scope.step) {
             $scope.user.$signup(function (response) {
@@ -750,12 +752,21 @@ app.controller('inposted.controllers.signup', function ($scope, User, dialog, se
                 }
             });
         } else {
-            $scope.user.$save(function (response) {
-                $scope._wait = false;
-                if (_(response.errors).isEmpty()) {
-                    goHome();
-                }
-            });
+            save = function () {
+                $scope.user.$save(function (response) {
+                    $scope._wait = false;
+                    if (_(response.errors).isEmpty()) {
+                        goHome();
+                    }
+                });
+            };
+
+            if ($scope.uploadAvatar) {
+                $scope.uploadAvatar().then(save);
+            }
+            else {
+                save();
+            }
         }
     };
 

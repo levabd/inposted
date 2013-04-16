@@ -59,6 +59,13 @@ class UserController extends \site\components\Controller
         $this->render('settings', ['user' => $user]);
     }
 
+    public function actionAvatarUpload() {
+        $user = $this->loadModel(null);
+        if ($user->validate('avatarUpload')) {
+            Yii()->avatarStorage->processAvatarUpload($user);
+        }
+    }
+
     public function actionSave() {
         $model = Yii()->user->model;
         if ($model->attributes = $this->getJson()) {

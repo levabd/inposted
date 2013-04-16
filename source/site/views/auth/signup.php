@@ -53,6 +53,7 @@ $countries = site\models\Country::model()->listData();
                 <div class="text-error error-message" ng-show="user.errors.name">{{user.errors.name}}</div>
                 <?= CHtml::dropDownList('country', array_keys($countries)[0], $countries, ['style' => 'width:99%;', 'ng-model' => 'user.Country_id']) ?>
 
+                <input type="file" in-file-upload="uploadAvatar" name="User[avatarUpload]" data-url="<?=Yii()->createUrl('user/avatarUpload')?>"/>
                 <? //$form->fileField($model, 'avatarUpload') ?>
                 <? //$form->error($model, 'avatarUpload') ?>
             </div>
