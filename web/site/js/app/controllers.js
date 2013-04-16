@@ -709,7 +709,6 @@ app.controller('inposted.controllers.share', function ($scope, settings, $http, 
         else {
             $scope.error = 'Please provide emails';
             $scope.state = 'error';
-            console.log($scope.error);
             if (promise) {
                 $timeout.cancel(promise);
             }

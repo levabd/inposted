@@ -25,7 +25,7 @@ class Country extends \shared\models\Country
         $country = null;
 
         if ($code = $geoIp->clientCountryCode) {
-            if (!($country = $this->countByAttributes(['code' => $code]))) {
+            if (!($country = $this->findByAttributes(['code' => $code]))) {
                 if ($name = $geoIp->clientCountryName) {
                     $country = new self;
                     $country->code = $code;
