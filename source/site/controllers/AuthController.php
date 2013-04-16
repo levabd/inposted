@@ -178,15 +178,26 @@ class AuthController extends components\WidgetController
     }
 
     public function actionSignin() {
-        $this->layout = '//auth/layout';
+//        $this->layout = '//auth/layout';
         $model = new models\forms\Signin('login');
-        if ($model->attributes = Yii()->getRequest()->getPost($model->formName())) {
+        if ($model->attributes = $this->getJson()) {
             // validates user input and redirect to previous page if validated
-            $this->signIn($model);
+            if ($model->validate() && $model->login()) {
+                $this->renderJson(['success' => true]);
+            } else {
+                $this->renderJson(
+                    [
+                    'errors' => [
+                        'username' => $model->getError('username'),
+                        'password' => $model->getError('password'),
+                    ]
+                    ]
+                );
+            }
+        } else {
+            // displays the login form
+            $this->renderPartial('signin', compact('model'));
         }
-
-        // displays the login form
-        $this->render('signin', compact('model'));
     }
 
     /**
@@ -203,10 +214,22 @@ class AuthController extends components\WidgetController
         if (!$policy) {
             $this->layout = '//auth/layout';
             $model = new Restore('request');
-            if ($model->loadPost()) {
-                $this->restoreRequest($model);
+            if ($model->attributes = $this->getJson()) {
+                /** @var $model User */
+                if ($model->validate()) {
+                    $this->sendRestorePasswordLink($model);
+                } else {
+                    sleep(3);
+                    $this->renderJson(
+                        [
+                        'errors' => [
+                            'username' => $model->getError('username'),
+                            'password' => $model->getError('password'),
+                        ]
+                        ]
+                    );
+                }
             }
-            $this->render('restore-request', array('model' => $model));
         } else {
             $policy = $this->decryptPolicy($policy);
             if (!$policy) {
@@ -229,24 +252,6 @@ class AuthController extends components\WidgetController
             $this->render('restore-set-password', array('model' => $model));
         }
     }
-
-    protected function restoreRequest(Restore $form) {
-        /** @var $model User */
-        if ($form->validate()) {
-            $this->sendRestorePasswordLink($form);
-            $this->goSignIn();
-        } else {
-            sleep(3);
-        }
-    }
-
-    protected function signIn(Signin $form) {
-        if ($form->validate() && $form->login()) {
-            $returnUrl = $this->user->getReturnUrl() ? : $this->user->getHomeUrl();
-            $this->redirect($returnUrl);
-        }
-    }
-
 
     protected function restoreSetPassword(Restore $form, $email) {
         if ($form->validate()) {
@@ -286,7 +291,6 @@ class AuthController extends components\WidgetController
                  'link'      => $verificationLink
             )
         );
-//        User()->setSuccess("Verification link was sent to {$user->email}.");
     }
 
     protected function sendRestorePasswordLink(Restore $form) {
@@ -294,12 +298,13 @@ class AuthController extends components\WidgetController
 
         Messenger()->send(
             'password-reset',
-            $form->username,
+            $form->user->email,
             array(
                  'firstName' => $form->user->firstName,
                  'link'      => $restorePasswordLink
             )
         );
-        User()->setSuccess("Password restore link was sent to <strong>{$form->username}</strong>");
+
+        $this->renderJson(['success' => "Password restore link was sent to {$form->username}"]);
     }
 }

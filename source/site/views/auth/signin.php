@@ -8,56 +8,65 @@
 $baseUrl = Yii()->baseUrl;
 ?>
 
-<div class="well mini_post_white"><!--вход на сайт-->
-    <?php if ($error = User()->getError()): ?>
-        <div class="alert alert-error"><?=$error?></div>
-    <?php endif?>
+<div class="well mini_post_white" ng-controller="inposted.controllers.auth"><!--вход на сайт-->
     <div class="well yellow">
-        <span class="ref_main"><b>Sign in</b></span>
+        <span class="ref_main">
+            <b ng-show="state.is('signin')">Sign in</b>
+            <b ng-show="state.is('restore')">Send new password</b>
+        </span>
     </div>
     <br/>
 
-    <div style="text-align:center;">
-        <?php
-        $form = $this->beginWidget(
-            'CActiveForm',
-            [
-            'id'                     => 'signin-form',
-            'enableAjaxValidation'   => false,
-            'enableClientValidation' => false,
-            'focus'                  => [$model, 'username'],
-            'errorMessageCssClass'   => 'text-error',
-            ]
-        );
-        ?>
-        <?=$form->textField($model, 'username', ['placeholder' => $model->getAttributeLabel('username'), 'style' => 'width:85%;'])?>
-        <?=$form->error($model, 'username')?>
+    <div class="text-error" ng-show="error">Sorry. Error happened. Please try again or contact info@inposted.com</div>
 
-        <?=$form->passwordField($model, 'password', array('placeholder' => $model->getAttributeLabel('password'), 'style' => 'width:85%;')); ?>
-        <?=$form->error($model, 'password')?>
-        <div class="button_log">
-            <input class="btn" type="submit" value="Sign in"/>
-        </div>
-        <?php $this->endWidget(); ?>
+    <div style="text-align:center;" ng-show="state.is('signin')">
+        <form action="<?= $this->createUrl('auth/signin') ?>">
+            <input placeholder="E-Mail" style="width:85%;" name="Signin[username]" type="text" ng-model="user.username" auto-fill-sync="#signin-button">
 
+            <div class=" text-error error-message" ng-show="errors.username">
+                {{errors.username}}
+            </div>
+
+            <input placeholder="Password" style="width:85%;" name="Signin[password]" type="password" ng-model="user.password" auto-fill-sync="#signin-button">
+
+            <div class="text-error error-message" ng-show="errors.password">
+                {{errors.password}}
+            </div>
+
+            <div class="button_log">
+                <button
+                    id="signin-button"
+                    class="btn"
+                    type="button"
+                    in-dots="_wait"
+                    ng-disabled="_wait"
+                    ng-click="signin()"
+                    style="width: 83px; text-align: left; margin-right: 7px;"
+                    >
+                    Sign in
+                </button>
+            </div>
+
+            <div class="text-success" ng-show="info">{{info}}</div>
+        </form>
 
         <div style="text-align:center;color:#000000;clear:both;">Login with :</div>
         <span class="soc_seti">
-            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Facebook'])?>">
+            <a href="<?= Yii()->createUrl('/auth/oauth', ['provider' => 'Facebook']) ?>">
                 <img src="<?= $baseUrl ?>/img/f.png">
             </a>
-            <?/*<a href=""><img src="<?= $baseUrl ?>/img/b.png"></a> */?>
-            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Twitter'])?>">
+            <? /*<a href=""><img src="<?= $baseUrl ?>/img/b.png"></a> */ ?>
+            <a href="<?= Yii()->createUrl('/auth/oauth', ['provider' => 'Twitter']) ?>">
                 <img src="<?= $baseUrl ?>/img/t.png">
             </a>
-            <a href="<?=Yii()->createUrl('/auth/oauth', ['provider' => 'Google'])?>">
+            <a href="<?= Yii()->createUrl('/auth/oauth', ['provider' => 'Google']) ?>">
                 <img src="<?= $baseUrl ?>/img/g.png">
             </a>
-            <?/*<a href=""><img src="<?= $baseUrl ?>/img/h.png"></a> */?>
+            <? /*<a href=""><img src="<?= $baseUrl ?>/img/h.png"></a> */ ?>
         </span><br/>
-        <a href="<?= $this->createUrl('restore') ?>" class="ref_mess ajax" data-no-loader="true">
+        <span class="ref_mess clickable" ng-click="state.set('restore')">
             Forgot your password?
-        </a>
+        </span>
         <br/>
 
         Not registered?
@@ -65,6 +74,40 @@ $baseUrl = Yii()->baseUrl;
             Join us!
         </span>
     </div>
+
+    <div class="send_np" ng-show="state.is('restore')">
+        <input
+            type="text"
+            name="username"
+            ng-model="user.username"
+            style="width: 85%;"
+            placeholder="<?= $model->getAttributeLabel('username') ?>"
+            />
+
+        <div class=" text-error error-message" ng-show="errors.username">
+            {{errors.username}}
+        </div>
+        <button
+            type="button"
+            class="btn"
+            ng-click="state.set('signin')"
+            ng-disabled="_wait"
+            >
+            Cancel
+        </button>
+        <button
+            type="button"
+            class="btn"
+            in-dots="_wait"
+            ng-disabled="_wait"
+            ng-click="restore()"
+            style="width: 83px; text-align: left;"
+            >
+            Request
+        </button>
+    </div>
+
+
 </div>
 
 <!--конец вход на сайт-->

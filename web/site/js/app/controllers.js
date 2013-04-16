@@ -440,17 +440,6 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         hints.open();
     }
 
-    //=====Signup=====
-    $scope.initSignup = function () {
-        $dialog.dialog(
-            {
-                controller: 'inposted.controllers.signup',
-                templateUrl: settings.baseUrl + '/auth/signup',
-                keyboard: false,
-                backdropClick: false
-            }
-        ).open();
-    }
 
 });
 
@@ -787,4 +776,79 @@ app.controller('inposted.controllers.signup', function ($scope, User, dialog, se
             dialog.close();
         }
     };
+});
+
+app.controller('inposted.controllers.auth', function ($scope, $http, settings, go, $dialog) {
+    $scope.user = {
+        username: '',
+        password: ''
+    };
+
+    $scope.errors = {};
+
+    $scope.state = {
+        value: 'signin',
+        set: function (value) {
+            this.value = value;
+            $scope.errors = {};
+        },
+        is: function (compare) {
+            return this.value === compare;
+        }
+    };
+
+    $scope._wait = false;
+
+    $scope.signin = function () {
+        $scope._wait = true;
+        $scope.error = false;
+        $http.post(settings.baseUrl + '/auth/signin', $scope.user)
+            .success(function (data) {
+                if (data.success) {
+                    go.home();
+                }
+                else {
+                    $scope.errors = data.errors
+                }
+                $scope._wait = false;
+            })
+            .error(function (response) {
+                $scope.error = true;
+                console && console.log(response);
+                $scope._wait = false;
+            });
+    };
+
+    $scope.restore = function () {
+        $scope._wait = true;
+        $scope.error = false;
+        $http.post(settings.baseUrl + '/auth/restore', $scope.user)
+            .success(function (data) {
+                if (data.success) {
+                    $scope.info = data.success;
+                    $scope.state.set('signin');
+                }
+                else {
+                    $scope.errors = data.errors
+                }
+                $scope._wait = false;
+            })
+            .error(function (response) {
+                $scope.error = true;
+                console && console.log(response);
+                $scope._wait = false;
+            });
+    };
+
+    //=====Signup=====
+    $scope.initSignup = function () {
+        $dialog.dialog(
+            {
+                controller: 'inposted.controllers.signup',
+                templateUrl: settings.baseUrl + '/auth/signup',
+                keyboard: false,
+                backdropClick: false
+            }
+        ).open();
+    }
 });

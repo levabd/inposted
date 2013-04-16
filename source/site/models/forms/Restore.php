@@ -1,6 +1,8 @@
 <?php
 namespace site\models\forms;
 
+use site\models\User;
+
 class Restore extends \base\FormModel
 {
     public $user;
@@ -15,7 +17,6 @@ class Restore extends \base\FormModel
      */
     public function rules() {
         return [
-            ['username', 'email'],
             ['username', 'required'],
             ['username', 'validateUser'],
             ['username', 'unsafe', 'on' => 'set-password'],
@@ -39,20 +40,16 @@ class Restore extends \base\FormModel
     }
 
     public function validateUser($attribute, $params) {
-        $this->user = $user = \site\models\User::model()->findByEmail($this->username);
+        $user = User::model()->findByEmail($this->username);
+        if (!$user) {
+            $user = User::model()->findByAttributes(array('nickname' => $this->username));
+        }
+        $this->user = $user;
         if (!$user) {
             $this->addError($attribute, "Account doesn't exist");
         }
         else{
             $this->nickname = $user->nickname;
         }
-//        else
-//        if(!$user->active){
-//            $this->addError($attribute, 'Account is inactive, contact us');
-//        }
-//        else
-//        if(!$user->verified){
-//            $this->addError($attribute, 'Account email not verified, contact us');
-//        }
     }
 }
