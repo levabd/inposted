@@ -69,7 +69,7 @@ return [
 
         'cache'          => [
             'class'        => 'CMemCache',
-            'behaviors' => ['\base\CacheBehavior'],
+            'behaviors'    => ['\base\CacheBehavior'],
             'useMemcached' => true,
             'servers'      => [
                 'one' => [
@@ -96,6 +96,7 @@ return [
                         'js/app/settings.js'       => 'settings/index',
 
                         ''                         => 'site/index',
+                        'user/signup'              => 'auth/signup',
                         'register/step<step>'      => 'auth/signup',
                         'register'                 => 'auth/signup',
                         'register/verify/<policy>' => 'auth/verify',
@@ -110,7 +111,7 @@ return [
                         'vote/<id:\d+>/<type>'     => 'post/vote',
                         'go/<eid:\w+>'             => ['go/go', 'urlSuffix' => false],
                         'pm'                       => 'pm/index',
-			'share' => 'site/share',
+                        'share'                    => 'site/share',
                     ]
                 ],
                 'admin' => [
@@ -165,13 +166,13 @@ return [
         ],
 
         'avatarStorage'  => [
-            'class'    => 'shared\components\AvatarStorage',
-            'appId'    => 'site',
-            'basePath' => ROOT . '/web/site/avatars',
-            'baseUrl'  => 'avatars',
-            'sizes'    => [56, 73, 210],
+            'class'          => 'shared\components\AvatarStorage',
+            'appId'          => 'site',
+            'basePath'       => ROOT . '/web/site/avatars',
+            'baseUrl'        => 'avatars',
+            'sizes'          => [56, 73, 210],
             'defaultAvatars' => [
-                'male' => '/img/empty_avatar_men.svg',
+                'male'   => '/img/empty_avatar_men.svg',
                 'female' => '/img/empty_avatar_girl.svg',
             ],
         ],

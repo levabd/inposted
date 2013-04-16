@@ -428,7 +428,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     }
 
 
-    //=====Hints======
+    //=====Hints=====
     if (settings.user.showHint) {
         var hints = $dialog.dialog(
             {
@@ -438,6 +438,18 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         );
 
         hints.open();
+    }
+
+    //=====Signup=====
+    $scope.initSignup = function () {
+        $dialog.dialog(
+            {
+                controller: 'inposted.controllers.signup',
+                templateUrl: settings.baseUrl + '/auth/signup',
+                keyboard: false,
+                backdropClick: false
+            }
+        ).open();
     }
 
 });
@@ -712,4 +724,57 @@ app.controller('inposted.controllers.share', function ($scope, settings, $http, 
     $scope.errorsLength = function () {
         return _($scope.errors).keys().length;
     }
+});
+
+app.controller('inposted.controllers.signup', function ($scope, User, dialog, settings, $window) {
+    $scope.step = 1;
+    $scope._wait = false;
+
+    $scope.user = new User(
+        {
+            'Country_id': settings.user.country.id,
+            errors: {}
+        }
+    );
+
+    var goHome = function () {
+        $window.location = settings.baseUrl;
+    };
+
+    $scope.submit = function () {
+        $scope._wait = true;
+        if (1 === $scope.step) {
+            $scope.user.$signup(function (response) {
+                $scope._wait = false;
+                if (_(response.errors).isEmpty()) {
+                    $scope.step = 2;
+                }
+            });
+        } else {
+            $scope.user.$save(function (response) {
+                $scope._wait = false;
+                if (_(response.errors).isEmpty()) {
+                    goHome();
+                }
+            });
+        }
+    };
+
+    $scope.validate = function (attribute) {
+        $scope.user.scenario = 'signup';
+        var attributes = _($scope.user.errors || {}).keys();
+        attributes.push(attribute);
+
+        $scope.user.validate = _(attributes).unique();
+        $scope.user.$validate();
+    };
+
+    $scope.close = function () {
+        if (2 == $scope.step) {
+            goHome();
+        }
+        else {
+            dialog.close();
+        }
+    };
 });

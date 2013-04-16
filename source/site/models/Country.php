@@ -15,9 +15,17 @@ class Country extends \shared\models\Country
     }
 
     public function listData() {
+        $this->getByGeoip();
+        return \CHtml::listData($this->sort()->findAll(), 'id', 'name');
+    }
+
+    public function getByGeoip(){
         $geoIp = Yii()->geoip;
+
+        $country = null;
+
         if ($code = $geoIp->clientCountryCode) {
-            if (!$this->countByAttributes(['code' => $code])) {
+            if (!($country = $this->countByAttributes(['code' => $code]))) {
                 if ($name = $geoIp->clientCountryName) {
                     $country = new self;
                     $country->code = $code;
@@ -27,6 +35,10 @@ class Country extends \shared\models\Country
             }
         }
 
-        return \CHtml::listData($this->sort()->findAll(), 'id', 'name');
+        return $country;
+    }
+
+    public function getRestAttributes(){
+        return $this->attributes;
     }
 }

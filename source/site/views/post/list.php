@@ -34,7 +34,7 @@ use site\models\Post;
 
                 <div class="avat">
                     <a href="{{post.author.url}}">
-                        <img alt="{{post.author.name}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.name}}">
+                        <img alt="{{post.author.firstName}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.firstName}}">
                     </a>
                 </div>
             </div>

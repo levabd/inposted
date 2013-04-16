@@ -1,7 +1,6 @@
 <?php
 namespace site\models;
 use base\Randomizr;
-use shared\models\Country;
 
 class User extends \shared\models\User
 {
@@ -15,7 +14,7 @@ class User extends \shared\models\User
             parent::rules(),
             [
             ['nickname', 'validateNickname'],
-            ['newPassword', 'required', 'on' => 'signup-1'],
+            ['newPassword', 'required', 'on' => 'signup'],
             ['newPassword', 'length', 'min' => 6],
             ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
             ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
@@ -149,16 +148,24 @@ class User extends \shared\models\User
     }
 
     public function getRestAttributes() {
+        $errors = [];
+        foreach ($this->errors as $attribute => $error) {
+            $errors[$attribute] = $error[0];
+        }
+
         return [
             'id'           => $this->id,
-            'name'         => $this->firstName,
+            'name'         => $this->name,
+            'firstName'    => $this->firstName,
             'nickname'     => $this->nickname,
             'url'          => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
-            'enabledHints' => (bool)$this->enabledHints,
+            'enabledHints' => (bool) $this->enabledHints,
             'lastHint'     => $this->lastHint,
             'avatarUrls'   => [
                 56 => Yii()->avatarStorage->getAvatarUrl($this, 56)
             ],
+            'errors'       => $errors,
+            'Country_id'   => $this->Country_id ? : Yii()->user->getGeoipCountry()->id,
         ];
     }
 
@@ -179,12 +186,12 @@ class User extends \shared\models\User
         };
     }
 
-    public function getModeratedPosts(){
+    public function getModeratedPosts() {
         $allModeratedPosts = Post::model()->findAll(['condition' => 'moderatedUntil IS NOT NULL AND moderatedUntil > NOW()']);
         $myModeratedPosts = [];
 
-        foreach($allModeratedPosts as $post){
-            if($post->isModerator($this->id)){
+        foreach ($allModeratedPosts as $post) {
+            if ($post->isModerator($this->id)) {
                 $myModeratedPosts[] = $post;
             }
         }

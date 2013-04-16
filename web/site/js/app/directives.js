@@ -111,7 +111,7 @@
                         dots += '.';
                     }
 
-                    if (scope.$eval(attrs.ngShow)) {
+                    if (scope.$eval(attrs.inDots)) {
                         $timeout(function () {
                             addDot();
                         }, 300);
@@ -124,7 +124,7 @@
 
                 };
 
-                scope.$watch(attrs.ngShow, function (value) {
+                scope.$watch(attrs.inDots, function (value) {
                     if (value) {
                         addDot();
                     }
@@ -133,18 +133,25 @@
 
             }
         }]).
-        directive('inKeyUp', function () {
+        directive('inKeyUp',function () {
             return function (scope, element, attributes) {
                 var mod = attributes.inKeyUpMod;
                 var key = attributes.inKeyUpKey;
 
-                element.bind('keyup', function(event){
+                element.bind('keyup', function (event) {
                     if ((!key || key == event.which) && (!mod || event[mod + 'Key'])) {
                         scope.$apply(attributes.inKeyUp);
                     }
                 });
             }
-        })
+        }).
+        directive('inBlur', function () {
+            return function (scope, elem, attrs) {
+                elem.bind('blur', function () {
+                    scope.$apply(attrs.inBlur);
+                });
+            };
+        });
 
 
     //ajax widget

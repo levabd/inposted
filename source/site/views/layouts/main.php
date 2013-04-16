@@ -24,7 +24,7 @@ Yii()->clientScript->registerPackage('main');
             <span class="clickable" ng-show="verification.state == 'initial'" ng-click="verification.sendEmail()">
                 Please, confirm your e-mail address
             </span>
-            <span ng-show="verification.state == 'pending'" in-dots>
+            <span ng-show="verification.state == 'pending'" in-dots="verification.state == 'pending'">
                 Sending verification link
             </span>
             <span ng-show="verification.state == 'sent'">

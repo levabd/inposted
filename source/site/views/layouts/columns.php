@@ -20,7 +20,6 @@ $this->beginContent('//layouts/main');
             <?php
             if (Yii()->user->isGuest) {
                 $this->controllerWidget('auth/signin');
-                $this->controllerWidget('auth/signup');
             }
             if ($this->author) {
                 if(!($this->id == 'pm' && $this->getAction()->id == 'index')){

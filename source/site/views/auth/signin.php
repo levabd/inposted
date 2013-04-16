@@ -61,9 +61,9 @@ $baseUrl = Yii()->baseUrl;
         <br/>
 
         Not registered?
-        <a href="#signup" data-toggle="modal" class="ref_mess">
+        <span class="clickable ref_mess" ng-click="initSignup()">
             Join us!
-        </a>
+        </span>
     </div>
 </div>
 

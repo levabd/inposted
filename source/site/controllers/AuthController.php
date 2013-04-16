@@ -17,6 +17,8 @@ use site\models\forms\Restore;
  */
 class AuthController extends components\WidgetController
 {
+    use components\RestTrait;
+
     public $defaultAction = 'signin';
 
     /**
@@ -101,7 +103,7 @@ class AuthController extends components\WidgetController
                     // you can also specify additional values,
                     // that will be applied to your model (eg. account activation status)
                     'verified'     => function ($profile) {
-                        return (bool)$profile->emailVerified;
+                        return (bool) $profile->emailVerified;
                     },
                 ),
             ),
@@ -122,58 +124,21 @@ class AuthController extends components\WidgetController
         $this->redirect(array('signup'));
     }
 
-    public function actionSignup($step = 1) {
-        $controller = Yii()->controller;
-        if ($this->isWidget && $controller->id == 'auth' && $controller->getAction()->id == 'signup') {
+    public function actionSignup() {
+        if (!($data = $this->getJson())) {
+            $this->renderPartial('signup');
             return;
         }
 
+        $model = new models\User('signup');
 
-        if ($step > 2) {
-            throw new CHttpException(404);
+        if (($model->attributes = $this->getJson()) && $model->save()) {
+            InpostedUser::makeUser($model->id);
+            $this->sendVerificationLink($model);
+            User()->login(new \shared\components\UserIdentity($model));
         }
 
-        $model = null;
-        if ($currentId = User()->getState('signup.user.id')) {
-            if ($model = models\User::model()->findByPk($currentId)) {
-
-            } else {
-                User()->setState('signup.user.id', null);
-            }
-        }
-
-        if (!$model) {
-            $step = 1;
-            $model = new models\User();
-        }
-
-
-        $scenario = "signup-$step";
-        $model->scenario = $scenario;
-
-
-        if ($model->attributes = $model->getPost()) {
-            $model->avatarUpload = CUploadedFile::getInstance($model, 'avatarUpload');
-            if ($model->save()) {
-                if (1 == $step) {
-                    InpostedUser::makeUser($model->id);
-                    User()->setState('signup.user.id', $model->id);
-                    $this->redirect(['/auth/signup', 'step' => 2]);
-                } else {
-                    Yii()->avatarStorage->processAvatarUpload($model);
-                    $this->sendVerificationLink($model);
-
-                    User()->login(new \shared\components\UserIdentity($model));
-                    User()->setState('signup.user.id', null);
-                    $this->goHome();
-                }
-            }
-
-        }
-        $model->password = null;
-
-        $render = 1 == $step ? 'renderPartial' : 'render';
-        $this->$render("signup-$step", compact('model'));
+        $this->renderModels($model);
     }
 
     /**

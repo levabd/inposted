@@ -40,12 +40,27 @@ angular.module('inposted.services', ['ngResource']).
     factory('User', function ($resource, settings) {
         return $resource(settings.baseUrl + '/user/:action/', {}, {
             query: {method: 'GET', params: {action: 'query'}, isArray: true},
-            save: {method: 'POST', params: {action: 'save'}}
+            save: {method: 'POST', params: {action: 'save'}},
+            validate: {method: 'POST', params: {action: 'validate'}},
+            signup: {method: 'POST', params: {action: 'signup'}}
         });
     }).
     factory('Hint', function ($resource, settings) {
         return $resource(settings.baseUrl + '/hint/:action/', {}, {
             query: {method: 'GET', params: {action: 'query'}, isArray: true}
         });
+    }).
+    factory('go', function($window, settings){
+        return {
+            back: function () {
+                $window.history.back();
+            },
+            to: function (path) {
+                $window.location = path;
+            },
+            home: function(){
+                this.to(settings.baseUrl);
+            }
+        }
     })
 ;
