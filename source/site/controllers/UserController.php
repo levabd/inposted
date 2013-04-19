@@ -56,6 +56,8 @@ class UserController extends \site\components\Controller
             Yii()->user->setFlash('settings.update', true);
             $this->refresh();
         }
+
+        $this->pageTitle = ['Settings'];
         $this->render('settings', ['user' => $user]);
     }
 
@@ -100,6 +102,8 @@ class UserController extends \site\components\Controller
     public function actionView($nickname = null) {
         $model = $this->loadModel($nickname);
         $this->author = $model;
+
+        $this->pageTitle = $model->id == Yii()->user->id ? ['Me'] : [$model->nickname];
         $this->render('//post/list');
     }
 

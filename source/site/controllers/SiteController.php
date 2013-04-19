@@ -33,6 +33,9 @@ class SiteController extends \site\components\Controller
             }
         }
         $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
+
+
+        $this->pageTitle = Yii()->user->isGuest ? [] : ['Home'];
         $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
         $this->$render('//post/list', compact('posts', 'sort'));
     }
@@ -117,6 +120,7 @@ class SiteController extends \site\components\Controller
             }
             $this->renderJson($errors);
         } else {
+            $this->pageTitle = ['Share'];
             $this->render('share', compact('link'));
         }
     }

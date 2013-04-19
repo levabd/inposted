@@ -5,7 +5,7 @@
 Yii()->clientScript->registerPackage('main');
 ?>
 <!DOCTYPE html>
-<html lang="en" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#" ng-controller="inposted.controllers.main">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -15,7 +15,7 @@ Yii()->clientScript->registerPackage('main');
             display: none !important;
         }</style>
 </head>
-<body ng-controller="inposted.controllers.main">
+<body >
 
 <div class="container"> <!--общий контейнер-->
 

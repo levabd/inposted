@@ -17,6 +17,8 @@ class PmController extends WidgetController
 
     public function actionIndex() {
         $this->author = Yii()->user->model;
+
+        $this->pageTitle = ['Messages {{unreadPmsCount && " (" + unreadPmsCount + ")" || ""}}'];
         $this->render('index');
     }
 
