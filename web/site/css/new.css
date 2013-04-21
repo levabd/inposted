@@ -30,7 +30,7 @@ body {
 
 .head_left ul {
     list-style: none;
-    margin-left: 0px;
+    margin: 0px;
 }
 
 .head_left  ul li {
@@ -49,16 +49,15 @@ body {
     text-decoration: underline;
     color: #ffffff !important;
 }
-
 .head_left ul li a:hover,
 .head_left  ul li.active a {
     background: #464646;
-    height: 30px !important;
+    max-height: 30px !important;
     color: #fea500 !important;
+	margin-top:0px;
 }
-
 .icon-1home {
-    background: url("../img/home0.png") no-repeat;
+    background: url("../img/home0.svg") no-repeat;
     height: 23px;
     width: 60px;
     padding-left: 25px;
@@ -68,7 +67,7 @@ body {
 }
 
 .icon-1me {
-    background: url("../img/me0.png") no-repeat;
+    background: url("../img/me0.svg") no-repeat;
     height: 23px;
     width: 60px;
     padding-left: 25px;
@@ -79,12 +78,12 @@ body {
 
 .icon-1home:hover,
 .active .icon-1home {
-    background: url("../img/home1.png") no-repeat !important;
+    background: url("../img/home1.svg") no-repeat !important;
 }
 
 .icon-1me:hover,
 .active .icon-1me {
-    background: url("../img/me1.png") no-repeat !important;
+    background: url("../img/me1.svg") no-repeat !important;
 }
 
 .header div {
@@ -110,13 +109,13 @@ body {
 }
 
 .ins {
-    height: 44px !important;
+    height: 33px !important;
     display: block !important;
     float: right;
 }
 
 .icon-1pencil {
-    background: url("../img/icon1.png") no-repeat;
+    background: url("../img/icon1.svg") no-repeat;
     height: 23px;
     width: 23px;
     margin-left: 5px;
@@ -124,7 +123,7 @@ body {
 }
 
 .icon-1star-empty {
-    background: url("../img/icon2.png") no-repeat;
+    background: url("../img/icon2.svg") no-repeat;
     height: 23px;
     width: 23px;
     margin-left: 5px;
@@ -132,15 +131,16 @@ body {
 }
 
 .icon-1share {
-    background: url("../img/icon3.png") no-repeat;
+    background: url("../img/icon3.svg") no-repeat;
     height: 23px;
     width: 23px;
+	margin-top:-1px;
     margin-left: 5px;
     margin-right: 5px;
 }
 
 .icon-1nat {
-    background: url("../img/icon4.png") no-repeat;
+    background: url("../img/icon4.svg") no-repeat;
     height: 23px;
     width: 23px;
     margin-left: 5px;
@@ -148,27 +148,27 @@ body {
 }
 
 .icon-1share:hover {
-    background: url("../img/icon03.png") no-repeat;
+    background: url("../img/icon03.svg") no-repeat;
 }
 
 .icon-1pencil:hover {
-    background: url("../img/icon01.png") no-repeat;
+    background: url("../img/icon01.svg") no-repeat;
 }
 
 .icon-1star-empty:hover, .active .icon-1star-empty {
-    background: url("../img/icon02.png") no-repeat;
+    background: url("../img/icon02.svg") no-repeat;
 }
 
 .icon-1nat:hover, .active .icon-1nat {
-    background: url("../img/icon04.png") no-repeat;
+    background: url("../img/icon04.svg") no-repeat;
 }
 
 .icon-1me :hover {
-    background: url("../img/me0.png") no-repeat;
+    background: url("../img/me0.svg") no-repeat;
 }
 
 .icon-1home :hover {
-    background: url("../img/home0.png") no-repeat;
+    background: url("../img/home0.svg") no-repeat;
 }
 
 /*emply block*/
@@ -240,7 +240,7 @@ a.sort_post:hover, a.sort_post.active {
 }
 
 .star {
-    margin-right: 7px;
+    margin-right: 3px;
     float: right;
 }
 
@@ -321,6 +321,7 @@ a.sort_post:hover, a.sort_post.active {
     color: #54211d;
     font-size: 18px;
     text-decoration: underline;
+	margin-bottom:5px;
 }
 
 /*avatar*/
@@ -533,6 +534,7 @@ a.sort_post:hover, a.sort_post.active {
 
 .margin_left_0 {
     margin-left: 0px;
+	width:100%;
 }
 
 #block_info_user {
@@ -550,37 +552,47 @@ a.sort_post:hover, a.sort_post.active {
 }
 
 .result_search {
-    width: 180px;
-    border: 1px solid #7d7d7d;
+    width: 95%;
+    border: 1px solid #f0f0f0;
     font-size: 14px;
     color: #000;
     background: #ffffff !important;
     z-index: 1 !important;
     position: relative;
+	overflow:hidden;
+	margin-top:0px;
 }
 
 .result_search ul {
     list-style: none;
     margin-left: 0px;
-    width: 180px;
+    width:100%;
     margin-top: 0px;
 }
 
 .result_search  li {
-    height: 25px !important;
+    height: 25px ;
+	padding-top:5px;
 }
 
 .result_search li.suggestion:hover {
     background-color: #ffffc8;
     cursor: pointer;
+	
 }
 
-.fixing_res {
+li.fixing_res {
     background: #eaeaea;
     color: #adb2b5;
     border-top: 1px solid #c6c5c5;
-    padding-left: 10px;
+    padding-left: 10px;	
+	padding-top:0px !important;
+	padding-bottom:2px !important;
 }
+li.fixing_res { 
+	height: 80% !important;
+max-height: 20px  !important;
+	}
 
 .btn-2mini {
     font-size: 14px;
@@ -592,6 +604,21 @@ a.sort_post:hover, a.sort_post.active {
     padding: 0px !important;
     line-height: 10px;
     background: #ffffff;
+	margin-top:1px;
+	
+
+}
+.btn-3mini {
+    font-size: 14px;
+    font-weight: bold;
+    height: 16px;
+    width: 16px !important;
+	margin:3px 5px 0px 8px;
+    padding: 0px !important;
+    line-height: 10px;
+    background: #ffffff;
+	float:right !important;
+
 }
 
 .active_res {
@@ -599,7 +626,7 @@ a.sort_post:hover, a.sort_post.active {
     height: 25px;
 }
 
-.btn-2mini:hover {
+.btn-2mini:hover, .btn-3mini:hover {
     background: #fffd74 !important;
     border: 1px solid #ffe066;
     -webkit-border-radius: 4px;
@@ -608,7 +635,7 @@ a.sort_post:hover, a.sort_post.active {
 }
 
 .but_sear {
-    float: right;
+    float: right !important;
     margin-right: 9px;
     margin-top: 3px;
 }
@@ -620,8 +647,9 @@ a.sort_post:hover, a.sort_post.active {
     height: 16px;
     width: 16px !important;
     margin-bottom: 4px;
-    padding: 0px !important;
+    padding: 0px 0px 0px 1px !important;
     line-height: 10px;
+	margin-left:4px;	
 }
 
 input[type="text"] {
@@ -640,7 +668,7 @@ input.go {
     text-indent: -9999px;
     line-height: 20;
     border: 0;
-    background: url("../img/search.png") no-repeat;
+    background: url("../img/search.svg") no-repeat;
     height: 22px;
     width: 22px;
     cursor: pointer;
@@ -779,6 +807,7 @@ input.go {
     height: 20px !important;
     padding: 0px;
     margin-bottom: 0px !important;
+	margin-left:2px !important;
 }
 
 .bit-box {
@@ -791,8 +820,11 @@ input.go {
     padding: 1px 2px 2px;
     position: relative;
     cursor: pointer;
+	margin:0px 1px !important;
 }
-
+.bit-box:hover{
+background:#efefef !important;
+}
 .closebutt, .closebutt :hover {
     color: #000 !important;
     text-decoration: none !important;
@@ -801,9 +833,10 @@ input.go {
 .searchh {
     box-shadow: none !important;
     border: none !important;
-    width: 60px;
+    width: 100px;
     display: inline-block;
     height: 20px !important;
+
 }
 
 .closebutt {
@@ -813,7 +846,7 @@ input.go {
 .search_block {
     display: inline-block;
     height: 20px;
-    padding: 4px 6px;
+    padding: 4px 3px;
     font-size: 14px;
     line-height: 20px;
     color: #555555;
@@ -821,16 +854,15 @@ input.go {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-}
-
-.search_block {
-    width: 180px;
+	width: 180px;
     cursor: text;
+	background-color: #ffffff;
+    border: 1px solid #cccccc;
 }
 
-.search_block {
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
+
+/*.search_block {
+    
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -844,12 +876,11 @@ input.go {
     border-color: rgba(82, 168, 236, 0.8);
     outline: 0;
     outline: thin dotted  \9;
-    /* IE6-9 */
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-}
+}*/
 
 .clickable {
     cursor: pointer;
@@ -870,5 +901,35 @@ input.go {
     color:#fff !important;
     text-decoration:none !important;
     padding:0px 1px 0px 1px;
-    margin-left:-15px;
+    margin-left:-15px;	
+}
+.addon{
+background:#ffffff !important;
+border-left-color:#ffffff !important;
+margin-left:-29px;
+display: inline-block;
+  width: auto;
+  height: 18px;
+  min-width: 16px;  
+}
+.ablack{
+color:#000;
+text-decoration:underline;
+}
+.ablack:hover{
+color:#000;
+text-decoration:none;
+}
+.wait{
+display: block;
+height:80px;
+text-align:center;
+}
+.wait img{
+height:80px;
+
+}
+
+.close, .close:hover{
+    color: #ffffff;
 }

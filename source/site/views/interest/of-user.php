@@ -11,5 +11,5 @@
         ng-click="attachInterest(interest); $event.stopPropagation(); $event.preventDefault()"
         ng-show="!settings.user.isGuest && !hasInterest(interest)"
         title="Add interest"
-        >+</button>
+        ><img src="<?=Yii()->baseUrl?>/img/plus.svg"></button>
 </label>

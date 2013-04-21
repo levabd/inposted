@@ -16,7 +16,7 @@ $form = $this->beginWidget(
     ]
 );
 ?>
-<div class="well mini_post_white"><!--вход на сайт-->
+<div class="well mini_post_white">
     <div class="well yellow">
         <span class="ref_main"><b>Send new pass</b></span>
     </div>

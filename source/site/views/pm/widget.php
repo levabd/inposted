@@ -1,4 +1,4 @@
-<div class="modal hide" style="z-index: 10002;background:#efefef;" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="modalMessageLabel"
+<div class="modal hide" style="z-index: 10002;background:#f4f2e7;" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="modalMessageLabel"
      aria-hidden="true">
     <div class="modal-header my_modal1">
         <button type="button" class="close my_modal2" data-dismiss="modal" aria-hidden="true">x</button>

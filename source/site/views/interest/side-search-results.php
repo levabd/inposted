@@ -21,7 +21,7 @@ $user = Yii()->user->model;
                     placeholder="Create a new category"
                     data-url="<?=$this->createUrl('create', ['parentId' => $parent ? $parent->id : null])?>"
                     >
-                <button class="btn btn-1mini create-new-interest-button" style="margin-top:-10px;" data-input-id="#create-<?=$this->widgetId?>">+</button>
+                <button class="btn btn-1mini create-new-interest-button" style="margin-top:-10px;" data-input-id="#create-<?=$this->widgetId?>"><img src="<?=Yii()->baseUrl?>/img/plus.svg"></button>
             </li>
 
             <?php foreach ($interests as $interest): ?>
@@ -35,15 +35,15 @@ $user = Yii()->user->model;
                             data-parent-id="<?=$parent ? $parent->id : null?>"
                             data-id=<?=$interest->id?>
                             >
-                            +
+                            <img src="<?=Yii()->baseUrl?>/img/plus.svg">
                         </button>
                     <?php endif;#(!$user->hasInterest($interest)) ?>
 
                     <a href="#" data-parent-id="<?=$interest->id?>" class="lock-parent-interest">
                         <?=$interest?>
                     </a>
-                    <button class="btn btn-2mini but_sear" data-id="<?=$interest->id?>">
-                        <img src="<?=Yii()->baseUrl?>/img/sear.png">
+                    <button class="btn btn-3mini but_sear" data-id="<?=$interest->id?>">
+                        <img src="<?=Yii()->baseUrl?>/img/sear.svg">
                     </button>
                 </li>
 

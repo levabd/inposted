@@ -8,7 +8,7 @@
 $baseUrl = Yii()->baseUrl;
 ?>
 
-<div class="well mini_post_white"><!--вход на сайт-->
+<div class="well mini_post_white">
     <?php if ($error = User()->getError()): ?>
         <div class="alert alert-error"><?=$error?></div>
     <?php endif?>
@@ -67,4 +67,3 @@ $baseUrl = Yii()->baseUrl;
     </div>
 </div>
 
-<!--конец вход на сайт-->

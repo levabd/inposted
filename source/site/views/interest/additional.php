@@ -16,7 +16,7 @@ $user = Yii()->user->model;
                 data-parent-id="<?=$parent ? $parent->id : null?>"
                 data-id=<?=$interest->id?>
                 >
-                +
+               <img src="<?=Yii()->baseUrl?>/img/plus.svg">
             </button>
         <?php endif;#($user && !$user->hasInterest($interest))?>
         <?=$interest?>
