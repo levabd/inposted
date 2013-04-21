@@ -88,6 +88,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     var pager = {
         enabled: true,
+        wait: false,
         limit: 10,
         offset: 0,
 
@@ -99,21 +100,25 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             this.limit = 10;
             this.offset = 0;
         },
-        disable: function () {
+        disable: function (wait) {
             this.enabled = false;
+            this.wait = wait;
         },
         enable: function () {
             this.enabled = true;
         }
     };
 
+    $scope.pager = pager;
+
     var loadPosts = function () {
         pager.reset();
-        pager.disable();
         if (settings.page.post) {
+            pager.disable(false);
             $scope.posts = [new Post(settings.page.post)];
         }
         else {
+            pager.disable(true);
             Post.query(
                 {
                     sort: $scope.sort.value,
@@ -127,6 +132,9 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                     if (data.length == pager.limit) {
                         pager.enable();
                     }
+                    else {
+                        pager.disable(false);
+                    }
 
                     $scope.posts = data;
                 }
@@ -138,7 +146,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     $scope.loadMorePosts = function () {
         if (pager.enabled) {
-            pager.disable();
+            pager.disable(true);
             Post.query(
                 {
                     sort: $scope.sort.value,
@@ -154,6 +162,9 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                     if (data.length == pager.limit) {
                         pager.shift();
                         pager.enable();
+                    }
+                    else {
+                        pager.disable(false);
                     }
                 }
             );

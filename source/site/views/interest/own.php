@@ -15,14 +15,14 @@
         ng-click="detachInterest(interest); $event.stopPropagation()"
         title="Delete interest"
         >
-        <img src="<?=Yii()->baseUrl?>/img/x.svg">
+        <img src="<?= Yii()->baseUrl ?>/img/x.svg">
     </button>
 </label>
 
 <br>
 <div class="poisk">
-	
-    <div class="search_block" in-search <?php if($searchWidth):?>style="width: <?=$searchWidth?>px;"<?php endif;?>>
+
+    <div class="search_block" in-search <?php if ($searchWidth): ?>style="width: <?= $searchWidth ?>px;"<?php endif; ?>>
         <span class="bit-box" ng-show="suggestions.parents.length > 1" ng-click="suggestions.popParent()">
             <img src="<?= Yii()->baseUrl ?>/img/back.png">
         </span>
@@ -30,19 +30,20 @@
             {{suggestions.parents[suggestions.parents.length - 1].name}}
             <a href="#" class="closebutt"><sup>x</sup></a>
         </span>
-			
-		<input ng-model="search.term" ng-change="search()" class="searchh input"  type="text"/>
-            
-	   <button
+
+        <input ng-model="search.term" ng-change="search()" class="searchh input" type="text"/>
+    </div>
+
+	<span class="addon">
+        <button
             class="btn btn-2mini"
             ng-click="createInterest(); $event.stopPropagation()"
             ng-show="search.term && search.term.length >= 3 && !existsInterest"
             title="Create interest"
-            ><img src="<?=Yii()->baseUrl?>/img/plus.svg">
+            ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
         </button>
-		
-    </div>
-	<span class="addon"><img src="/img/search.svg"></span>
+        <img src="/img/search.svg">
+    </span>
 
     <div class="result_search" ng-show="suggestions.main.length">
         <ul>
@@ -60,7 +61,7 @@
                     ng-hide="hasInterest(interest)"
                     ng-click="attachInterest(interest); $event.stopPropagation()"
                     title="Add interest"
-                    ><img src="<?=Yii()->baseUrl?>/img/plus.svg">
+                    ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
                 </button>
                 {{interest.name}}
                 <button
@@ -79,7 +80,7 @@
                 <button
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
-                    ng-click="attachInterest(interest); $event.stopPropagation()"><img src="<?=Yii()->baseUrl?>/img/plus.svg">
+                    ng-click="attachInterest(interest); $event.stopPropagation()"><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
                 </button>
                 {{interest.name}}
             </li>

@@ -912,11 +912,12 @@ input.go {
 .addon {
     background: #ffffff !important;
     border-left-color: #ffffff !important;
-    margin-left: -29px;
+    margin-left: -52px;
     display: inline-block;
     width: auto;
     height: 18px;
-    min-width: 16px;
+    min-width: 46px;
+    text-align: right;
 }
 
 .ablack {

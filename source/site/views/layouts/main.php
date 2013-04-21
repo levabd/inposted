@@ -94,6 +94,6 @@ if (!Yii()->user->isGuest) {
     $this->controllerWidget('pm/widget');
 }
 ?>
-<div style="display: none;" class="wait"><img  src="<?= Yii()->baseUrl ?>/img/ajax-loader-big.gif"  > </div>
+
 </body>
 </html>
