@@ -36,6 +36,8 @@ class SiteController extends \site\components\Controller
 
 
         $this->pageTitle = Yii()->user->isGuest ? [] : ['Home'];
+        $this->attachMetaTags('index');
+
         $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
         $this->$render('//post/list', compact('posts', 'sort'));
     }
