@@ -36,4 +36,12 @@ class Controller extends \base\Controller
     protected function goHome() {
         $this->redirect(User()->getHomeUrl());
     }
+
+    public function setPageTitle($value) {
+        if(is_array($value)){
+            array_unshift($value, Yii()->name);
+            $value = implode(' - ', $value);
+        }
+        parent::setPageTitle($value);
+    }
 }

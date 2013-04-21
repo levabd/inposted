@@ -111,7 +111,7 @@
                         dots += '.';
                     }
 
-                    if (scope.$eval(attrs.ngShow)) {
+                    if (scope.$eval(attrs.inDots)) {
                         $timeout(function () {
                             addDot();
                         }, 300);
@@ -124,7 +124,7 @@
 
                 };
 
-                scope.$watch(attrs.ngShow, function (value) {
+                scope.$watch(attrs.inDots, function (value) {
                     if (value) {
                         addDot();
                     }
@@ -133,84 +133,67 @@
 
             }
         }]).
-        directive('inKeyUp', function () {
+        directive('inKeyUp',function () {
             return function (scope, element, attributes) {
                 var mod = attributes.inKeyUpMod;
                 var key = attributes.inKeyUpKey;
 
-                element.bind('keyup', function(event){
+                element.bind('keyup', function (event) {
                     if ((!key || key == event.which) && (!mod || event[mod + 'Key'])) {
                         scope.$apply(attributes.inKeyUp);
                     }
                 });
             }
-        })
+        }).
+        directive('inBlur',function () {
+            return function (scope, elem, attrs) {
+                elem.bind('blur', function () {
+                    scope.$apply(attrs.inBlur);
+                });
+            };
+        }).
+        directive('inFileUpload',function ($q) {
+            return function (scope, element, attributes) {
+                var deferred;
 
-
-    //ajax widget
-
-
-    var Inposted = {
-        ajaxError: function (info) {
-            alert(info.responseText)
-        },
-
-        showAjaxLoader: function () {
-            var loader = $('<div>')
-                .attr('id', 'ajax-loader')
-                .css({
-                    background: 'url("/img/ajax-loader-big.gif") no-repeat scroll center center gray',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    opacity: 0.5,
-                    'z-index': 1000,
-                    height: '100%',
-                    width: '100%'
-                })
-            $('body').append(loader);
-        },
-        hideAjaxLoader: function () {
-            $('#ajax-loader').remove();
-        }
-    };
-
-    $(document).on('click', '.ajax-widget a.ajax', function (e) {
-        e.preventDefault();
-        var widget = $(this).closest('.ajax-widget');
-
-        var showLoader = !$(this).data('no-loader');
-
-        showLoader && Inposted.showAjaxLoader();
-        $.ajax(
-            $(this).attr('href'),
-            {
-                success: function (data) {
-                    widget.replaceWith(data);
-                    showLoader && Inposted.hideAjaxLoader();
-                },
-                error: Inposted.ajaxError
+                element.fileupload({
+//                    dataType: 'json',
+                    add: function (e, data) {
+                        scope[attributes.inFileUpload] = function () {
+                            deferred = $q.defer();
+                            data.submit();
+                            return deferred.promise;
+                        }
+                    },
+                    done: function (e, data) {
+                        scope[attributes.inFileUpload] = null;
+                        deferred.resolve(data);
+                    },
+                    fail: function (e, data) {
+                        scope[attributes.inFileUpload] = null;
+                        deferred.reject(data);
+                    }
+                });
             }
-        )
-    });
+        }).
+        directive('autoFillSync', function ($timeout) {
+            return {
+                require: 'ngModel',
+                link: function (scope, elem, attrs, ngModel) {
+                    var origVal = elem.val();
+                    var sync = function () {
+                        var newVal = elem.val();
+                        if (ngModel.$pristine && origVal !== newVal) {
+                            ngModel.$setViewValue(newVal);
+                        }
+                    };
 
-    $(document).on('submit', '.ajax-widget form.ajax', function (e) {
-        e.preventDefault();
-        var widget = $(this).closest('.ajax-widget');
-        Inposted.showAjaxLoader();
-        $.ajax(
-            $(this).attr('action'),
-            {
-                type: $(this).attr('method'),
-                data: $(this).serialize(),
-                success: function (data) {
-                    widget.replaceWith(data);
-                    Inposted.hideAjaxLoader();
-                },
-                error: Inposted.ajaxError
+                    //this should ensure that login WILL work :)
+                    if (attrs.autoFillSync) {
+                        $(attrs.autoFillSync).bind('click', sync);
+                    }
+                    $timeout(sync, 500);
+                }
             }
-        );
-    });
-
-
+        });
 }());

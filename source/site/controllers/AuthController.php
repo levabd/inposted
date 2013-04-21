@@ -17,6 +17,8 @@ use site\models\forms\Restore;
  */
 class AuthController extends components\WidgetController
 {
+    use components\RestTrait;
+
     public $defaultAction = 'signin';
 
     /**
@@ -101,7 +103,7 @@ class AuthController extends components\WidgetController
                     // you can also specify additional values,
                     // that will be applied to your model (eg. account activation status)
                     'verified'     => function ($profile) {
-                        return (bool)$profile->emailVerified;
+                        return (bool) $profile->emailVerified;
                     },
                 ),
             ),
@@ -122,58 +124,21 @@ class AuthController extends components\WidgetController
         $this->redirect(array('signup'));
     }
 
-    public function actionSignup($step = 1) {
-        $controller = Yii()->controller;
-        if ($this->isWidget && $controller->id == 'auth' && $controller->getAction()->id == 'signup') {
+    public function actionSignup() {
+        if (!($data = $this->getJson())) {
+            $this->renderPartial('signup');
             return;
         }
 
+        $model = new models\User('signup');
 
-        if ($step > 2) {
-            throw new CHttpException(404);
+        if (($model->attributes = $this->getJson()) && $model->save()) {
+            InpostedUser::makeUser($model->id);
+            $this->sendVerificationLink($model);
+            User()->login(new \shared\components\UserIdentity($model));
         }
 
-        $model = null;
-        if ($currentId = User()->getState('signup.user.id')) {
-            if ($model = models\User::model()->findByPk($currentId)) {
-
-            } else {
-                User()->setState('signup.user.id', null);
-            }
-        }
-
-        if (!$model) {
-            $step = 1;
-            $model = new models\User();
-        }
-
-
-        $scenario = "signup-$step";
-        $model->scenario = $scenario;
-
-
-        if ($model->attributes = $model->getPost()) {
-            $model->avatarUpload = CUploadedFile::getInstance($model, 'avatarUpload');
-            if ($model->save()) {
-                if (1 == $step) {
-                    InpostedUser::makeUser($model->id);
-                    User()->setState('signup.user.id', $model->id);
-                    $this->redirect(['/auth/signup', 'step' => 2]);
-                } else {
-                    Yii()->avatarStorage->processAvatarUpload($model);
-                    $this->sendVerificationLink($model);
-
-                    User()->login(new \shared\components\UserIdentity($model));
-                    User()->setState('signup.user.id', null);
-                    $this->goHome();
-                }
-            }
-
-        }
-        $model->password = null;
-
-        $render = 1 == $step ? 'renderPartial' : 'render';
-        $this->$render("signup-$step", compact('model'));
+        $this->renderModels($model);
     }
 
     /**
@@ -213,15 +178,26 @@ class AuthController extends components\WidgetController
     }
 
     public function actionSignin() {
-        $this->layout = '//auth/layout';
+//        $this->layout = '//auth/layout';
         $model = new models\forms\Signin('login');
-        if ($model->attributes = Yii()->getRequest()->getPost($model->formName())) {
+        if ($model->attributes = $this->getJson()) {
             // validates user input and redirect to previous page if validated
-            $this->signIn($model);
+            if ($model->validate() && $model->login()) {
+                $this->renderJson(['success' => true]);
+            } else {
+                $this->renderJson(
+                    [
+                    'errors' => [
+                        'username' => $model->getError('username'),
+                        'password' => $model->getError('password'),
+                    ]
+                    ]
+                );
+            }
+        } else {
+            // displays the login form
+            $this->renderPartial('signin', compact('model'));
         }
-
-        // displays the login form
-        $this->render('signin', compact('model'));
     }
 
     /**
@@ -238,10 +214,22 @@ class AuthController extends components\WidgetController
         if (!$policy) {
             $this->layout = '//auth/layout';
             $model = new Restore('request');
-            if ($model->loadPost()) {
-                $this->restoreRequest($model);
+            if ($model->attributes = $this->getJson()) {
+                /** @var $model User */
+                if ($model->validate()) {
+                    $this->sendRestorePasswordLink($model);
+                } else {
+                    sleep(3);
+                    $this->renderJson(
+                        [
+                        'errors' => [
+                            'username' => $model->getError('username'),
+                            'password' => $model->getError('password'),
+                        ]
+                        ]
+                    );
+                }
             }
-            $this->render('restore-request', array('model' => $model));
         } else {
             $policy = $this->decryptPolicy($policy);
             if (!$policy) {
@@ -264,24 +252,6 @@ class AuthController extends components\WidgetController
             $this->render('restore-set-password', array('model' => $model));
         }
     }
-
-    protected function restoreRequest(Restore $form) {
-        /** @var $model User */
-        if ($form->validate()) {
-            $this->sendRestorePasswordLink($form);
-            $this->goSignIn();
-        } else {
-            sleep(3);
-        }
-    }
-
-    protected function signIn(Signin $form) {
-        if ($form->validate() && $form->login()) {
-            $returnUrl = $this->user->getReturnUrl() ? : $this->user->getHomeUrl();
-            $this->redirect($returnUrl);
-        }
-    }
-
 
     protected function restoreSetPassword(Restore $form, $email) {
         if ($form->validate()) {
@@ -321,7 +291,6 @@ class AuthController extends components\WidgetController
                  'link'      => $verificationLink
             )
         );
-//        User()->setSuccess("Verification link was sent to {$user->email}.");
     }
 
     protected function sendRestorePasswordLink(Restore $form) {
@@ -329,12 +298,13 @@ class AuthController extends components\WidgetController
 
         Messenger()->send(
             'password-reset',
-            $form->username,
+            $form->user->email,
             array(
                  'firstName' => $form->user->firstName,
                  'link'      => $restorePasswordLink
             )
         );
-        User()->setSuccess("Password restore link was sent to <strong>{$form->username}</strong>");
+
+        $this->renderJson(['success' => "Password restore link was sent to {$form->username}"]);
     }
 }

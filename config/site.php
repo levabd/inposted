@@ -36,7 +36,7 @@ return [
                     'js'      => [$js('js/viewport/jquery.viewport')],
 
                     'css'     => ['css/new.css'],
-                    'depends' => ['bootstrap', 'angular', 'angular-ui-bootstrap', 'underscore', 'app'],
+                    'depends' => ['bootstrap', 'jquery-file-upload', 'angular', 'angular-ui-bootstrap', 'underscore', 'app'],
                 ],
 
 //                'jquery'     => [
@@ -76,6 +76,11 @@ return [
                 'underscore'           => [
                     'baseUrl' => 'js/underscore',
                     'js'      => [$js('underscore')],
+                ],
+
+                'jquery-file-upload'   => [
+                    'basePath' => 'vendors.jquery-file-upload.js',
+                    'js'       => ['vendor/jquery.ui.widget.js', 'jquery.iframe-transport.js', 'jquery.fileupload.js'],
                 ],
 //                'async'      => [
 //                    'baseUrl' => 'static/js/',

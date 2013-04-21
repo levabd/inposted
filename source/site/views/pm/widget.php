@@ -3,7 +3,7 @@
     <div class="modal-header my_modal1">
         <button type="button" class="close my_modal2" data-dismiss="modal" aria-hidden="true">x</button>
         <h3 id="modalMessageLabel" class="my_modal3"><img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
-            Private message to {{pm.to.name}}
+            Private message to {{pm.to.firstName}}
         </h3>
     </div>
     <div class="modal-body" id="mini_post_ser">

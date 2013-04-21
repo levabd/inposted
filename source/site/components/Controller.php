@@ -32,7 +32,7 @@ class Controller extends \shared\components\Controller
 
     public function init() {
         parent::init();
-        if(Yii()->baseUrl){
+        if (Yii()->baseUrl) {
             Yii()->clientScript->registerScript(
                 'baseUrl',
                 sprintf('Inposted.baseUrl = "%s";', Yii()->baseUrl),
@@ -146,5 +146,22 @@ class Controller extends \shared\components\Controller
         $properties['action'] = $action;
         $this->widget($class, $properties, $captureOutput);
 
+    }
+
+    public function attachMetaTags($id) {
+        $config = Yii()->params->itemAt('metaTags') ? : [];
+        if (isset($config[$id]) && is_array($config[$id])) {
+            $cs = Yii()->clientScript;
+            foreach ($config[$id] as $name => $value) {
+                if (is_array($value)) {
+                    $content = array_shift($value);
+                    $options = $value;
+                } else {
+                    $content = $value;
+                    $options = [];
+                }
+                $cs->registerMetaTag($content, $name, null, $options);
+            }
+        }
     }
 }

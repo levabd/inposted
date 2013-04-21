@@ -10,3 +10,6 @@
 [submodule "source/vendors/angular-ui"]
 	path = source/vendors/angular-ui
 	url = https://github.com/angular-ui/angular-ui.git
+[submodule "source/vendors/jquery-file-upload"]
+	path = source/vendors/jquery-file-upload
+	url = https://github.com/blueimp/jQuery-File-Upload.git

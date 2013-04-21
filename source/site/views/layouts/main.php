@@ -5,7 +5,7 @@
 Yii()->clientScript->registerPackage('main');
 ?>
 <!DOCTYPE html>
-<html lang="en" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#" ng-controller="inposted.controllers.main">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -15,7 +15,7 @@ Yii()->clientScript->registerPackage('main');
             display: none !important;
         }</style>
 </head>
-<body ng-controller="inposted.controllers.main">
+<body >
 
 <div class="container"> <!--общий контейнер-->
 
@@ -24,7 +24,7 @@ Yii()->clientScript->registerPackage('main');
             <span class="clickable" ng-show="verification.state == 'initial'" ng-click="verification.sendEmail()">
                 Please, confirm your e-mail address
             </span>
-            <span ng-show="verification.state == 'pending'" in-dots>
+            <span ng-show="verification.state == 'pending'" in-dots="verification.state == 'pending'">
                 Sending verification link
             </span>
             <span ng-show="verification.state == 'sent'">
@@ -45,7 +45,12 @@ Yii()->clientScript->registerPackage('main');
                 'encodeLabel' => false,
                 'items'       => [
                     ['label' => '<b class="icon-1home">Home</b>', 'url' => ['/site/index']],
-                    ['label' => '<b class="icon-1me">Me </b>', 'url' => ['/user/view'], 'visible' => !Yii()->user->isGuest],
+                    [
+                        'label' => '<b class="icon-1me">Me </b>',
+                        'url' => ['/user/view'],
+                        'visible' => !Yii()->user->isGuest,
+                        'active' => $this->id == 'user' && $this->getAction()->id == 'view' && empty($_GET['nickname']),
+                    ],
                     ['label' => 'Messages</a><sub class="unread" ng-show="unreadPmsCount">{{unreadPmsCount}}</sub>',
                      'url'   => ['/pm/index'], 'visible' => !Yii()->user->isGuest],
                 ]

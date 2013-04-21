@@ -872,3 +872,9 @@ input.go {
     padding:0px 1px 0px 1px;
     margin-left:-15px;
 }
+
+.error-message{
+    margin-top: -5px;
+    margin-bottom: 10px;
+    text-align: right;
+}

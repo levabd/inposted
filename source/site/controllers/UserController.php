@@ -10,10 +10,11 @@ class UserController extends \site\components\Controller
     use RestTrait;
 
     public $showTopMenu = false;
+    public $restActions = ['validate'];
 
     public function filters() {
         return array(
-            'accessControl - view',
+            'accessControl - view, validate',
             '\shared\filters\ForceSuffix + index',
         );
     }
@@ -55,7 +56,16 @@ class UserController extends \site\components\Controller
             Yii()->user->setFlash('settings.update', true);
             $this->refresh();
         }
+
+        $this->pageTitle = ['Settings'];
         $this->render('settings', ['user' => $user]);
+    }
+
+    public function actionAvatarUpload() {
+        $user = $this->loadModel(null);
+        if ($user->validate('avatarUpload')) {
+            Yii()->avatarStorage->processAvatarUpload($user);
+        }
     }
 
     public function actionSave() {
@@ -67,9 +77,33 @@ class UserController extends \site\components\Controller
         $this->renderModels($model);
     }
 
+    public function actionValidate($scenario = 'insert', array $validate = []) {
+        $model = new User($scenario);
+
+        $attributes = array_intersect_key(
+            $this->getJson(),
+            $model->attributes + array_combine($model->safeAttributeNames, $model->safeAttributeNames)
+        );
+
+        if ($attributes) {
+            foreach ($attributes as $attribute => $value) {
+                try {
+                    $model->$attribute = $value;
+                } catch (\CException $e) {
+                    //just ignore non existent attribute in case it somehow ended up in input
+                }
+            }
+            $model->validate($validate ? : array_keys($attributes));
+        }
+
+        $this->renderJson($model->getAttributes() + $model->getAttributes($model->safeAttributeNames) + $model->getRestAttributes());
+    }
+
     public function actionView($nickname = null) {
         $model = $this->loadModel($nickname);
         $this->author = $model;
+
+        $this->pageTitle = $model->id == Yii()->user->id ? ['Me'] : [$model->nickname];
         $this->render('//post/list');
     }
 
