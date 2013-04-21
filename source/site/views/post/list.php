@@ -85,7 +85,7 @@ use site\models\Post;
                         ng-class="{'btn-success': 'like' == post.userVote, 'disabled': (post.userVote && 'like' != post.userVote) || settings.user.id == post.author.id}"
                         title="Like"
                         >
-                       <img src="<?= Yii()->baseUrl ?>/img/like.svg">
+                       <i class="icon-thumbs-up"></i>
                     </button>
 
                     <div class="arrow_box" ng-show="post.userVote || settings.user.id == post.author.id">{{post.likesCount}}</div>
