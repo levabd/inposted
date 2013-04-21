@@ -4,11 +4,10 @@
 
 /** @var $form \CActiveForm */
 
-
 $baseUrl = Yii()->baseUrl;
 ?>
 
-<div class="well mini_post_white" ng-controller="inposted.controllers.auth"><!--вход на сайт-->
+<div class="well mini_post_white" ng-controller="inposted.controllers.auth">
     <div class="well yellow">
         <span class="ref_main">
             <b ng-show="state.is('signin')">Sign in</b>
@@ -106,8 +105,4 @@ $baseUrl = Yii()->baseUrl;
             Request
         </button>
     </div>
-
-
 </div>
-
-<!--конец вход на сайт-->

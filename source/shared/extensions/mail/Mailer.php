@@ -42,7 +42,7 @@ class Mailer extends \CApplicationComponent
     }
 
     public function create($subject = null, $body = null, $contentType = null, $charset = null){
-        $charset = $charset ?: Yii()->charset;
+        $charset = $charset ?: strtolower(Yii()->charset);
         return \Swift_Message::newInstance($subject, $body, $contentType, $charset)
             ->setSender($this->_message['from'])
             ->setFrom($this->_message['from']);

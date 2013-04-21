@@ -3,7 +3,7 @@
 /** @var $user \site\models\User */
 ?>
 
-<div class="well mini_post_white"><!--инфо о пользователе-->
+<div class="well mini_post_white">
     <div class="well yellow">
         <a href="<?= Yii()->createProfileUrl($user) ?>" class="ref_main">
             <b><?= $user->firstName ?></b>
@@ -33,4 +33,4 @@
             <?php endif;#($user->country)?>
         </div>
     </div>
-</div><!--конец инфо о пользователе-->
+</div>

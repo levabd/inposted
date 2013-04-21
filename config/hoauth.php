@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------------------------
 
 return 
+	CMap::mergeArray(
 	array(
 		"base_url" => "http://isp.inposted.info/auth/oauth/", 
 
@@ -71,4 +72,4 @@ return
 		"debug_mode" => false,
 
 		"debug_file" => ""
-	);
+	), file_exists($local = __DIR__ . '/hoauth.local.php') ? require $local : []);

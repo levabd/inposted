@@ -9,6 +9,7 @@ Yii()->clientScript->registerPackage('main');
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="copyright" content="Fordot http://fordot.com.ua/" />
     <title><?=$this->pageTitle?></title>
     <style
         type="text/css">embed[type*="application/x-shockwave-flash"], embed[src*=".swf"], object[type*="application/x-shockwave-flash"], object[codetype*="application/x-shockwave-flash"], object[src*=".swf"], object[codebase*="swflash.cab"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"], object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"] {
@@ -17,7 +18,7 @@ Yii()->clientScript->registerPackage('main');
 </head>
 <body >
 
-<div class="container"> <!--общий контейнер-->
+<div class="container"> 
 
     <?php if (!Yii()->user->isGuest && !Yii()->user->model->verified): ?>
         <div class="mess_email">
@@ -36,7 +37,7 @@ Yii()->clientScript->registerPackage('main');
         </div>
     <?php endif;#(!Yii()->user->isGuest && !Yii()->user->model->verified)?>
 
-    <div class="header"> <!--шапка-->
+    <div class="header">
         <div class="head_left">
             <?php
             $this->widget(
@@ -82,16 +83,17 @@ Yii()->clientScript->registerPackage('main');
             <?php endif;#(!Yii()->user->isGuest)?>
         </div>
     </div>
-    <!-- конец шапка-->
+   
     <div class="empty_block"></div>
-    <!--пустой блок-->
+  
     <?=$content?>
 </div>
-<!--конец общий контейнер-->
+
 <?php
 if (!Yii()->user->isGuest) {
     $this->controllerWidget('pm/widget');
 }
 ?>
+<div style="display: none;" class="wait"><img  src="<?= Yii()->baseUrl ?>/img/ajax-loader-big.gif"  > </div>
 </body>
 </html>

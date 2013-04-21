@@ -19,11 +19,11 @@ if ($user) {
         'refresh'     => true,
 
         'add'         => [
-            'image' => Yii()->baseUrl . '/img/star_null.png',
+            'image' => Yii()->baseUrl . '/img/star_null.svg',
             'url'   => Yii()->createUrl('/post/addFavorite', ['id' => $post->id]),
         ],
         'delete'      => [
-            'image' => Yii()->baseUrl . '/img/star_full.png',
+            'image' => Yii()->baseUrl . '/img/star_full.svg',
             'url'   => Yii()->createUrl('/post/deleteFavorite', ['id' => $post->id]),
         ],
     ];
@@ -43,7 +43,7 @@ if ($user) {
 
     <div class="row-fluid">
         <?php if (!$this->author && ($author = $post->author)): ?>
-            <div class="span1"><!--имя пользователя и аватарка-->
+            <div class="span1">
                 <a href="<?=Yii()->createProfileUrl($author)?>" class="ref_avat">
                     <b><?=$author->nickname?></b>
                 </a>
@@ -53,7 +53,7 @@ if ($user) {
                         <img alt="<?=$author->nickname?>" class="face" src="<?=$author->getAvatarUrl(56)?>" title="<?=$author->nickname?>">
                     </a>
                 </div>
-            </div><!--конец имя пользователя и аватарка-->
+            </div>
         <?php endif;#($this->author)?>
 
         <div class="<?=$this->author ? 'span10' /*TODO:???*/ : 'span9'?> padding_left_20px">
@@ -65,7 +65,7 @@ if ($user) {
                     if ($user && !$user->hasInterest($interest)):
                         ?>
                     <button data-url="<?=$this->createUrl('/interest/attach', ['id' => $interest->id])?>" class="btn btn-1mini attach-interest"
-                            data-id=<?=$interest->id?>>+</button><?= $comma ? ', ' : '' ?>
+                            data-id=<?=$interest->id?>><img src="<?=Yii()->baseUrl?>/img/plus.svg"></button><?= $comma ? ', ' : '' ?>
                     <?php elseif ($comma):
                         echo ', ';
                     endif;#($user && !$user->hasInterest($interest))
@@ -76,9 +76,9 @@ if ($user) {
 
             <p><?=$post->htmlContent?></p>
         </div>
-        <!--конец текст сообщения-->
+    
 
-        <div class="span2 adm_butt"><!--рейтинг-->
+        <div class="span2 adm_butt">
             <?php if ($user && $post->User_id != $user->id): ?>
                 <a href="<?=$favorite[$favorite['state']]['url']?>" data-favorite='<?=CJSON::encode($favorite)?>' class="favorite-star">
                     <img src="<?=$favorite[$favorite['state']]['image']?>" class="star">
@@ -106,17 +106,17 @@ if ($user) {
                     </div>
                     <div class="adm_butt_right">
                         <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'like'])?>" class="btn btn-mini">
-                            <i class=" icon-thumbs-up"></i>
+                             <img src="<?= Yii()->baseUrl ?>/img/like.svg">
                         </a>
                         <br/>
 
                         <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'spam'])?>" class="btn btn-mini">
-                            <i class=" icon-ban-circle"></i>
+                            <img src="<?= Yii()->baseUrl ?>/img/awesome.svg">
                         </a>
                         <br/>
 
                         <a href="<?=$this->createUrl('/post/vote', ['id' => $post->id, 'type' => 'abuse'])?>" class="btn btn-mini">
-                            <i class="  icon-warning-sign"></i>
+                           <img src="<?= Yii()->baseUrl ?>/img/warning.svg">
                         </a>
                         <br/>
                     </div>
@@ -152,6 +152,6 @@ if ($user) {
 
             <?php endif;#($user && $post->User_id != $user->id)?>
         </div>
-        <!--конец рейтинг-->
+       
     </div>
-</div><!--конец мини-пост-->
+</div>

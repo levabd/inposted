@@ -1,6 +1,6 @@
 <div
     class="modal"
-    style="z-index: 10002;background:#efefef;"
+    style="z-index: 10002;background:#f4f2e7;"
     id="suggestions"
     tabindex="-1"
     aria-labelledby="suggestionsLabel"
