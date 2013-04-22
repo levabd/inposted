@@ -941,8 +941,16 @@ input.go {
 
 }
 
-.close, .close:hover {
+.close {
     color: #ffffff;
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
+
+.close:hover {
+    color: #ffffff;
+    opacity: .8;
+    filter: alpha(opacity=80);
 }
 
 .error-message {
