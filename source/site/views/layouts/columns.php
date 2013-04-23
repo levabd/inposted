@@ -37,8 +37,10 @@ $this->beginContent('//layouts/main');
                     <span class="ref_main"><b>About</b></span>
                 </div>
                 <br/>
-                &copy;  Inposted <a href="http://inposted.info/" class="ablack" >Blog</a>  <br/>         
-                developed by <a href="http://fordot.com.ua/"class="ablack" >Fordot</a>   
+                &copy; Inposted <br/>  
+				Inposted <a href="http://inposted.info/" class="ablack" >Blog</a>  <br/>         
+                developed by <a href="http://fordot.com.ua/"class="ablack" >Fordot</a>  <br/>  
+				<a href="mailto:info@inposted.com"class="ablack" >Contact us</a> 				
             </div>
       
         </div>

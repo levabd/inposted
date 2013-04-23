@@ -37,6 +37,7 @@ use site\models\Post;
                         <img alt="{{post.author.firstName}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.firstName}}">
                     </a>
                 </div>
+				
             </div>
 
 
@@ -82,6 +83,9 @@ use site\models\Post;
                     <br/>
                 </div>
                 <div class="adm_butt_right">
+				
+				<button class="btn btn-mini btn-warning" title="View post">	<i class="icon-eye-open"> </i></button>
+				<!-- кнопка сіра, якщо по ній вже 1 раз переходили><button class="btn btn-mini" title="View post">	<i class="icon-eye-open"> </i></button><-->
                     <button
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"
@@ -112,4 +116,4 @@ use site\models\Post;
         </div>
     </div>
 </div>
-<div class="wait" ng-show="pager.wait"><img src="<?= Yii()->baseUrl ?>/img/ajax-loader-big.gif"></div>
+<div class="wait" ng-show="pager.wait"><img src="<?= Yii()->baseUrl ?>/img/loader.svg"></div>
