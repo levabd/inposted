@@ -26,9 +26,9 @@
         <span class="bit-box" ng-show="suggestions.parents.length > 1" ng-click="suggestions.popParent()">
             <img src="<?= Yii()->baseUrl ?>/img/back.png">
         </span>
-        <span class="bit-box" ng-show="suggestions.parents.length" ng-click="suggestions.popParent()">
+        <span class="bit-box clickable" ng-show="suggestions.parents.length" ng-click="suggestions.popParent()">
             {{suggestions.parents[suggestions.parents.length - 1].name}}
-            <a href="#" class="closebutt"><sup>x</sup></a>
+            <span class="closebutt"><sup>x</sup></span>
         </span>
 
         <input ng-model="search.term" ng-change="search()" class="searchh input" type="text"/>
