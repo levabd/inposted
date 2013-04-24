@@ -73,6 +73,8 @@ class PostController extends \site\components\WidgetController
         }
         $this->author = $post->author;
 
+        $post->visited = true;
+
         $this->pageTitle = [$post->content];
         $this->render('list');
     }

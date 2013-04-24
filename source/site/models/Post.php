@@ -215,6 +215,7 @@ class Post extends \shared\models\Post
             'success'     => !$this->isNewRecord,
 
             'viewUrl'     => $this->id ? Yii()->createUrl('post/view', ['id' => $this->id]) : null,
+            'visited'     => $this->visited,
         ];
     }
 
@@ -262,5 +263,23 @@ class Post extends \shared\models\Post
         )->queryColumn(['author' => $this->User_id]);
 
         return in_array($id, $moderators);
+    }
+
+    public function getVisited() {
+        if($id = Yii()->user->id){
+            return Yii()->cache->get("user:$id.posts.visited.$this->id");
+        }
+        else{
+            return Yii()->session['posts.visited.' . $this->id];
+        }
+    }
+
+    public function setVisited() {
+        if($id = Yii()->user->id){
+            Yii()->cache->set("user:$id.posts.visited.$this->id", true, 30*24*3600);
+        }
+        else{
+            Yii()->session['posts.visited.' . $this->id] = true;
+        }
     }
 }

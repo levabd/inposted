@@ -84,8 +84,15 @@ use site\models\Post;
                 </div>
                 <div class="adm_butt_right">
 				
-				<button class="btn btn-mini btn-warning" title="View post">	<i class="icon-eye-open"> </i></button>
-				<!-- кнопка сіра, якщо по ній вже 1 раз переходили><button class="btn btn-mini" title="View post">	<i class="icon-eye-open"> </i></button><-->
+				<a
+                    ng-href="{{post.viewUrl}}"
+                    ng-click="post.visited = true"
+                    class="btn btn-mini"
+                    ng-class="{'btn-warning' : !post.visited}"
+                    title="View post"
+                    >
+                    <i class="icon-eye-open"> </i>
+                </a>
                     <button
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"
