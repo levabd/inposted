@@ -89,6 +89,7 @@ use site\models\Post;
                     ng-click="post.visited = true"
                     class="btn btn-mini"
                     ng-class="{'btn-warning' : !post.visited}"
+                    ng-hide="settings.page.post"
                     title="View post"
                     >
                     <i class="icon-eye-open"> </i>
