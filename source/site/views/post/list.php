@@ -43,14 +43,14 @@ use site\models\Post;
 
             <div class="padding_left_20px" ng-class="{span9: !settings.user.isGuest, span11: settings.user.isGuest}">
                 <b ng-repeat="interest in post.interests">
-                    {{interest.name}}
+                    {{interest.name}}<span ng-show="!$last && (settings.user.isGuest || hasInterest(interest))">,</span>
                     <button
                         class="btn btn-1mini attach-interest"
                         ng-click="attachInterest(interest)"
                         ng-hide="settings.user.isGuest || hasInterest(interest)"
                         title="Add interest"
                         ><img src="<?= Yii()->baseUrl ?>/img/plus.svg"></button>
-                    <span ng-show="!$last">,</span>
+                    <span ng-hide="$last || settings.user.isGuest || hasInterest(interest)">,</span>
                 </b>
                 <i class="float_right">{{post.date | date:'HH:mm dd MMM yyyy'}}</i>
 
