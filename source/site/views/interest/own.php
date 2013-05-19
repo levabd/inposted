@@ -9,7 +9,7 @@
         ng-disabled="isFilterDisabled(interest.id, interests)"
         ng-click="toggleFilter(interest); $event.stopPropagation()"
         >
-    <b>{{interest.fullName}}</b>
+    <b>{{interest.<?=YII_DEBUG ? 'fullName' : 'name'?>}}</b>
     <button
         class="btn btn-1mini"
         ng-click="detachInterest(interest); $event.stopPropagation()"

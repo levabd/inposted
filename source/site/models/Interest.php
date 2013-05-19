@@ -122,11 +122,17 @@ class Interest extends \shared\models\Interest
     }
 
     public function getRestAttributes() {
-        return [
+        $attributes = [
             'id'       => $this->id,
             'name'     => $this->name,
-            'fullName' => $this->getFullName(),
+
         ];
+
+        if(YII_DEBUG){
+            $attributes['fullName'] = $this->getFullName();
+        }
+
+        return $attributes;
     }
 
 
