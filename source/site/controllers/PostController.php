@@ -76,6 +76,8 @@ class PostController extends \site\components\WidgetController
         $post->visited = true;
 
         $this->pageTitle = [$post->content];
+        $this->attachMetaTags('post.view');
+
         $this->render('list');
     }
 

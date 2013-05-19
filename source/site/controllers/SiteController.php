@@ -24,22 +24,11 @@ class SiteController extends \site\components\Controller
         );
     }
 
-    public function actionIndex(array $interests = array(), $sort = Post::SORT_DATE) {
-        $criteria = new \CDbCriteria();
-        if ($interests) {
-            foreach ($interests as $index => $interest) {
-                $criteria->addCondition("t.id IN (SELECT Post_id FROM Interest_Post WHERE Interest_id = :interest$index)");
-                $criteria->params["interest$index"] = $interest;
-            }
-        }
-        $posts = Post::model()->good()->sortBy($sort)->findAll($criteria);
-
-
+    public function actionIndex() {
         $this->pageTitle = Yii()->user->isGuest ? [] : ['Home'];
-        $this->attachMetaTags('index');
+        $this->attachMetaTags(Yii()->user->isGuest ? 'site.index.guest' : 'site.index.user');
 
-        $render = Yii()->request->isAjaxRequest ? 'renderPartial' : 'render';
-        $this->$render('//post/list', compact('posts', 'sort'));
+        $this->render('//post/list');
     }
 
     public function actionContact() {
@@ -123,6 +112,7 @@ class SiteController extends \site\components\Controller
             $this->renderJson($errors);
         } else {
             $this->pageTitle = ['Share'];
+            $this->attachMetaTags('site.share');
             $this->render('share', compact('link'));
         }
     }
