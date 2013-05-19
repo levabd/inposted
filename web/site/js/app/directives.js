@@ -140,6 +140,7 @@
 
                 element.bind('keyup', function (event) {
                     if ((!key || key == event.which) && (!mod || event[mod + 'Key'])) {
+                        scope.event = event;
                         scope.$apply(attributes.inKeyUp);
                     }
                 });

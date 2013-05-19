@@ -243,6 +243,25 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     };
 
+    var shouldPopParent = false;
+    $scope.searchBackspace = function (event) {
+        if ($scope.suggestions.parents.length) {
+            if ($scope.search.term.length == 0) {
+                if (shouldPopParent) {
+                    if (event.which == 8) {
+                        $scope.suggestions.popParent();
+                    }
+                }
+                else {
+                    shouldPopParent = true;
+                }
+            }
+            else {
+                shouldPopParent = false;
+            }
+        }
+    };
+
     $scope.search.term = '';
 
     $scope.showAdditionalSuggestions = function (parent) {

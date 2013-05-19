@@ -31,7 +31,14 @@
             <span class="closebutt"><sup>x</sup></span>
         </span>
 
-        <input ng-model="search.term" ng-change="search()" class="searchh input" type="text"/>
+        <input
+            ng-model="search.term"
+            ng-change="search($scope)"
+            class="searchh input"
+            type="text"
+            in-key-up="searchBackspace(event)"
+            ng-trim="false"
+            />
     </div>
 
 	<span class="addon">
