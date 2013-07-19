@@ -6,7 +6,7 @@ use site\models\Post;
 /** @var $sort string */
 ?>
 <div id="posts" in-infinite-posts="loadMorePosts()">
-    <!--сортировка-->
+
     <div class="block_sort" ng-show="posts.length > 1">
         <b>Sort:</b>
         <a href="#" class="sort_post"
@@ -21,49 +21,53 @@ use site\models\Post;
             by popularity
         </a>
     </div>
-    <!-- конец сортировка-->
 
-    <div class="well post" ng-class="{mini_post_ser: !($index%2), mini_post_white: $index%2}" ng-repeat="post in posts" in-hide="!post.isGood"><!--мини-пост-->
+
+    <div class="well post" ng-class="{mini_post_ser: !($index%2), mini_post_white: $index%2}" ng-repeat="post in posts" in-hide="!post.isGood">
         <div class="necessarily" ng-show="post.isModerated && !post.thanks && !post.userVote">Compulsory voting! We are interested in your opinion.</div>
-        <div class="thanks" ng-show="post.thanks" in-hide="post.thanks">Thanks for rating! </div>
+        <div class="thanks" ng-show="post.thanks" in-hide="post.thanks">Thanks for rating!</div>
         <div class="row-fluid">
-            <div class="span1"><!--имя пользователя и аватарка-->
+            <div class="span1">
                 <a ng-href="{{post.author.url}}" class="ref_avat">
                     <b>{{post.author.nickname}}</b>
                 </a>
 
                 <div class="avat">
                     <a href="{{post.author.url}}">
-                        <img alt="{{post.author.name}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.name}}">
+                        <img alt="{{post.author.firstName}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.firstName}}">
                     </a>
                 </div>
+				
             </div>
-            <!--конец имя пользователя и аватарка-->
 
-            <div class="padding_left_20px"  ng-class="{span9: !settings.user.isGuest, span11: settings.user.isGuest}">
+
+            <div class="padding_left_20px" ng-class="{span9: !settings.user.isGuest, span11: settings.user.isGuest}">
                 <b ng-repeat="interest in post.interests">
-                    {{interest.name}}<button
+                    {{interest.name}}<span ng-show="!$last && (settings.user.isGuest || hasInterest(interest))">,</span>
+                    <button
                         class="btn btn-1mini attach-interest"
                         ng-click="attachInterest(interest)"
                         ng-hide="settings.user.isGuest || hasInterest(interest)"
                         title="Add interest"
-                        >+</button><span ng-show="!$last">,</span>
+                        ><img src="<?= Yii()->baseUrl ?>/img/plus.svg"></button>
+                    <span ng-hide="$last || settings.user.isGuest || hasInterest(interest)">,</span>
                 </b>
                 <i class="float_right">{{post.date | date:'HH:mm dd MMM yyyy'}}</i>
 
                 <p ng-bind-html-unsafe="post.htmlContent"></p>
             </div>
-            <!--конец текст сообщения-->
 
-            <div class="span2 adm_butt" ng-hide="settings.user.isGuest"><!--рейтинг-->
+
+            <div class="span2 adm_butt" ng-hide="settings.user.isGuest">
                 <span class="clickable" ng-click="toggleFavorite(post, true)">
                     <img
-                        ng-src="{{post.isFavorite && '<?=Yii()->baseUrl?>/img/star_full.png' || '<?=Yii()->baseUrl?>/img/star_null.png'}}"
+                        ng-src="{{post.isFavorite && '<?= Yii()->baseUrl ?>/img/star_full.svg' || '<?= Yii()->baseUrl ?>/img/star_null.svg'}}"
                         class="star"
                         title="{{post.isFavorite && 'Delete from favorites' || 'Add to favorites'}}"
                         >
                 </span>
                 <br>
+
                 <div class="adm_butt_left" ng-hide="settings.user.id == post.author.id">
                     <button
                         class="btn btn-mini adm_butt_decor"
@@ -79,6 +83,17 @@ use site\models\Post;
                     <br/>
                 </div>
                 <div class="adm_butt_right">
+				
+				<a
+                    ng-href="{{post.viewUrl}}"
+                    ng-click="post.visited = true"
+                    class="btn btn-mini"
+                    ng-class="{'btn-warning' : !post.visited}"
+                    ng-hide="settings.page.post"
+                    title="View post"
+                    >
+                    <i class="icon-eye-open"> </i>
+                </a>
                     <button
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"
@@ -105,7 +120,8 @@ use site\models\Post;
                     <br>
                 </div>
             </div>
-            <!--конец рейтинг-->
+
         </div>
     </div>
 </div>
+<div class="wait" ng-show="pager.wait"><img src="<?= Yii()->baseUrl ?>/img/loader.svg"></div>

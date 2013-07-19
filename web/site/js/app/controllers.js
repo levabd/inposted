@@ -88,6 +88,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     var pager = {
         enabled: true,
+        wait: false,
         limit: 10,
         offset: 0,
 
@@ -99,21 +100,25 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             this.limit = 10;
             this.offset = 0;
         },
-        disable: function () {
+        disable: function (wait) {
             this.enabled = false;
+            this.wait = wait;
         },
         enable: function () {
             this.enabled = true;
         }
     };
 
+    $scope.pager = pager;
+
     var loadPosts = function () {
         pager.reset();
-        pager.disable();
         if (settings.page.post) {
+            pager.disable(false);
             $scope.posts = [new Post(settings.page.post)];
         }
         else {
+            pager.disable(true);
             Post.query(
                 {
                     sort: $scope.sort.value,
@@ -127,6 +132,9 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                     if (data.length == pager.limit) {
                         pager.enable();
                     }
+                    else {
+                        pager.disable(false);
+                    }
 
                     $scope.posts = data;
                 }
@@ -138,7 +146,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
     $scope.loadMorePosts = function () {
         if (pager.enabled) {
-            pager.disable();
+            pager.disable(true);
             Post.query(
                 {
                     sort: $scope.sort.value,
@@ -154,6 +162,9 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
                     if (data.length == pager.limit) {
                         pager.shift();
                         pager.enable();
+                    }
+                    else {
+                        pager.disable(false);
                     }
                 }
             );
@@ -230,6 +241,25 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
             $scope.suggestions.main = [];
         }
 
+    };
+
+    var shouldPopParent = false;
+    $scope.searchBackspace = function (event) {
+        if ($scope.suggestions.parents.length) {
+            if ($scope.search.term.length == 0) {
+                if (shouldPopParent) {
+                    if (event.which == 8) {
+                        $scope.suggestions.popParent();
+                    }
+                }
+                else {
+                    shouldPopParent = true;
+                }
+            }
+            else {
+                shouldPopParent = false;
+            }
+        }
     };
 
     $scope.search.term = '';
@@ -428,7 +458,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
     }
 
 
-    //=====Hints======
+    //=====Hints=====
     if (settings.user.showHint) {
         var hints = $dialog.dialog(
             {
@@ -439,6 +469,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
 
         hints.open();
     }
+
 
 });
 
@@ -697,7 +728,6 @@ app.controller('inposted.controllers.share', function ($scope, settings, $http, 
         else {
             $scope.error = 'Please provide emails';
             $scope.state = 'error';
-            console.log($scope.error);
             if (promise) {
                 $timeout.cancel(promise);
             }
@@ -711,5 +741,144 @@ app.controller('inposted.controllers.share', function ($scope, settings, $http, 
 
     $scope.errorsLength = function () {
         return _($scope.errors).keys().length;
+    }
+});
+
+app.controller('inposted.controllers.signup', function ($scope, User, dialog, settings, $window) {
+    $scope.step = 1;
+    $scope._wait = false;
+
+    $scope.user = new User(
+        {
+            'Country_id': settings.user.country.id,
+            errors: {}
+        }
+    );
+
+    var goHome = function () {
+        $window.location = settings.baseUrl;
+    };
+
+    $scope.submit = function () {
+        var save;
+
+        $scope._wait = true;
+        if (1 === $scope.step) {
+            $scope.user.$signup(function (response) {
+                $scope._wait = false;
+                if (_(response.errors).isEmpty()) {
+                    $scope.step = 2;
+                }
+            });
+        } else {
+            save = function () {
+                $scope.user.$save(function (response) {
+                    $scope._wait = false;
+                    if (_(response.errors).isEmpty()) {
+                        goHome();
+                    }
+                });
+            };
+
+            if ($scope.uploadAvatar) {
+                $scope.uploadAvatar().then(save);
+            }
+            else {
+                save();
+            }
+        }
+    };
+
+    $scope.validate = function (attribute) {
+        $scope.user.scenario = 'signup';
+        var attributes = _($scope.user.errors || {}).keys();
+        attributes.push(attribute);
+
+        $scope.user.validate = _(attributes).unique();
+        $scope.user.$validate();
+    };
+
+    $scope.close = function () {
+        if (2 == $scope.step) {
+            goHome();
+        }
+        else {
+            dialog.close();
+        }
+    };
+});
+
+app.controller('inposted.controllers.auth', function ($scope, $http, settings, go, $dialog) {
+    $scope.user = {
+        username: '',
+        password: ''
+    };
+
+    $scope.errors = {};
+
+    $scope.state = {
+        value: 'signin',
+        set: function (value) {
+            this.value = value;
+            $scope.errors = {};
+        },
+        is: function (compare) {
+            return this.value === compare;
+        }
+    };
+
+    $scope._wait = false;
+
+    $scope.signin = function () {
+        $scope._wait = true;
+        $scope.error = false;
+        $http.post(settings.baseUrl + '/auth/signin', $scope.user)
+            .success(function (data) {
+                if (data.success) {
+                    go.home();
+                }
+                else {
+                    $scope.errors = data.errors
+                }
+                $scope._wait = false;
+            })
+            .error(function (response) {
+                $scope.error = true;
+                console && console.log(response);
+                $scope._wait = false;
+            });
+    };
+
+    $scope.restore = function () {
+        $scope._wait = true;
+        $scope.error = false;
+        $http.post(settings.baseUrl + '/auth/restore', $scope.user)
+            .success(function (data) {
+                if (data.success) {
+                    $scope.info = data.success;
+                    $scope.state.set('signin');
+                }
+                else {
+                    $scope.errors = data.errors
+                }
+                $scope._wait = false;
+            })
+            .error(function (response) {
+                $scope.error = true;
+                console && console.log(response);
+                $scope._wait = false;
+            });
+    };
+
+    //=====Signup=====
+    $scope.initSignup = function () {
+        $dialog.dialog(
+            {
+                controller: 'inposted.controllers.signup',
+                templateUrl: settings.baseUrl + '/auth/signup',
+                keyboard: false,
+                backdropClick: false
+            }
+        ).open();
     }
 });

@@ -11,16 +11,15 @@ $this->beginContent('//layouts/main');
 } ?>
 
     <div class="row-fluid">
-        <div class="span9"> <!--левая часть контента-->
+        <div class="span9"> 
             <?=$content?>
         </div>
-        <!-- конец левая часть контента-->
+      
 
-        <div class="span3"> <!--правая часть контента-->
+        <div class="span3"> 
             <?php
             if (Yii()->user->isGuest) {
                 $this->controllerWidget('auth/signin');
-                $this->controllerWidget('auth/signup');
             }
             if ($this->author) {
                 if(!($this->id == 'pm' && $this->getAction()->id == 'index')){
@@ -33,15 +32,18 @@ $this->beginContent('//layouts/main');
             }
             ?>
 
-            <div class="well mini_post_white"><!--о нас-->
+            <div class="well mini_post_white">
                 <div class="well yellow">
                     <span class="ref_main"><b>About</b></span>
                 </div>
                 <br/>
-                &copy; 2012 Copyright
+                &copy; Inposted <br/>  
+				Inposted <a href="http://inposted.info/" class="ablack" >Blog</a>  <br/>         
+                developed by <a href="http://fordot.com.ua/"class="ablack" >Fordot</a>  <br/>  
+				<a href="mailto:info@inposted.com"class="ablack" >Contact us</a> 				
             </div>
-            <!--конец о нас-->
+      
         </div>
-        <!--конец правая часть контента-->
+   
     </div>
 <?php $this->endContent() ?>

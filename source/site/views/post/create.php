@@ -6,7 +6,7 @@ use site\models\Post;
 
 ?>
 <div class="modal"
-     style="background:#efefef;"
+     style="background:#f4f2e7;"
      tabindex="-1"
      aria-labelledby="createPostLabel"
 
@@ -33,7 +33,7 @@ use site\models\Post;
             </div>
             <div class="span4">
                 <div class="well" id="mini_post_white">
-                    <span class="myint"><b>Interests</b></span>
+                    <div class="myint"><b>Interests</b></div>
                     <?php $this->controllerWidget('interest/own', ['actionParams' => ['layout' => false, 'searchWidth' => 128]])?>
                 </div>
             </div>
