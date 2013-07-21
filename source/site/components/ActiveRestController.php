@@ -18,7 +18,7 @@ abstract class ActiveRestController extends \site\components\RestController
         $model = $class::model();
 
         if(!$model instanceof \shared\interfaces\RestRecord){
-            throw new \CException("$class should implement \\shared\\interfaces\\RestRecord interface");
+            throw new \CException("$class должен реализовывать \\shared\\interfaces\\RestRecord interface");
         }
 
         if(null === $this->modelHasAccountConstraint){
@@ -52,7 +52,7 @@ abstract class ActiveRestController extends \site\components\RestController
         if ($m->save()) {
             $this->reply($m);
         } else {
-            $this->reject(400, 'Validation', 'Validation error', $m->getErrors());
+            $this->reject(400, 'Валидация', 'Ошибка валидации', $m->getErrors());
         }
 
     }
@@ -64,7 +64,7 @@ abstract class ActiveRestController extends \site\components\RestController
         if ($p->save()) {
             $this->reply($p);
         } else {
-            $this->reject(400, 'Validation', 'Validation error', $p->getErrors());
+            $this->reject(400, 'Валидация', 'Ошибка валидации', $p->getErrors());
         }
     }
 
@@ -127,7 +127,7 @@ abstract class ActiveRestController extends \site\components\RestController
                 return $result;
             }
 
-            $this->reject(404, null, "$class #$id not found", compact('id'));
+            $this->reject(404, null, "$class #$id не найден", compact('id'));
         }
     }
 

@@ -23,7 +23,7 @@ class Formatter extends \CFormatter
 
 
     public function formatTimeSec($value) {
-        return $this->formatNumber($value) . ' sec';
+        return $this->formatNumber($value) . ' сек.';
     }
 
     public function formatList($value) {

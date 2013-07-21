@@ -19,13 +19,13 @@ class Messenger extends \CBaseController implements \IApplicationComponent
     public $messages
         = array(
             'email-verification' => array(
-                'subject' => 'Activate your Inposted account',
+                'subject' => 'Активируйте Ваш аккаунт на Inposted',
             ),
 //            'email-change' => array(
 //                'subject' => 'Confirm your email address',
 //            ),
             'password-reset'     => array(
-                'subject' => 'Set your new password',
+                'subject' => 'Установите новый пароль',
             ),
         );
 
@@ -72,13 +72,13 @@ class Messenger extends \CBaseController implements \IApplicationComponent
         if (array_key_exists($name, $this->addresses)) {
             return $this->addresses[$name];
         }
-        throw new \Exception("No address mapped for $name");
+        throw new \Exception("Нету адреса связанного с $name");
     }
 
     public function sendEmailVerification($to, $options) {
-        $message = $this->mailer->create('Imposted.com Email verification')
+        $message = $this->mailer->create('Подтверждение элетронного адреса на Inposted.com')
             ->setTo($to)
-            ->setBody(sprintf("Email verification link %s", array_path($options, 'link')));
+            ->setBody(sprintf("Ссылка на подтверждение электронной почты %s", array_path($options, 'link')));
 
         $this->mailer->send($message);
     }
@@ -158,7 +158,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
         }
 
         throw new \CException(\Yii::t(
-            'yii', '{widget} cannot find the mail template "{view}".',
+            'yii', '{widget} не может найти шаблон письма "{view}".',
             array('{widget}' => get_class($this), '{view}' => $view)
         ));
     }
@@ -168,7 +168,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
             return $this->renderInternal($viewFile, $data, $return);
         } else {
             throw new \CException(\Yii::t(
-                'yii', '{widget} cannot find the mail template "{view}".',
+                'yii', '{widget} не может найти шаблон письма "{view}".',
                 array('{widget}' => get_class($this), '{view}' => $view)
             ));
         }

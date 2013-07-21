@@ -164,13 +164,13 @@ class AuthController extends components\WidgetController
             $email = array_path($params, 'email');
 
             if (time() - $time > 1800) {
-                $user->setError('Unable to verify email. Signature expired');
+                $user->setError('Не удалось подтвердить e-mail. Истек ключ.');
             } else {
                 if ($email != $userModel->email) {
-                    $user->setError('Unable to verify email. Emails don\'t match.');
+                    $user->setError('Не удалось подтвердить e-mail. Элетронные адреса не совпадают.');
                 } else {
                     $userModel->markVerified();
-                    $user->setSuccess('Your email was successfully verified.');
+                    $user->setSuccess('Ваш элетронный адрес был успешно подтвержден.');
                 }
             }
             $this->goHome();
@@ -233,7 +233,7 @@ class AuthController extends components\WidgetController
         } else {
             $policy = $this->decryptPolicy($policy);
             if (!$policy) {
-                throw new CHttpException(403, 'Invalid signature');
+                throw new CHttpException(403, 'Неверный ключ');
             }
 
             list(, $params, $time) = $policy;
@@ -241,7 +241,7 @@ class AuthController extends components\WidgetController
             $username = array_path($params, 'username');
 
             if (time() - $time > 900) {
-                throw new CHttpException(403, 'Signature expired');
+                throw new CHttpException(403, 'Ключ истек');
             }
 
             $model = new Restore('set-password');
@@ -260,7 +260,7 @@ class AuthController extends components\WidgetController
             $user->resetPassword($form->password);
             $user->save();
 
-            User()->setSuccess('Your password was successfully changed');
+            User()->setSuccess('Ваш пароль был успешно изменен.');
             User()->login(new \shared\components\UserIdentity($user));
             $this->goHome();
         }
@@ -305,6 +305,6 @@ class AuthController extends components\WidgetController
             )
         );
 
-        $this->renderJson(['success' => "Password restore link was sent to {$form->username}"]);
+        $this->renderJson(['success' => "Ссылка на восстановление пароля была отправлена {$form->username}"]);
     }
 }

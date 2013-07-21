@@ -13,7 +13,7 @@
     <button
         class="btn btn-1mini"
         ng-click="detachInterest(interest); $event.stopPropagation()"
-        title="Delete interest"
+        title="Удалить интерес"
         >
         <img src="<?= Yii()->baseUrl ?>/img/x.svg">
     </button>
@@ -67,7 +67,7 @@
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
                     ng-click="attachInterest(interest); $event.stopPropagation()"
-                    title="Add interest"
+                    title="Добавить интерес"
                     ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
                 </button>
                 {{interest.name}}
@@ -75,7 +75,7 @@
                     class="btn btn-3mini"
                     class="but_sear"
                     ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()"
-                    title="Show additional suggestions"
+                    title="Показать дополнительные предложения"
                     >
                     <img src="<?= Yii()->baseUrl ?>/img/sear.svg">
                 </button>

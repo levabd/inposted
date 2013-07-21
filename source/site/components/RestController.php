@@ -66,14 +66,14 @@ abstract class RestController extends \site\components\Controller
         if(!$type){
             switch($code){
                 case 400:
-                    $type = 'Bad request';
+                    $type = 'Неверный запрос';
                     break;
-                case 403: $type = 'Forbidden';
-                    $msg = $msg ?: 'You have no access here';
+                case 403: $type = 'Запрещено';
+                    $msg = $msg ?: 'У вас нету доступа сюда';
                     break;
-                case 404: $type = 'Not found'; break;
-                case 500: $type = 'Internal server error';
-                    $msg = $msg ?: 'Something terrible happened. Please contact us.';
+                case 404: $type = 'Страница не найдена'; break;
+                case 500: $type = 'Внутренняя ошибка сервера';
+                    $msg = $msg ?: 'Что-то страшное случилось. Пожалуйста, свяжитесь с нами.';
                     break;
             }
         }
