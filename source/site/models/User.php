@@ -156,6 +156,7 @@ class User extends \shared\models\User
         return [
             'id'           => $this->id,
             'name'         => $this->name,
+            'email'        => $this->email,
             'firstName'    => $this->firstName,
             'nickname'     => $this->nickname,
             'url'          => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),
