@@ -10,7 +10,7 @@ namespace site\components;
 class GeoIp extends \CApplicationComponent{
     public function init(){
         if(!extension_loaded('geoip')){
-            throw new \CException('geoip php расширение требуется');
+            throw new \CException('geoip php СЂР°СЃС€РёСЂРµРЅРёРµ С‚СЂРµР±СѓРµС‚СЃСЏ');
         }
     }
 

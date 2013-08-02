@@ -57,7 +57,7 @@ class SettingsController extends Controller
                 'user'          => [
                     'id'       => $inpostedUser->id,
                     'isGuest'  => $inpostedUser->isGuest,
-                    'country'  => $inpostedUser->geoipCountry ? $inpostedUser->geoipCountry->restAttributes : [],
+                    'country'  => $inpostedUser->geoipCountry->restAttributes,
                     'showHint' => $showHint,
                 ] + ($inpostedUser->model ? $inpostedUser->model->restAttributes : []),
                 'page'          => $page,
@@ -66,7 +66,7 @@ class SettingsController extends Controller
 
             echo "angular.module('inposted.services').value('settings',$settings);";
         } catch (\Exception $e) {
-            echo "alert('�� ������� ��������� ��������. ����������, ��������� �� ������� ���������: info@inposted.com')\n";
+            echo "alert('Не удалось загрузить страницу. Пожалуйста, свяжитесь со службой поддержки: info@inposted.com')\n";
             echo "console && console.log('{$e}')";
         }
     }

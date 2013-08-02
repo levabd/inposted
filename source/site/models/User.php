@@ -32,7 +32,7 @@ class User extends \shared\models\User
             $this->addError(
                 $attribute,
                 \Yii::t(
-                    'inposted', '{attribute} íå ìîæåò íà÷èòàòñÿ ñ öèôðû',
+                    'inposted', '{attribute} Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ð°Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑÑ Ñ Ñ†Ð¸Ñ„Ñ€Ñ‹',
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
@@ -40,7 +40,7 @@ class User extends \shared\models\User
     }
 
     public function checkPassword($attribute, $params = []) {
-        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Íåâåðíûé ïàðîëü', 'skipEmpty' => true], $params));
+        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ', 'skipEmpty' => true], $params));
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */

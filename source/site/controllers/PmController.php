@@ -18,7 +18,7 @@ class PmController extends WidgetController
     public function actionIndex() {
         $this->author = Yii()->user->model;
 
-        $this->pageTitle = ['Сообщения {{unreadPmsCount && " (" + unreadPmsCount + ")" || ""}}'];
+        $this->pageTitle = ['РЎРѕРѕР±С‰РµРЅРёСЏ {{unreadPmsCount && " (" + unreadPmsCount + ")" || ""}}'];
         $this->attachMetaTags('pm.index');
         $this->render('index');
     }
@@ -38,7 +38,7 @@ class PmController extends WidgetController
             $pm->save();
             $this->renderModels($pm);
         } else {
-            throw new \CHttpException(404, "Пользователь $to не существует");
+            throw new \CHttpException(404, "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ $to РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
         }
     }
 

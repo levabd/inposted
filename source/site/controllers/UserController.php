@@ -57,7 +57,7 @@ class UserController extends \site\components\Controller
             $this->refresh();
         }
 
-        $this->pageTitle = ['Íàñòðîéêè'];
+        $this->pageTitle = ['ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸'];
         $this->attachMetaTags('user.settings');
 
         $this->render('settings', ['user' => $user]);
@@ -106,7 +106,7 @@ class UserController extends \site\components\Controller
         $this->author = $model;
 
         if($model->id == Yii()->user->id){
-            $this->pageTitle = ['Ìîÿ ñòðàíèöà'];
+            $this->pageTitle = ['ÐœÐ¾Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð°'];
             $this->attachMetaTags('user.view.me');
         }
         else{

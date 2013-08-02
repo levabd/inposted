@@ -62,7 +62,7 @@ $form = $this->beginWidget(
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-inverse" tabindex="1">Применить</button>
+                    <button type="submit" class="btn btn-inverse" tabindex="1">РџСЂРёРјРµРЅРёС‚СЊ</button>
                 </div>
             </div>
         </fieldset>

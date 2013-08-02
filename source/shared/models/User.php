@@ -114,7 +114,7 @@ class User extends ActiveRecord
             try {
                 new \Imagick($this->$attribute->tempName);
             } catch (\ImagickException $e) {
-                $this->addError($attribute, 'Неверный файл изображения');
+                $this->addError($attribute, 'РќРµРІРµСЂРЅС‹Р№ С„Р°Р№Р» РёР·РѕР±СЂР°Р¶РµРЅРёСЏ');
             }
         }
     }
@@ -138,18 +138,18 @@ class User extends ActiveRecord
     public function attributeLabels() {
         return [
             'id'                   => 'ID',
-            'name'                 => 'Полное имя',
+            'name'                 => 'РџРѕР»РЅРѕРµ РёРјСЏ',
             'email'                => 'E-Mail',
-            'password'             => 'Текущий пароль',
-            'active'               => 'Активный',
-            'dateCreated'          => 'Дата создания',
-            'dateAccessed'         => 'Дата захода',
-            'note'                 => 'Запись',
-            'Country_id'           => 'Страна',
-            'nickname'             => 'Логин',
-            'homepage'             => 'Веб-сайт',
-            'enabledHints'         => 'Показывать подсказки',
-            'enabledNotifications' => 'Уведомлять о всех новых постах'
+            'password'             => 'РўРµРєСѓС‰РёР№ РїР°СЂРѕР»СЊ',
+            'active'               => 'РђРєС‚РёРІРЅС‹Р№',
+            'dateCreated'          => 'Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ',
+            'dateAccessed'         => 'Р”Р°С‚Р° Р·Р°С…РѕРґР°',
+            'note'                 => 'Р—Р°РїРёСЃСЊ',
+            'Country_id'           => 'РЎС‚СЂР°РЅР°',
+            'nickname'             => 'Р›РѕРіРёРЅ',
+            'homepage'             => 'Р’РµР±-СЃР°Р№С‚',
+            'enabledHints'         => 'РџРѕРєР°Р·С‹РІР°С‚СЊ РїРѕРґСЃРєР°Р·РєРё',
+            'enabledNotifications' => 'РЈРІРµРґРѕРјР»СЏС‚СЊ Рѕ РІСЃРµС… РЅРѕРІС‹С… РїРѕСЃС‚Р°С…'
         ];
     }
 

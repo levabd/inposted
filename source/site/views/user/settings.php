@@ -51,7 +51,7 @@ $form = $this->beginWidget(
     <div class="span12">
         <div class="well mini_post_white">
             <div class="info_title ">
-                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Лтчное</h3></div>
+                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Р›С‚С‡РЅРѕРµ</h3></div>
             <div class="row-fluid">
                 <div class="span6">
                     <?=$form->textField($user, 'email', ['class' => 'span12'])?><br>
@@ -82,7 +82,7 @@ $form = $this->beginWidget(
                     <?=$form->error($user, 'password')?>
                     <br>
                     <?=$form->passwordField($user, 'newPassword', ['class' => 'span6'])?>
-                    <?=CHtml::submitButton('Подтвердить', ['class' => 'but_conf'])?>
+                    <?=CHtml::submitButton('РџРѕРґС‚РІРµСЂРґРёС‚СЊ', ['class' => 'but_conf'])?>
                     <?=$form->error($user, 'newPassword')?>
                 </div>
                 <div class="span6">
@@ -107,7 +107,7 @@ $form = $this->beginWidget(
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledHints')?> <?=$user->getAttributeLabel('enabledHints')?>
                     </label>
-                    <?=CHtml::submitButton('Применить', ['class' => 'but_apl'])?>
+                    <?=CHtml::submitButton('РџСЂРёРјРµРЅРёС‚СЊ', ['class' => 'but_apl'])?>
                 </div>
             </div>
         </div>
@@ -117,9 +117,9 @@ $form = $this->beginWidget(
             <div class="span6">
                 <div class="well mini_post_white">
                     <div class="info_title">
-                        <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Уведомления по e-mail</h3>
+                        <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> РЈРІРµРґРѕРјР»РµРЅРёСЏ РїРѕ e-mail</h3>
                     </div>
-                    <?=CHtml::submitButton('Применить', ['class' => 'btn mypre'])?>
+                    <?=CHtml::submitButton('РџСЂРёРјРµРЅРёС‚СЊ', ['class' => 'btn mypre'])?>
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledNotifications')?> <?=$user->getAttributeLabel('enabledNotifications')?>
                     </label>

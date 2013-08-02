@@ -34,13 +34,13 @@ $this->beginContent('//layouts/main');
 
             <div class="well mini_post_white">
                 <div class="well yellow">
-                    <span class="ref_main"><b>О нас</b></span>
+                    <span class="ref_main"><b>Рћ РЅР°СЃ</b></span>
                 </div>
                 <br/>
                 &copy; Inposted <br/>  
-				Inposted <a href="http://inposted.info/" class="ablack" >Блог</a>  <br/>         
-                создан <a href="http://fordot.com.ua/"class="ablack" >Fordot</a>  <br/>  
-				<a href="mailto:info@inposted.com"class="ablack" >Свяжитесь с нами</a> 				
+				Inposted <a href="http://inposted.info/" class="ablack" >Р‘Р»РѕРі</a>  <br/>         
+                СЃРѕР·РґР°РЅ <a href="http://fordot.com.ua/"class="ablack" >Fordot</a>  <br/>  
+				<a href="mailto:info@inposted.com"class="ablack" >РЎРІСЏР¶РёС‚РµСЃСЊ СЃ РЅР°РјРё</a> 				
             </div>
       
         </div>

@@ -109,7 +109,7 @@ class AvatarStorage extends \CApplicationComponent
         $gender = $gender ?: 'male';
 
         if(!isset($this->_defaultAvatars[$gender])){
-            throw new \CException("Àâàòàğ äëÿ ïîëà $gender íå íàñòğîåí");
+            throw new \CException("ĞĞ²Ğ°Ñ‚Ğ°Ñ€ Ğ´Ğ»Ñ Ğ¿Ğ¾Ğ»Ğ° $gender Ğ½Ğµ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾ĞµĞ½");
         }
         return $this->_defaultAvatars[$gender];
     }

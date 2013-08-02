@@ -8,7 +8,7 @@ $user = Yii()->user->model;
 
 <div class="well mini_post_white" id="favorites" data-url="<?= $this->createUrl('/post/favorites') ?>"> 
     <div class="well yellow">
-        <span class="ref_main"><b>Избранное</b></span>
+        <span class="ref_main"><b>РР·Р±СЂР°РЅРЅРѕРµ</b></span>
     </div>
     <br/>
     <ul class="unstyled">
@@ -24,7 +24,7 @@ $user = Yii()->user->model;
                         <img
                             ng-src="{{post.isFavorite && '<?= Yii()->baseUrl ?>/img/star_full.svg' || '<?= Yii()->baseUrl ?>/img/star_null.svg'}}"
                             class="star"
-                            title="{{post.isFavorite && 'Удалить из избранного' || 'Добавить в избранное'}}"
+                            title="{{post.isFavorite && 'РЈРґР°Р»РёС‚СЊ РёР· РёР·Р±СЂР°РЅРЅРѕРіРѕ' || 'Р”РѕР±Р°РІРёС‚СЊ РІ РёР·Р±СЂР°РЅРЅРѕРµ'}}"
                             >
                     </span>
                     <br>

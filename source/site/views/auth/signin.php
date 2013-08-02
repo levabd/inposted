@@ -10,13 +10,13 @@ $baseUrl = Yii()->baseUrl;
 <div class="well mini_post_white" ng-controller="inposted.controllers.auth">
     <div class="well yellow">
         <span class="ref_main">
-            <b ng-show="state.is('signin')">Зайти</b>
-            <b ng-show="state.is('restore')">Отправить новый пароль</b>
+            <b ng-show="state.is('signin')">Р—Р°Р№С‚Рё</b>
+            <b ng-show="state.is('restore')">РћС‚РїСЂР°РІРёС‚СЊ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ</b>
         </span>
     </div>
     <br/>
 
-    <div class="text-error" ng-show="error">Приносим извинения. Произошла ошибка. Пожалуйста, попробуйте еще раз или отправьте письмо на info@inposted.com</div>
+    <div class="text-error" ng-show="error">РџСЂРёРЅРѕСЃРёРј РёР·РІРёРЅРµРЅРёСЏ. РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р· РёР»Рё РѕС‚РїСЂР°РІСЊС‚Рµ РїРёСЃСЊРјРѕ РЅР° info@inposted.com</div>
 
     <div style="text-align:center;" ng-show="state.is('signin')">
         <form action="<?= $this->createUrl('auth/signin') ?>">
@@ -49,7 +49,7 @@ $baseUrl = Yii()->baseUrl;
             <div class="text-success" ng-show="info">{{info}}</div>
         </form>
 
-        <div style="text-align:center;color:#000000;clear:both;">Зайти из :</div>
+        <div style="text-align:center;color:#000000;clear:both;">Р—Р°Р№С‚Рё РёР· :</div>
         <span class="soc_seti">
             <a href="<?= Yii()->createUrl('/auth/oauth', ['provider' => 'Facebook']) ?>">
                 <img src="<?= $baseUrl ?>/img/f.png">
@@ -92,7 +92,7 @@ $baseUrl = Yii()->baseUrl;
             ng-click="state.set('signin')"
             ng-disabled="_wait"
             >
-            Отменить
+            РћС‚РјРµРЅРёС‚СЊ
         </button>
         <button
             type="button"
@@ -102,7 +102,7 @@ $baseUrl = Yii()->baseUrl;
             ng-click="restore()"
             style="width: 83px; text-align: left;"
             >
-            Выслать
+            Р’С‹СЃР»Р°С‚СЊ
         </button>
     </div>
 </div>

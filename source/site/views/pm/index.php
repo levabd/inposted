@@ -8,7 +8,7 @@
             <div class="avat">
                 <img alt="bender" class="face" ng-src="{{pm.from.avatarUrls[56]}}" title="{{pm.from.nickname}}">
             </div>
-            <button class="btn reply" ng-click="showPM(pm.from, 'RE: ' + pm.topic)">Ответить</button>
+            <button class="btn reply" ng-click="showPM(pm.from, 'RE: ' + pm.topic)">РћС‚РІРµС‚РёС‚СЊ</button>
         </div>
   
         <div class="span11 padding_left_20px">

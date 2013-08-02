@@ -25,7 +25,7 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionIndex() {
-        $this->pageTitle = Yii()->user->isGuest ? [] : ['Домашняя страница'];
+        $this->pageTitle = Yii()->user->isGuest ? [] : ['Р”РѕРјР°С€РЅСЏСЏ СЃС‚СЂР°РЅРёС†Р°'];
         $this->attachMetaTags(Yii()->user->isGuest ? 'site.index.guest' : 'site.index.user');
 
         $this->render('//post/list');
@@ -55,13 +55,13 @@ class SiteController extends \site\components\Controller
 
                 try {
                     Messenger()->getMailer()->send($msg);
-                    User()->setSuccess("Спасибо за то что связались с нами");
+                    User()->setSuccess("РЎРїР°СЃРёР±Рѕ Р·Р° С‚Рѕ С‡С‚Рѕ СЃРІСЏР·Р°Р»РёСЃСЊ СЃ РЅР°РјРё");
 
                     User()->setFlash($successFlashName, \CJSON::encode($model));
                     $this->goBack();
                 } catch (Exception $e) {
-                    User()->setError("Сообщение не было отослано. Мы уведомлены об этой ошибке.");
-                    $logmsg = "Невозможно отправить сообщение:\n"
+                    User()->setError("РЎРѕРѕР±С‰РµРЅРёРµ РЅРµ Р±С‹Р»Рѕ РѕС‚РѕСЃР»Р°РЅРѕ. РњС‹ СѓРІРµРґРѕРјР»РµРЅС‹ РѕР± СЌС‚РѕР№ РѕС€РёР±РєРµ.");
+                    $logmsg = "РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РїСЂР°РІРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ:\n"
                         . "From    = $name <$from>\n"
                         . "Subject = $subject\n"
                         . "Body    = $body\n"
@@ -95,15 +95,15 @@ class SiteController extends \site\components\Controller
         if ($emails) {
             $mailer = Yii()->mailer;
 
-            $title = 'Приглашение посетить Inposted.com';
-            $body = ($message ? : 'Перейдите по этой ссылке:') . "\n\n" . $link;
+            $title = 'РџСЂРёРіР»Р°С€РµРЅРёРµ РїРѕСЃРµС‚РёС‚СЊ Inposted.com';
+            $body = ($message ? : 'РџРµСЂРµР№РґРёС‚Рµ РїРѕ СЌС‚РѕР№ СЃСЃС‹Р»РєРµ:') . "\n\n" . $link;
 
             $errors = (object)[];
             foreach (array_unique(preg_split('/[,\s]+/', $emails)) as $email) {
                 try {
                     $message = $mailer->create($title, $body, 'text/plain', Yii()->charset)->setTo($email);
                     if (!$mailer->send($message, $failures)) {
-                        $errors->$email = 'Не удалось отправить сообщение';
+                        $errors->$email = 'РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РїСЂР°РІРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ';
                     }
                 } catch (Exception $e) {
                     $errors->$email = $e->getMessage();
@@ -111,7 +111,7 @@ class SiteController extends \site\components\Controller
             }
             $this->renderJson($errors);
         } else {
-            $this->pageTitle = ['Поделиться'];
+            $this->pageTitle = ['РџРѕРґРµР»РёС‚СЊСЃСЏ'];
             $this->attachMetaTags('site.share');
             $this->render('share', compact('link'));
         }

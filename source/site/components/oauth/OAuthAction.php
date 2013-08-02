@@ -128,7 +128,7 @@ class OAuthAction extends \HOAuthAction
                     }
                 } else {
                     // this social network account is bond to existing local account
-                    Yii::log("Вошли в систему с помощью существующей ссылки через '$provider'", CLogger::LEVEL_INFO, 'hoauth.' . __CLASS__);
+                    Yii::log("Р’РѕС€Р»Рё РІ СЃРёСЃС‚РµРјСѓ СЃ РїРѕРјРѕС‰СЊСЋ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµР№ СЃСЃС‹Р»РєРё С‡РµСЂРµР· '$provider'", CLogger::LEVEL_INFO, 'hoauth.' . __CLASS__);
                     $user = call_user_func(array($this->model, 'model'))->findByPk($oAuth->user_id);
                 }
 
@@ -136,11 +136,11 @@ class OAuthAction extends \HOAuthAction
                 $identity = new $this->identityClass($user->email, null);
 
                 if (!Yii::app()->user->login($identity, $this->duration)) {
-                    throw new CException("Не могу войти, что-то с классом UserIdentity.");
+                    throw new CException("РќРµ РјРѕРіСѓ РІРѕР№С‚Рё, С‡С‚Рѕ-С‚Рѕ СЃ РєР»Р°СЃСЃРѕРј UserIdentity.");
                 }
 
                 if (!$oAuth->bindTo($user->primaryKey)) {
-                    throw new CException("Ошибка привязки пользователя к провайдеру:\n\n" . \CJSON::encode($oAuth->errors));
+                    throw new CException("РћС€РёР±РєР° РїСЂРёРІСЏР·РєРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рє РїСЂРѕРІР°Р№РґРµСЂСѓ:\n\n" . \CJSON::encode($oAuth->errors));
                 }
             }
         } catch (Exception $e) {
@@ -149,38 +149,38 @@ class OAuthAction extends \HOAuthAction
                 $code = 500;
                 switch ($e->getCode()) {
                     case 0 :
-                        $error = "Неизвестная ошибка.";
+                        $error = "РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°.";
                         break;
                     case 1 :
-                        $error = "Ошибка конфигурации Hybriauth.";
+                        $error = "РћС€РёР±РєР° РєРѕРЅС„РёРіСѓСЂР°С†РёРё Hybriauth.";
                         break;
                     case 2 :
-                        $error = "Провайдер неверно сконфигурирован.";
+                        $error = "РџСЂРѕРІР°Р№РґРµСЂ РЅРµРІРµСЂРЅРѕ СЃРєРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅ.";
                         break;
                     case 3 :
-                        $error = "Неизвестный или заблокированный провайдер.";
+                        $error = "РќРµРёР·РІРµСЃС‚РЅС‹Р№ РёР»Рё Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹Р№ РїСЂРѕРІР°Р№РґРµСЂ.";
                         break;
                     case 4 :
-                        $error = "Отсутствуют учетные данные.";
+                        $error = "РћС‚СЃСѓС‚СЃС‚РІСѓСЋС‚ СѓС‡РµС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ.";
                         break;
                     case 5 :
-                        $error = "Ошибка аутентификации. Пользователь отменил аутентификацию или провайдер отменил связь.";
+                        $error = "РћС€РёР±РєР° Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё. РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕС‚РјРµРЅРёР» Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЋ РёР»Рё РїСЂРѕРІР°Р№РґРµСЂ РѕС‚РјРµРЅРёР» СЃРІСЏР·СЊ.";
                         $code = 403;
                         break;
                     case 6 :
-                        $error = "Провалился запрос профиля пользователя. Скорее всего, пользователь не подключен к провайдеру и он должен переподключится.";
+                        $error = "РџСЂРѕРІР°Р»РёР»СЃСЏ Р·Р°РїСЂРѕСЃ РїСЂРѕС„РёР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ. РЎРєРѕСЂРµРµ РІСЃРµРіРѕ, РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РїРѕРґРєР»СЋС‡РµРЅ Рє РїСЂРѕРІР°Р№РґРµСЂСѓ Рё РѕРЅ РґРѕР»Р¶РµРЅ РїРµСЂРµРїРѕРґРєР»СЋС‡РёС‚СЃСЏ.";
                         break;
                     case 7 :
-                        $error = "Пользователь не подключен к провайдеру.";
+                        $error = "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РїРѕРґРєР»СЋС‡РµРЅ Рє РїСЂРѕРІР°Р№РґРµСЂСѓ.";
                         break;
                     case 8 :
-                        $error = "Провайдер не поддерживает эту функцию.";
+                        $error = "РџСЂРѕРІР°Р№РґРµСЂ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ СЌС‚Сѓ С„СѓРЅРєС†РёСЋ.";
                         break;
                     default:
                         $error = '';
                 }
 
-                Yii::log($error . "\n\n<br /><br /><b>Исходное сообщение об ошибке:</b> " . $e->getMessage(), CLogger::LEVEL_WARNING, 'hoauth.' . __CLASS__);
+                Yii::log($error . "\n\n<br /><br /><b>РСЃС…РѕРґРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ:</b> " . $e->getMessage(), CLogger::LEVEL_WARNING, 'hoauth.' . __CLASS__);
                 throw new \CHttpException($code, $error);
             }
         }

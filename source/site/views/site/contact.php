@@ -4,7 +4,7 @@
         <?php $this->renderPartial($success ? '_contact_success' : '_contact_form', compact('model'))?>
     </div>
     <div class="span6">
-        <h3>Служба поддержки</h3>
+        <h3>РЎР»СѓР¶Р±Р° РїРѕРґРґРµСЂР¶РєРё</h3>
 
         <p><a href="mailto:support@inposted.com">support@inposted.com</a></p>
         <br/>

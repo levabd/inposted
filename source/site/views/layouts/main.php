@@ -23,16 +23,16 @@ Yii()->clientScript->registerPackage('main');
     <?php if (!Yii()->user->isGuest && !Yii()->user->model->verified): ?>
         <div class="mess_email">
             <span class="clickable" ng-show="verification.state == 'initial'" ng-click="verification.sendEmail()">
-                Пожалуйста, подтвердите Ваш e-mail адрес
+                РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРґС‚РІРµСЂРґРёС‚Рµ Р’Р°С€ e-mail Р°РґСЂРµСЃ
             </span>
             <span ng-show="verification.state == 'pending'" in-dots="verification.state == 'pending'">
-                Отправляем ссылку для подтверждения
+                РћС‚РїСЂР°РІР»СЏРµРј СЃСЃС‹Р»РєСѓ РґР»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
             </span>
             <span ng-show="verification.state == 'sent'">
-                Ссылка для подтверждения была отправлена {{user.email}}. Пожалуйста, проверьте Ваш почтовый адрес (включая папку со спамом).
+                РЎСЃС‹Р»РєР° РґР»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ Р±С‹Р»Р° РѕС‚РїСЂР°РІР»РµРЅР° {{user.email}}. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ Р’Р°С€ РїРѕС‡С‚РѕРІС‹Р№ Р°РґСЂРµСЃ (РІРєР»СЋС‡Р°СЏ РїР°РїРєСѓ СЃРѕ СЃРїР°РјРѕРј).
             </span>
             <span ng-show="verification.state == 'error'">
-                Произошла ошибка во время отправки ссылки для подтверждения. Пожалуйста, попробуйте позже.
+                РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё СЃСЃС‹Р»РєРё РґР»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ. РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.
             </span>
         </div>
     <?php endif;#(!Yii()->user->isGuest && !Yii()->user->model->verified)?>

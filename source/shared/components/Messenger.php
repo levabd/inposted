@@ -19,13 +19,13 @@ class Messenger extends \CBaseController implements \IApplicationComponent
     public $messages
         = array(
             'email-verification' => array(
-                'subject' => 'Àêòèâèðóéòå Âàø àêêàóíò íà Inposted',
+                'subject' => 'ÐÐºÑ‚Ð¸Ð²Ð¸Ñ€ÑƒÐ¹Ñ‚Ðµ Ð’Ð°Ñˆ Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚ Ð½Ð° Inposted',
             ),
 //            'email-change' => array(
 //                'subject' => 'Confirm your email address',
 //            ),
             'password-reset'     => array(
-                'subject' => 'Óñòàíîâèòå íîâûé ïàðîëü',
+                'subject' => 'Ð£ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ñ‹Ð¹ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ',
             ),
         );
 
@@ -72,13 +72,13 @@ class Messenger extends \CBaseController implements \IApplicationComponent
         if (array_key_exists($name, $this->addresses)) {
             return $this->addresses[$name];
         }
-        throw new \Exception("Íåòó àäðåñà ñâÿçàííîãî ñ $name");
+        throw new \Exception("ÐÐµÑ‚Ñƒ Ð°Ð´Ñ€ÐµÑÐ° ÑÐ²ÑÐ·Ð°Ð½Ð½Ð¾Ð³Ð¾ Ñ $name");
     }
 
     public function sendEmailVerification($to, $options) {
-        $message = $this->mailer->create('Ïîäòâåðæäåíèå ýëåòðîííîãî àäðåñà íà Inposted.com')
+        $message = $this->mailer->create('ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ðµ ÑÐ»ÐµÑ‚Ñ€Ð¾Ð½Ð½Ð¾Ð³Ð¾ Ð°Ð´Ñ€ÐµÑÐ° Ð½Ð° Inposted.com')
             ->setTo($to)
-            ->setBody(sprintf("Ññûëêà íà ïîäòâåðæäåíèå ýëåêòðîííîé ïî÷òû %s", array_path($options, 'link')));
+            ->setBody(sprintf("Ð¡ÑÑ‹Ð»ÐºÐ° Ð½Ð° Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ðµ ÑÐ»ÐµÐºÑ‚Ñ€Ð¾Ð½Ð½Ð¾Ð¹ Ð¿Ð¾Ñ‡Ñ‚Ñ‹ %s", array_path($options, 'link')));
 
         $this->mailer->send($message);
     }
@@ -158,7 +158,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
         }
 
         throw new \CException(\Yii::t(
-            'yii', '{widget} íå ìîæåò íàéòè øàáëîí ïèñüìà "{view}".',
+            'yii', '{widget} Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ð°Ð¹Ñ‚Ð¸ ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð¿Ð¸ÑÑŒÐ¼Ð° "{view}".',
             array('{widget}' => get_class($this), '{view}' => $view)
         ));
     }
@@ -168,7 +168,7 @@ class Messenger extends \CBaseController implements \IApplicationComponent
             return $this->renderInternal($viewFile, $data, $return);
         } else {
             throw new \CException(\Yii::t(
-                'yii', '{widget} íå ìîæåò íàéòè øàáëîí ïèñüìà "{view}".',
+                'yii', '{widget} Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ð°Ð¹Ñ‚Ð¸ ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð¿Ð¸ÑÑŒÐ¼Ð° "{view}".',
                 array('{widget}' => get_class($this), '{view}' => $view)
             ));
         }

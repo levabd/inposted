@@ -14,6 +14,6 @@ class Controller extends \site\components\Controller
             $this->redirect($url->url, 303);
         }
 
-        throw new \CHttpException(404, 'Страница не найдена');
+        throw new \CHttpException(404, 'РЎС‚СЂР°РЅРёС†Р° РЅРµ РЅР°Р№РґРµРЅР°');
     }
 }

@@ -25,7 +25,7 @@ class Fs extends \CApplicationComponent
             $realLocation = $location[0] != '/' ? \Yii::getPathOfAlias($location) : $location;
 
             if (!$realpath = realpath($realLocation)) {
-                throw new FSException(__METHOD__ . ": Невозможно привязать $location к реальному пути.");
+                throw new FSException(__METHOD__ . ": РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРёРІСЏР·Р°С‚СЊ $location Рє СЂРµР°Р»СЊРЅРѕРјСѓ РїСѓС‚Рё.");
             }
 
             $preparedLocations[] = $realpath;
@@ -80,7 +80,7 @@ class Fs extends \CApplicationComponent
      */
     public function dir($target) {
         $this->checkPathSafety($target);
-        $this->log("Убеждаюсь, что директория <$target> существует и доступна");
+        $this->log("РЈР±РµР¶РґР°СЋСЃСЊ, С‡С‚Рѕ РґРёСЂРµРєС‚РѕСЂРёСЏ <$target> СЃСѓС‰РµСЃС‚РІСѓРµС‚ Рё РґРѕСЃС‚СѓРїРЅР°");
 
         if (file_exists($target)) {
             $this->checkPaths($target, array('is_dir', 'is_writable', 'is_readable', 'is_executable'));
@@ -98,7 +98,7 @@ class Fs extends \CApplicationComponent
         try {
             $this->checkPaths($path, array('is_dir', 'is_writable', 'is_executable'));
         } catch (FSException $e) {
-            throw new FSException("Не могу продолжать с <$target> потому что это базовый путь {$e->getMessage()}");
+            throw new FSException("РќРµ РјРѕРіСѓ РїСЂРѕРґРѕР»Р¶Р°С‚СЊ СЃ <$target> РїРѕС‚РѕРјСѓ С‡С‚Рѕ СЌС‚Рѕ Р±Р°Р·РѕРІС‹Р№ РїСѓС‚СЊ {$e->getMessage()}");
         }
         foreach (array_reverse($stack) as $item) {
             $path .= DIRECTORY_SEPARATOR . $item;
@@ -106,7 +106,7 @@ class Fs extends \CApplicationComponent
                 mkdir($path, 0777);
             } catch (ErrorException $e) {
                 if (!is_dir($path)) {
-                    throw new FSException("Не удалось создать <$target> на этапе <$path> из-за: {$e->getMessage()}", 0, $e);
+                    throw new FSException("РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ <$target> РЅР° СЌС‚Р°РїРµ <$path> РёР·-Р·Р°: {$e->getMessage()}", 0, $e);
                 }
             }
         }
@@ -120,7 +120,7 @@ class Fs extends \CApplicationComponent
      * @param $destination
      */
     public function rename($source, $destination) {
-        $this->log("Переименовываю $source -> $destination");
+        $this->log("РџРµСЂРµРёРјРµРЅРѕРІС‹РІР°СЋ $source -> $destination");
         $this->checkPathSafety($source, $destination);
 
         if (is_dir($source)) {
@@ -160,7 +160,7 @@ class Fs extends \CApplicationComponent
      * @param null $suffix
      */
     public function hide($source, $suffix = null) {
-        $this->log("Прячу $source");
+        $this->log("РџСЂСЏС‡Сѓ $source");
         $dirname = dirname($source);
         $basename = basename($source);
         $to = "{$dirname}/.{$basename}" . ($suffix ? ".$suffix" : null);
@@ -176,7 +176,7 @@ class Fs extends \CApplicationComponent
      * @return bool
      */
     public function remove($source) {
-        $this->log("Удаляю $source");
+        $this->log("РЈРґР°Р»СЏСЋ $source");
         $this->checkPathSafety($source);
 
         if (is_dir($source)) {
@@ -242,7 +242,7 @@ class Fs extends \CApplicationComponent
         foreach ($paths as $file) {
             foreach ($callbacks as $callback) {
                 if (!call_user_func($callback, $file)) {
-                    throw new FSException("$file не прошел проверку {$this->stringifyCallable($callback)}");
+                    throw new FSException("$file РЅРµ РїСЂРѕС€РµР» РїСЂРѕРІРµСЂРєСѓ {$this->stringifyCallable($callback)}");
                 }
             }
         }

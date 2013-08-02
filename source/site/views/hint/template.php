@@ -8,18 +8,19 @@
     <div class="modal-header my_modal1">
         <button type="button" class="my_modal2 close" ng-click="close(false)">x</button>
         <h3 id="suggestionsLabel" class="my_modal3">
-            <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png" /> ������ �� �� ...
+            <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png" /> Знаете ли Вы ...
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
         <div class="row-fluid">
             <div class="span12">
-                <div class="well mini_post_white" ng-bind-html-unsafe="hint.content">
+                <div class="well mini_post_white">
+                    {{hint.content}}
                 </div>
             </div>
         </div>
-        <button ng-show="showNavigation" class="btn mynext" ng-click="next()">����. &raquo;</button>
-        <button ng-show="showNavigation" class="btn mypre" ng-click="previous()">&laquo; ����.</button>
-        <label class="checkbox"><input type="checkbox" ng-click="close(true)"> �� ���������� </label>
+        <button class="btn mynext" ng-click="next()">След. &raquo;</button>
+        <button class="btn mypre" ng-click="previous()">&laquo; Пред.</button>
+        <label class="checkbox"><input type="checkbox" ng-click="close(true)"> Не показывать </label>
     </div>
 </div>

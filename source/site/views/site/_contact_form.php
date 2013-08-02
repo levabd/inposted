@@ -67,7 +67,7 @@ $form = $this->beginWidget(
     </div>
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+            <button type="submit" class="btn btn-primary">РћС‚РїСЂР°РІРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ</button>
         </div>
     </div>
 </fieldset>

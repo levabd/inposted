@@ -14,8 +14,8 @@ isset($thanks) || ($thanks = null);
 if ($user) {
 //favorite
     $favorite = [
-        'state'       => $user->isFavorite($post) ? 'óäàëèòü' : 'äîáàâèòü',
-        'stateChange' => $user->isFavorite($post) ? 'äîáàâèòü' : 'óäàëèòü',
+        'state'       => $user->isFavorite($post) ? 'ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ' : 'Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ¸Ñ‚ÑŒ',
+        'stateChange' => $user->isFavorite($post) ? 'Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ¸Ñ‚ÑŒ' : 'ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ',
         'refresh'     => true,
 
         'add'         => [
@@ -30,7 +30,7 @@ if ($user) {
 }
 ?>
 
-<div class="well mini_post_ser post" data-id="<?=$post->id?>"><!--Ğ¼Ğ¸Ğ½Ğ¸-Ğ¿Ğ¾ÑÑ‚-->
+<div class="well mini_post_ser post" data-id="<?=$post->id?>"><!--Ğ Ñ˜Ğ Ñ‘Ğ Ğ…Ğ Ñ‘-Ğ Ñ—Ğ Ñ•Ğ¡ĞƒĞ¡â€š-->
     <?php if ($necessarily): ?>
         <div class="necessarily"><?=$necessarily?></div>
     <?php endif;#($necessarily)?>
@@ -124,9 +124,9 @@ if ($user) {
                     <div class="adm_butt_left">
                         <?php
                         $votes = [
-                            Vote::TYPE_IRRELEVANT => 'Íåğåëåâàíòíûå èíòåğåñû',
-                            Vote::TYPE_NONSENSE   => 'Áåññìûñëèöà',
-                            Vote::TYPE_DUPLICATE  => 'Óæå áûëî',
+                            Vote::TYPE_IRRELEVANT => 'ĞĞµÑ€ĞµĞ»ĞµĞ²Ğ°Ğ½Ñ‚Ğ½Ñ‹Ğµ Ğ¸Ğ½Ñ‚ĞµÑ€ĞµÑÑ‹',
+                            Vote::TYPE_NONSENSE   => 'Ğ‘ĞµÑÑĞ¼Ñ‹ÑĞ»Ğ¸Ñ†Ğ°',
+                            Vote::TYPE_DUPLICATE  => 'Ğ£Ğ¶Ğµ Ğ±Ñ‹Ğ»Ğ¾',
                         ];
                         if (in_array($vote->type, array_keys($votes))):
                             ?>

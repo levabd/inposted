@@ -10,6 +10,6 @@
         class="btn btn-1mini attach-interest"
         ng-click="attachInterest(interest); $event.stopPropagation(); $event.preventDefault()"
         ng-show="!settings.user.isGuest && !hasInterest(interest)"
-        title="Äîáàâèòü èíòåðåñ"
+        title="Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ‚ÐµÑ€ÐµÑ"
         ><img src="<?=Yii()->baseUrl?>/img/plus.svg"></button>
 </label>

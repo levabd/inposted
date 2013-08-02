@@ -38,7 +38,7 @@ $form = $this->beginWidget(
             </div>
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-inverse" tabindex="1">Задать пароль</button>
+                    <button type="submit" class="btn btn-inverse" tabindex="1">Р—Р°РґР°С‚СЊ РїР°СЂРѕР»СЊ</button>
                 </div>
             </div>
         </fieldset>

@@ -18,7 +18,7 @@ abstract class ActiveRestController extends \site\components\RestController
         $model = $class::model();
 
         if(!$model instanceof \shared\interfaces\RestRecord){
-            throw new \CException("$class äîëæåí ðåàëèçîâûâàòü \\shared\\interfaces\\RestRecord interface");
+            throw new \CException("$class Ð´Ð¾Ð»Ð¶ÐµÐ½ Ñ€ÐµÐ°Ð»Ð¸Ð·Ð¾Ð²Ñ‹Ð²Ð°Ñ‚ÑŒ \\shared\\interfaces\\RestRecord interface");
         }
 
         if(null === $this->modelHasAccountConstraint){
@@ -52,7 +52,7 @@ abstract class ActiveRestController extends \site\components\RestController
         if ($m->save()) {
             $this->reply($m);
         } else {
-            $this->reject(400, 'Âàëèäàöèÿ', 'Îøèáêà âàëèäàöèè', $m->getErrors());
+            $this->reject(400, 'Ð’Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ñ', 'ÐžÑˆÐ¸Ð±ÐºÐ° Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ð¸', $m->getErrors());
         }
 
     }
@@ -64,7 +64,7 @@ abstract class ActiveRestController extends \site\components\RestController
         if ($p->save()) {
             $this->reply($p);
         } else {
-            $this->reject(400, 'Âàëèäàöèÿ', 'Îøèáêà âàëèäàöèè', $p->getErrors());
+            $this->reject(400, 'Ð’Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ñ', 'ÐžÑˆÐ¸Ð±ÐºÐ° Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸Ð¸', $p->getErrors());
         }
     }
 
@@ -127,7 +127,7 @@ abstract class ActiveRestController extends \site\components\RestController
                 return $result;
             }
 
-            $this->reject(404, null, "$class #$id íå íàéäåí", compact('id'));
+            $this->reject(404, null, "$class #$id Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½", compact('id'));
         }
     }
 

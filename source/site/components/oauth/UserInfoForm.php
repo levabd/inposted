@@ -76,8 +76,8 @@ class UserInfoForm extends \CFormModel
     public function attributeLabels() {
         return array(
             'email'    => OAuthAction::t('E-mail'),
-            'username' => OAuthAction::t('Логин'),
-            'password' => OAuthAction::t('Пароль'),
+            'username' => OAuthAction::t('Р›РѕРіРёРЅ'),
+            'password' => OAuthAction::t('РџР°СЂРѕР»СЊ'),
         );
     }
 
@@ -96,7 +96,7 @@ class UserInfoForm extends \CFormModel
         /** @var $user \site\models\User */
         $user = $this->model->findByEmail($this->email);
         if (!$user->validatePassword($this->password)) {
-            $this->addError('password', OAuthAction::t('Извините, но пароль неверный'));
+            $this->addError('password', OAuthAction::t('РР·РІРёРЅРёС‚Рµ, РЅРѕ РїР°СЂРѕР»СЊ РЅРµРІРµСЂРЅС‹Р№'));
         } else {
             // setting up the current model, to use it later in OAuthAction
             if ($this->nameAtt && !isset($this->getPost()['username'])) {
@@ -148,7 +148,7 @@ class UserInfoForm extends \CFormModel
                      'buttons'    => array(
                          'submit' => array(
                              'type'  => 'submit',
-                             'label' => OAuthAction::t('Отправить'),
+                             'label' => OAuthAction::t('РћС‚РїСЂР°РІРёС‚СЊ'),
                          ),
                          '</div>',
                      ),
@@ -221,7 +221,7 @@ class UserInfoForm extends \CFormModel
                         if ($attribute == $emailAtt) {
                             $this->addError(
                                 'email', OAuthAction::t(
-                                    "Этот $attribute занят другим пользователем. Если это Ваш аккаунт - введите пароль в поле внизу или измените $attribute и оставьте поле пароля пустым."
+                                    "Р­С‚РѕС‚ $attribute Р·Р°РЅСЏС‚ РґСЂСѓРіРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј. Р•СЃР»Рё СЌС‚Рѕ Р’Р°С€ Р°РєРєР°СѓРЅС‚ - РІРІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ РІ РїРѕР»Рµ РІРЅРёР·Сѓ РёР»Рё РёР·РјРµРЅРёС‚Рµ $attribute Рё РѕСЃС‚Р°РІСЊС‚Рµ РїРѕР»Рµ РїР°СЂРѕР»СЏ РїСѓСЃС‚С‹Рј."
                                 )
                             );
                             $passwordRequired = true;
@@ -295,15 +295,15 @@ class UserInfoForm extends \CFormModel
         switch ($this->scenario) {
             case 'both':
             case 'both_pass':
-                $header = OAuthAction::t('Пожалуйста, укажите логин и e-mail, чтобы завершить регистрацию.');
+                $header = OAuthAction::t('РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СѓРєР°Р¶РёС‚Рµ Р»РѕРіРёРЅ Рё e-mail, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ.');
                 break;
             case 'username':
             case 'username_pass':
-                $header = OAuthAction::t('Пожалуйста, укажите логин, чтобы завершить регистрацию.');
+                $header = OAuthAction::t('РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СѓРєР°Р¶РёС‚Рµ Р»РѕРіРёРЅ, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ.');
                 break;
             case 'email':
             case 'email_pass':
-                $header = OAuthAction::t('Пожалуйста, укажите e-mail, чтобы завершить регистрацию.');
+                $header = OAuthAction::t('РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СѓРєР°Р¶РёС‚Рµ e-mail, С‡С‚РѕР±С‹ Р·Р°РІРµСЂС€РёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ.');
                 break;
             default:
                 $header = null;

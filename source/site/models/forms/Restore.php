@@ -35,7 +35,7 @@ class Restore extends \base\FormModel
     public function attributeLabels() {
         return array(
             'username' => 'E-mail',
-            'password' => 'Ïàðîëü',
+            'password' => 'ÐŸÐ°Ñ€Ð¾Ð»ÑŒ',
         );
     }
 
@@ -46,7 +46,7 @@ class Restore extends \base\FormModel
         }
         $this->user = $user;
         if (!$user) {
-            $this->addError($attribute, "Àêêàóíò íå ñóùåñòâóåò");
+            $this->addError($attribute, "ÐÐºÐºÐ°ÑƒÐ½Ñ‚ Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚");
         }
         else{
             $this->nickname = $user->nickname;

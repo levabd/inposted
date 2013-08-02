@@ -134,11 +134,7 @@ class AuthController extends components\WidgetController
 
         if (($model->attributes = $this->getJson()) && $model->save()) {
             InpostedUser::makeUser($model->id);
-            try {
-                $this->sendVerificationLink($model);
-            } catch (\Exception $e) {
-                \Yii::log("Failed to send registration email to $model->email because of: {$e->getMessage()}");
-            }
+            $this->sendVerificationLink($model);
             User()->login(new \shared\components\UserIdentity($model));
         }
 
@@ -168,13 +164,13 @@ class AuthController extends components\WidgetController
             $email = array_path($params, 'email');
 
             if (time() - $time > 1800) {
-                $user->setError('�� ������� ����������� e-mail. ����� ����.');
+                $user->setError('Не удалось подтвердить e-mail. Истек ключ.');
             } else {
                 if ($email != $userModel->email) {
-                    $user->setError('�� ������� ����������� e-mail. ���������� ������ �� ���������.');
+                    $user->setError('Не удалось подтвердить e-mail. Элетронные адреса не совпадают.');
                 } else {
                     $userModel->markVerified();
-                    $user->setSuccess('��� ���������� ����� ��� ������� �����������.');
+                    $user->setSuccess('Ваш элетронный адрес был успешно подтвержден.');
                 }
             }
             $this->goHome();
@@ -237,7 +233,7 @@ class AuthController extends components\WidgetController
         } else {
             $policy = $this->decryptPolicy($policy);
             if (!$policy) {
-                throw new CHttpException(403, '�������� ����');
+                throw new CHttpException(403, 'Неверный ключ');
             }
 
             list(, $params, $time) = $policy;
@@ -245,7 +241,7 @@ class AuthController extends components\WidgetController
             $username = array_path($params, 'username');
 
             if (time() - $time > 900) {
-                throw new CHttpException(403, '���� �����');
+                throw new CHttpException(403, 'Ключ истек');
             }
 
             $model = new Restore('set-password');
@@ -264,7 +260,7 @@ class AuthController extends components\WidgetController
             $user->resetPassword($form->password);
             $user->save();
 
-            User()->setSuccess('��� ������ ��� ������� �������.');
+            User()->setSuccess('Ваш пароль был успешно изменен.');
             User()->login(new \shared\components\UserIdentity($user));
             $this->goHome();
         }
@@ -309,6 +305,6 @@ class AuthController extends components\WidgetController
             )
         );
 
-        $this->renderJson(['success' => "������ �� �������������� ������ ���� ���������� {$form->username}"]);
+        $this->renderJson(['success' => "Ссылка на восстановление пароля была отправлена {$form->username}"]);
     }
 }

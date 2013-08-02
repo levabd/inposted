@@ -18,19 +18,19 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
     <div class="span10">
         <div class="well" class="mini_post_white">
             <div class="info_title ">
-                <h3 id="myModalLabel" class="my_modal3"><img src="<?= Yii()->baseUrl ?>/img/logo_icon.png"> И наконец...</h3>
+                <h3 id="myModalLabel" class="my_modal3"><img src="<?= Yii()->baseUrl ?>/img/logo_icon.png"> Р РЅР°РєРѕРЅРµС†...</h3>
             </div>
             <div class="row-fluid">
                 <div class="span1"></div>
                 <div class="span10">
                     <div class="centering">
-                        <p>Поздравляем, Вы - один из первых!</p>
+                        <p>РџРѕР·РґСЂР°РІР»СЏРµРј, Р’С‹ - РѕРґРёРЅ РёР· РїРµСЂРІС‹С…!</p>
 
-                        <p>За Ваше терпение Вы получите дополнительные возможности!</p>
+                        <p>Р—Р° Р’Р°С€Рµ С‚РµСЂРїРµРЅРёРµ Р’С‹ РїРѕР»СѓС‡РёС‚Рµ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё!</p>
 
-                        <p>Сейчас Вы можете пригласить друзей на этот сайт. </p>
+                        <p>РЎРµР№С‡Р°СЃ Р’С‹ РјРѕР¶РµС‚Рµ РїСЂРёРіР»Р°СЃРёС‚СЊ РґСЂСѓР·РµР№ РЅР° СЌС‚РѕС‚ СЃР°Р№С‚. </p>
 
-                        <p>И следите за новостями на нашем <a href="http://inposted.info/" class="ref_mess">блоге</a></p>
+                        <p>Р СЃР»РµРґРёС‚Рµ Р·Р° РЅРѕРІРѕСЃС‚СЏРјРё РЅР° РЅР°С€РµРј <a href="http://inposted.info/" class="ref_mess">Р±Р»РѕРіРµ</a></p>
 
                         <p>
 
@@ -67,7 +67,7 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                             type="text"
                             style="margin-left:30px;width:74%;"
                             class="input"
-                            placeholder="Введите e-mail адреса (разделенные запятыми)"
+                            placeholder="Р’РІРµРґРёС‚Рµ e-mail Р°РґСЂРµСЃР° (СЂР°Р·РґРµР»РµРЅРЅС‹Рµ Р·Р°РїСЏС‚С‹РјРё)"
                             ng-model="share.emails"
                             required
                             >
@@ -75,11 +75,11 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                         <textarea
                             style="width:97%;"
                             rows="10"
-                            placeholder="ВВедите сообщение"
+                            placeholder="Р’Р’РµРґРёС‚Рµ СЃРѕРѕР±С‰РµРЅРёРµ"
                             ng-model="share.message"
                             ></textarea>
                         Share link:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
-                        <button class="btn" class="mypre" ng-click="send()">Отправить приглашение</button>
+                        <button class="btn" class="mypre" ng-click="send()">РћС‚РїСЂР°РІРёС‚СЊ РїСЂРёРіР»Р°С€РµРЅРёРµ</button>
                         <div class="well" style="margin-top: 20px; margin-bottom: 0" ng-show="state">
                             <div class="text-success" ng-show="state == 'success'">
                                 Your invitations was sent.
@@ -90,7 +90,7 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                             <div class="text-error" ng-show="state == 'error'">
                                 {{error}}
                                 <div ng-show="errorsLength()">
-                                    Произошла ошибка во время отправки приглашений
+                                    РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РІРѕ РІСЂРµРјСЏ РѕС‚РїСЂР°РІРєРё РїСЂРёРіР»Р°С€РµРЅРёР№
                                     <div ng-repeat="(email, error) in errors">
                                         {{email}}: {{error}}
                                     </div>
