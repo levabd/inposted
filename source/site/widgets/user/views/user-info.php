@@ -32,7 +32,7 @@
         </div>
         <div class="info_user_right ">
             <p>
-                <?=nl2br(strip_tags($user->info)) ? : 'no info'?>
+                <?=nl2br(strip_tags($user->info)) ? : 'нет информации'?>
             </p>
             <?php if ($user->homepage): ?>
                 <p><a href="<?= $user->homepage ?>"><?=$user->homepage?></a></p>

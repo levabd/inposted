@@ -18,7 +18,7 @@ class InpostedUser extends \CWebUser
 
     public function init() {
         parent::init();
-        \Yii::trace($this->getIsGuest() ? 'Guest' : join($this->getRoles(), ', '), 'user.roles');
+        \Yii::trace($this->getIsGuest() ? 'Гость' : join($this->getRoles(), ', '), 'user.roles');
         \Yii::trace(print_r($this->getFlashes(false), true), 'user.flashes');
         \Yii::trace(print_r($_SESSION, true), 'user.session');
         \Yii::trace($this->getReturnUrl(), 'user.returnUrl');
@@ -60,7 +60,7 @@ class InpostedUser extends \CWebUser
             }
             $request->redirect($url);
         } else {
-            throw new \CHttpException(403, Yii::t('yii', 'Login Required'));
+            throw new \CHttpException(403, Yii::t('yii', 'Требуется логин'));
         }
     }
 

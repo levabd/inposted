@@ -26,8 +26,8 @@ class Contact extends \base\FormModel
 
     public function attributeLabels() {
         return array(
-            'url' => 'Your website',
-            'verifyCode' => 'Verification Code',
+            'url' => 'Ваш веб-сайт',
+            'verifyCode' => 'Код подтверждения',
         );
     }
 

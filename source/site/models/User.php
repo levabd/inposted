@@ -32,7 +32,7 @@ class User extends \shared\models\User
             $this->addError(
                 $attribute,
                 \Yii::t(
-                    'inposted', '{attribute} can not start with digit',
+                    'inposted', '{attribute} не может начитатся с цифры',
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
@@ -40,7 +40,7 @@ class User extends \shared\models\User
     }
 
     public function checkPassword($attribute, $params = []) {
-        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Invalid password', 'skipEmpty' => true], $params));
+        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Неверный пароль', 'skipEmpty' => true], $params));
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */

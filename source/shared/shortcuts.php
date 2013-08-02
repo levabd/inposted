@@ -64,7 +64,7 @@ function mb_ucfirst($string, $charset = null){
         $charset = Yii()->charset;
     }
 
-    return mb_strtoupper(mb_substr($string, 0, 1, $charset)) . mb_substr($string, 1);
+    return mb_strtoupper(mb_substr($string, 0, 1, $charset)) . mb_substr($string, 1, mb_strlen($string, $charset), $charset);
 }
 
 function array_path($array, $path, $default = null, $delimiter = '.') {

@@ -14,8 +14,8 @@ isset($thanks) || ($thanks = null);
 if ($user) {
 //favorite
     $favorite = [
-        'state'       => $user->isFavorite($post) ? 'delete' : 'add',
-        'stateChange' => $user->isFavorite($post) ? 'add' : 'delete',
+        'state'       => $user->isFavorite($post) ? 'удалить' : 'добавить',
+        'stateChange' => $user->isFavorite($post) ? 'добавить' : 'удалить',
         'refresh'     => true,
 
         'add'         => [
@@ -124,9 +124,9 @@ if ($user) {
                     <div class="adm_butt_left">
                         <?php
                         $votes = [
-                            Vote::TYPE_IRRELEVANT => 'Wrong tags',
-                            Vote::TYPE_NONSENSE   => 'No Sense',
-                            Vote::TYPE_DUPLICATE  => 'Duplication',
+                            Vote::TYPE_IRRELEVANT => 'Нерелевантные интересы',
+                            Vote::TYPE_NONSENSE   => 'Бессмыслица',
+                            Vote::TYPE_DUPLICATE  => 'Уже было',
                         ];
                         if (in_array($vote->type, array_keys($votes))):
                             ?>

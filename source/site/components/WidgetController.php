@@ -111,7 +111,7 @@ class WidgetController extends Controller
             parent::invalidActionParams($action);
         }
 
-        throw new \CException(\Yii::t('inposted', 'Invalid params for action {action}', ['{action}' => $action->id]));
+        throw new \CException(\Yii::t('inposted', 'Неверные параметры для действия {action}', ['{action}' => $action->id]));
     }
 
     public function getIsWidget() {

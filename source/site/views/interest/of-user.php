@@ -5,11 +5,11 @@
         ng-disabled="isFilterDisabled(interest.id, owner.interests)"
         ng-click="toggleFilter(interest)"
         >
-    <b>{{interest.fullName}}</b>
+    <b>{{interest.<?=YII_DEBUG ? 'fullName' : 'name'?>}}</b>
     <button
         class="btn btn-1mini attach-interest"
         ng-click="attachInterest(interest); $event.stopPropagation(); $event.preventDefault()"
         ng-show="!settings.user.isGuest && !hasInterest(interest)"
-        title="Add interest"
+        title="Добавить интерес"
         ><img src="<?=Yii()->baseUrl?>/img/plus.svg"></button>
 </label>
