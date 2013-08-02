@@ -75,7 +75,7 @@ class InterestController extends WidgetController
 
         $criteria = new \CDbCriteria(
             [
-            'condition' => '`name` LIKE CONCAT(:term, "%")',
+            'condition' => '`name` LIKE CONCAT("%", :term, "%")',
             'params'    => compact('term'),
             'limit' => 5,
             ]

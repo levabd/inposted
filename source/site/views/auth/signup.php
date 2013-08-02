@@ -21,6 +21,15 @@ $countries = site\models\Country::model()->listData();
     <div class="modal-body mini_post_ser">
         <div class="join_us">
             <div ng-show="step == 1">
+				<input
+                    type="text"
+                    name="nickname"
+                    ng-model="user.nickname"
+                    in-blur="validate('nickname')"
+                    placeholder="<?= $model->getAttributeLabel('nickname') ?>"
+                    />
+                <div class="text-error error-message" ng-show="user.errors.nickname">{{user.errors.nickname}}</div>
+				
                 <input
                     type="text"
                     name="email"
@@ -38,15 +47,6 @@ $countries = site\models\Country::model()->listData();
                     placeholder="<?= $model->getAttributeLabel('newPassword') ?>"
                     />
                 <div class="text-error error-message" ng-show="user.errors.newPassword">{{user.errors.newPassword}}</div>
-
-                <input
-                    type="text"
-                    name="nickname"
-                    ng-model="user.nickname"
-                    in-blur="validate('nickname')"
-                    placeholder="<?= $model->getAttributeLabel('nickname') ?>"
-                    />
-                <div class="text-error error-message" ng-show="user.errors.nickname">{{user.errors.nickname}}</div>
             </div>
             <div ng-show="step == 2">
                 <input type="text" name="name" ng-model="user.name" placeholder="<?= $model->getAttributeLabel('name') ?>"/>
