@@ -69,7 +69,7 @@ class PostController extends \site\components\WidgetController
     public function actionView($id) {
         /** @var $post Post */
         if (!($post = Post::model()->findByPk($id))) {
-            throw new \CHttpException(404, 'Post not found');
+            throw new \CHttpException(404, 'Запись не найдена');
         }
         $this->author = $post->author;
 

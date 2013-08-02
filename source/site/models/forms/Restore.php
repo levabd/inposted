@@ -34,8 +34,8 @@ class Restore extends \base\FormModel
      */
     public function attributeLabels() {
         return array(
-            'username' => 'E-Mail',
-            'password' => 'Password',
+            'username' => 'E-mail',
+            'password' => 'Пароль',
         );
     }
 
@@ -46,7 +46,7 @@ class Restore extends \base\FormModel
         }
         $this->user = $user;
         if (!$user) {
-            $this->addError($attribute, "Account doesn't exist");
+            $this->addError($attribute, "Аккаунт не существует");
         }
         else{
             $this->nickname = $user->nickname;

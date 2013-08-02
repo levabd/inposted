@@ -23,16 +23,16 @@ Yii()->clientScript->registerPackage('main');
     <?php if (!Yii()->user->isGuest && !Yii()->user->model->verified): ?>
         <div class="mess_email">
             <span class="clickable" ng-show="verification.state == 'initial'" ng-click="verification.sendEmail()">
-                Please, confirm your e-mail address
+                Пожалуйста, подтвердите Ваш e-mail адрес
             </span>
             <span ng-show="verification.state == 'pending'" in-dots="verification.state == 'pending'">
-                Sending verification link
+                Отправляем ссылку для подтверждения
             </span>
             <span ng-show="verification.state == 'sent'">
-                Verification link was sent to {{user.email}}. Please, check your inbox.
+                Ссылка для подтверждения была отправлена {{user.email}}. Пожалуйста, проверьте Ваш почтовый адрес (включая папку со спамом).
             </span>
             <span ng-show="verification.state == 'error'">
-                Error while sending verification link. Please try again later.
+                Произошла ошибка во время отправки ссылки для подтверждения. Пожалуйста, попробуйте позже.
             </span>
         </div>
     <?php endif;#(!Yii()->user->isGuest && !Yii()->user->model->verified)?>

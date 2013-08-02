@@ -14,8 +14,8 @@ $countries = site\models\Country::model()->listData();
         <button type="button" class="close my_modal2" ng-click="close()" aria-hidden="true">x</button>
         <h3 id="signupModalLabel" class="my_modal3">
             <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
-            <span ng-show="step == 1">Join us</span>
-            <span ng-show="step == 2">A little more...</span>
+            <span ng-show="step == 1">Присоединиться</span>
+            <span ng-show="step == 2">Немножко больше о себе...</span>
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
@@ -66,7 +66,7 @@ $countries = site\models\Country::model()->listData();
                 in-dots="_wait">
                 Next
             </button>
-            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Skip</button>
+            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Пропустить</button>
         </div>
     </div>
 </div>

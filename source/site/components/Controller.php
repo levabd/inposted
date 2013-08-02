@@ -62,7 +62,7 @@ class Controller extends \shared\components\Controller
                     $message = array_values($status)[0];
                 } else {
                     $code = $status;
-                    $message = $this->getHttpHeader($code, 'Error');
+                    $message = $this->getHttpHeader($code, 'Ошибка');
                 }
                 header("HTTP/1.0 $code $message");
             }

@@ -114,7 +114,7 @@ class User extends ActiveRecord
             try {
                 new \Imagick($this->$attribute->tempName);
             } catch (\ImagickException $e) {
-                $this->addError($attribute, 'Invalid image file');
+                $this->addError($attribute, 'Неверный файл изображения');
             }
         }
     }
@@ -138,18 +138,18 @@ class User extends ActiveRecord
     public function attributeLabels() {
         return [
             'id'                   => 'ID',
-            'name'                 => 'Full Name',
+            'name'                 => 'Полное имя',
             'email'                => 'E-Mail',
-            'password'             => 'Current Password',
-            'active'               => 'Active',
-            'dateCreated'          => 'Date Created',
-            'dateAccessed'         => 'Date Accessed',
-            'note'                 => 'Note',
-            'Country_id'           => 'Country',
-            'nickname'             => 'Login',
-            'homepage'             => 'Web-site',
-            'enabledHints'         => 'Show Hints',
-            'enabledNotifications' => 'Notify about all new posts'
+            'password'             => 'Текущий пароль',
+            'active'               => 'Активный',
+            'dateCreated'          => 'Дата создания',
+            'dateAccessed'         => 'Дата захода',
+            'note'                 => 'Запись',
+            'Country_id'           => 'Страна',
+            'nickname'             => 'Логин',
+            'homepage'             => 'Веб-сайт',
+            'enabledHints'         => 'Показывать подсказки',
+            'enabledNotifications' => 'Уведомлять о всех новых постах'
         ];
     }
 

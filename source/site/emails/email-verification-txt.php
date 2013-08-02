@@ -1,10 +1,10 @@
-Dear <?=$firstName?>,
+Уважаемый <?=$firstName?>,
 
-Thanks for joining Inposted. Now click to confirm your account:
+Спасибо, что присоединились к Inposted. Теперь перейдите по ссылке для подтверждения аккаунта:
 
 <?=$link?>
 
 
-Thanks,
+Спасибо,
 
-- The Inposted Team
+- Команда Inposted
