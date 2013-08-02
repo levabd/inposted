@@ -46,14 +46,14 @@ Yii()->clientScript->registerPackage('main');
                 [
                 'encodeLabel' => false,
                 'items'       => [
-                    ['label' => '<b class="icon-1home">Home</b>', 'url' => ['/site/index']],
+                    ['label' => '<b class="icon-1home">Домашняя</b>', 'url' => ['/site/index']],
                     [
-                        'label'   => '<b class="icon-1me">Me </b>',
+                        'label'   => '<b class="icon-1me">Профиль</b>',
                         'url'     => ['/user/view'],
                         'visible' => !Yii()->user->isGuest,
                         'active'  => $this->id == 'user' && $this->getAction()->id == 'view' && empty($_GET['nickname']),
                     ],
-                    ['label' => 'Messages</a><sub class="unread" ng-show="unreadPmsCount">{{unreadPmsCount}}</sub>',
+                    ['label' => 'Сообщения</a><sub class="unread" ng-show="unreadPmsCount">{{unreadPmsCount}}</sub>',
                      'url'   => ['/pm/index'], 'visible' => !Yii()->user->isGuest],
                 ]
                 ]
