@@ -9,16 +9,16 @@ Yii()->clientScript->registerPackage('main');
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="copyright" content="Fordot http://fordot.com.ua/" />
-    <title><?=$this->pageTitle?></title>
+    <meta name="copyright" content="Fordot http://fordot.com.ua/"/>
+    <title><?= $this->pageTitle ?></title>
     <style
         type="text/css">embed[type*="application/x-shockwave-flash"], embed[src*=".swf"], object[type*="application/x-shockwave-flash"], object[codetype*="application/x-shockwave-flash"], object[src*=".swf"], object[codebase*="swflash.cab"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"], object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"] {
             display: none !important;
         }</style>
 </head>
-<body >
+<body>
 
-<div class="container"> 
+<div class="container">
 
     <?php if (!Yii()->user->isGuest && !Yii()->user->model->verified): ?>
         <div class="mess_email">
@@ -28,9 +28,8 @@ Yii()->clientScript->registerPackage('main');
             <span ng-show="verification.state == 'pending'" in-dots="verification.state == 'pending'">
                 Отправляем ссылку для подтверждения
             </span>
-            <span ng-show="verification.state == 'sent'">
+            <span ng-show="verification.state == 'sent'" style="font-size: 12px;">
                 Ссылка для подтверждения была отправлена на {{user.email}}.
-                <br/>
                 Пожалуйста, проверьте Ваш почтовый адрес (включая папку со спамом).
             </span>
             <span ng-show="verification.state == 'error'">
@@ -49,10 +48,10 @@ Yii()->clientScript->registerPackage('main');
                 'items'       => [
                     ['label' => '<b class="icon-1home">Home</b>', 'url' => ['/site/index']],
                     [
-                        'label' => '<b class="icon-1me">Me </b>',
-                        'url' => ['/user/view'],
+                        'label'   => '<b class="icon-1me">Me </b>',
+                        'url'     => ['/user/view'],
                         'visible' => !Yii()->user->isGuest,
-                        'active' => $this->id == 'user' && $this->getAction()->id == 'view' && empty($_GET['nickname']),
+                        'active'  => $this->id == 'user' && $this->getAction()->id == 'view' && empty($_GET['nickname']),
                     ],
                     ['label' => 'Messages</a><sub class="unread" ng-show="unreadPmsCount">{{unreadPmsCount}}</sub>',
                      'url'   => ['/pm/index'], 'visible' => !Yii()->user->isGuest],
@@ -85,10 +84,10 @@ Yii()->clientScript->registerPackage('main');
             <?php endif;#(!Yii()->user->isGuest)?>
         </div>
     </div>
-   
+
     <div class="empty_block"></div>
-  
-    <?=$content?>
+
+    <?= $content ?>
 </div>
 
 <?php
