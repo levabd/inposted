@@ -44,8 +44,8 @@ class Signin extends \base\FormModel
     public function attributeLabels() {
         return array(
             'username' => 'E-mail',
-            'password' => 'Пароль',
-            'rememberMe' => 'Запомнить',
+            'password' => 'пїЅпїЅпїЅпїЅпїЅпїЅ',
+            'rememberMe' => 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
         );
     }
 
@@ -55,7 +55,7 @@ class Signin extends \base\FormModel
      */
     public function authenticate($attribute, $params) {
         if (!$this->hasErrors() && !$this->identity->isAuthenticated) {
-            $this->addError('password', 'Неверный логин или пароль.');
+            $this->addError('password', 'РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ.');
         }
     }
 

@@ -8,7 +8,7 @@
     <div class="modal-header my_modal1">
         <button type="button" class="my_modal2 close" ng-click="close(false)">x</button>
         <h3 id="suggestionsLabel" class="my_modal3">
-            <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png" /> Знаете ли Вы ...
+            <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png" /> пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ ...
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
@@ -19,8 +19,8 @@
                 </div>
             </div>
         </div>
-        <button class="btn mynext" ng-click="next()">След. &raquo;</button>
-        <button class="btn mypre" ng-click="previous()">&laquo; Пред.</button>
-        <label class="checkbox"><input type="checkbox" ng-click="close(true)"> Не показывать </label>
+        <button ng-show="showNavigation" class="btn mynext" ng-click="next()">пїЅпїЅпїЅпїЅ. &raquo;</button>
+        <button ng-show="showNavigation" class="btn mypre" ng-click="previous()">&laquo; пїЅпїЅпїЅпїЅ.</button>
+        <label class="checkbox"><input type="checkbox" ng-click="close(true)"> пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ </label>
     </div>
 </div>

@@ -14,8 +14,8 @@ $countries = site\models\Country::model()->listData();
         <button type="button" class="close my_modal2" ng-click="close()" aria-hidden="true">x</button>
         <h3 id="signupModalLabel" class="my_modal3">
             <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
-            <span ng-show="step == 1">Присоединиться</span>
-            <span ng-show="step == 2">Немножко больше о себе...</span>
+            <span ng-show="step == 1">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</span>
+            <span ng-show="step == 2">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ...</span>
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
@@ -51,7 +51,7 @@ $countries = site\models\Country::model()->listData();
             <div ng-show="step == 2">
                 <input type="text" name="name" ng-model="user.name" placeholder="<?= $model->getAttributeLabel('name') ?>"/>
                 <div class="text-error error-message" ng-show="user.errors.name">{{user.errors.name}}</div>
-                <?= CHtml::dropDownList('country', array_keys($countries)[0], $countries, ['style' => 'width:99%;', 'ng-model' => 'user.Country_id']) ?>
+                <?= CHtml::dropDownList('country', $countries ? array_keys($countries)[0] : null , $countries, ['style' => 'width:99%;', 'ng-model' => 'user.Country_id']) ?>
 
                 <input type="file" in-file-upload="uploadAvatar" name="User[avatarUpload]" data-url="<?=Yii()->createUrl('user/avatarUpload')?>"/>
                 <? //$form->fileField($model, 'avatarUpload') ?>
@@ -66,7 +66,7 @@ $countries = site\models\Country::model()->listData();
                 in-dots="_wait">
                 Next
             </button>
-            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Пропустить</button>
+            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</button>
         </div>
     </div>
 </div>

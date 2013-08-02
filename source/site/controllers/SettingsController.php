@@ -57,7 +57,7 @@ class SettingsController extends Controller
                 'user'          => [
                     'id'       => $inpostedUser->id,
                     'isGuest'  => $inpostedUser->isGuest,
-                    'country'  => $inpostedUser->geoipCountry ? $inpostedUser->geoipCountry->restAttributes : null,
+                    'country'  => $inpostedUser->geoipCountry ? $inpostedUser->geoipCountry->restAttributes : [],
                     'showHint' => $showHint,
                 ] + ($inpostedUser->model ? $inpostedUser->model->restAttributes : []),
                 'page'          => $page,

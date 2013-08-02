@@ -478,8 +478,12 @@ app.controller('inposted.controllers.hints', function ($scope, dialog, User, Hin
         var i;
         var index = 0;
         if (!hints.length) {
-            dialog.close();
+            hints = [
+                {id: null, content: 'Sorry, but there are no hints for now. Check it later'}
+            ];
         }
+
+        $scope.showNavigation = hints.length > 1;
 
         if (settings.user.lastHint) {
             for (i = 0; i < hints.length; i++) {
