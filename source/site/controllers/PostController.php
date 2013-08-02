@@ -6,7 +6,7 @@ namespace site\controllers;
 use site\components\RestTrait;
 use site\models\Interest;
 use site\models\Post;
-use yii_core\CHtml;
+use CHtml;
 
 class PostController extends \site\components\WidgetController
 {

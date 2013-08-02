@@ -49,7 +49,7 @@
             title="Create interest"
             ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
         </button>
-        <img src="/img/search.svg">
+        <img src="<?= Yii()->baseUrl ?>/img/search.svg">
     </span>
 
     <div class="result_search" ng-show="suggestions.main.length">

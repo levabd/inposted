@@ -37,7 +37,7 @@ class AuthController extends components\WidgetController
         return array(
             array(
                 'allow',
-                'roles' => array('User')
+                'users' => array('@')
             ),
             array(
                 'deny',
@@ -133,7 +133,6 @@ class AuthController extends components\WidgetController
         $model = new models\User('signup');
 
         if (($model->attributes = $this->getJson()) && $model->save()) {
-            InpostedUser::makeUser($model->id);
             $this->sendVerificationLink($model);
             User()->login(new \shared\components\UserIdentity($model));
         }

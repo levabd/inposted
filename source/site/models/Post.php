@@ -4,7 +4,7 @@
  */
 namespace site\models;
 
-use yii_core\CHtml;
+use CHtml;
 
 /**
  * @property Interest[] $interests
