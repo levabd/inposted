@@ -28,13 +28,13 @@ class Signin extends \base\FormModel
     public function rules() {
         return array(
             // username and password are required
-            array('username', 'required'),
+            array('username', 'required','message'=>'E-Mail не может быть пустым'),
             array('password', 'required', 'on' => 'login'),
             // password needs to be authenticated
             array('password', 'authenticate', 'on' => 'login'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
-            array('username', 'exist', 'className' => 'site\models\User', 'attributeName' => 'email', 'message' => 'Account doesn\'t exist', 'on' => 'restore'),
+            array('username', 'exist', 'className' => 'site\models\User', 'attributeName' => 'email', 'message' => 'Аккаунт не существует', 'on' => 'restore'),
         );
     }
 
@@ -43,7 +43,7 @@ class Signin extends \base\FormModel
      */
     public function attributeLabels() {
         return array(
-            'username' => 'E-mail',
+            'username' => 'E-Mail',
             'password' => 'Пароль',
             'rememberMe' => 'Запомнить',
         );
