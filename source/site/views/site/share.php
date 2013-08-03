@@ -78,7 +78,7 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                             placeholder="Введите сообщение"
                             ng-model="share.message"
                             ></textarea>
-                        Share link:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
+                        Поделиться ссылкой:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
                         <button class="btn" class="mypre" ng-click="send()">Отправить приглашение</button>
                         <div class="well" style="margin-top: 20px; margin-bottom: 0" ng-show="state">
                             <div class="text-success" ng-show="state == 'success'">
