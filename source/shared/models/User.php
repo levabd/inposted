@@ -151,7 +151,8 @@ class User extends ActiveRecord
             'enabledHints'         => 'Показывать подсказки',
             'enabledNotifications' => 'Уведомлять о всех новых постах',
             'birthYear' => 'Год рождения',
-            'gender' => 'Пол'
+            'gender' => 'Пол',
+            'info' => 'О себе'
         ];
     }
 
