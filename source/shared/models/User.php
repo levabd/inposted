@@ -149,7 +149,9 @@ class User extends ActiveRecord
             'nickname'             => 'Логин',
             'homepage'             => 'Веб-сайт',
             'enabledHints'         => 'Показывать подсказки',
-            'enabledNotifications' => 'Уведомлять о всех новых постах'
+            'enabledNotifications' => 'Уведомлять о всех новых постах',
+            'birthYear' => 'Год рождения',
+            'gender' => 'Пол'
         ];
     }
 
