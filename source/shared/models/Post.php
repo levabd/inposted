@@ -23,8 +23,8 @@ class Post extends \base\ActiveRecord
 
     public function rules() {
         return [
-            'content-length' => ['content', 'length', 'max' => self::MAX_POST_SIZE],
-            ['interests', 'required'],
+            'content-length' => ['content', 'length', 'max' => self::MAX_POST_SIZE,'message'=>'Слишком длинный пост'],
+            ['interests', 'required','message'=>'Выберите интересы'],
         ];
     }
 
