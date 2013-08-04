@@ -14,8 +14,7 @@
     <div class="modal-body mini_post_ser">
         <div class="row-fluid">
             <div class="span12">
-                <div class="well mini_post_white">
-                    {{hint.content}}
+                <div class="well mini_post_white" ng-bind-html-unsafe="hint.content">
                 </div>
             </div>
         </div>
