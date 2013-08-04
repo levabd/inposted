@@ -14,10 +14,10 @@ class User extends \shared\models\User
             parent::rules(),
             [
             ['nickname', 'validateNickname'],
-            ['newPassword', 'required', 'on' => 'signup'],
-            ['newPassword', 'length', 'min' => 6],
-            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
-            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
+            ['newPassword', 'required', 'on' => 'signup','message'=>'Введите новый пароль'],
+            ['newPassword', 'length', 'min' => 6,'message'=>'Новый пароль слишком короткий (минимум 6 символов)'],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email','message'=>'Пароль не может быть таким же как e-mail'],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname','message'=>'Пароль не может быть таким же как логин'],
             ['newPassword', 'site\validators\Password'],
 
             //            ['password', 'required', 'on' => 'settings'],
@@ -32,7 +32,7 @@ class User extends \shared\models\User
             $this->addError(
                 $attribute,
                 \Yii::t(
-                    'inposted', '{attribute} не может начитатся с цифры',
+                    'inposted', 'Пароль не может начитатся с цифры',
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
