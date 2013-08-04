@@ -34,7 +34,7 @@ class Restore extends \base\FormModel
      */
     public function attributeLabels() {
         return array(
-            'username' => 'E-mail',
+            'username' => 'E-Mail',
             'password' => 'Пароль',
             'nickname' => 'Логин',
         );
