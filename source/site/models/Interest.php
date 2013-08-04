@@ -125,6 +125,7 @@ class Interest extends \shared\models\Interest
         $attributes = [
             'id'       => $this->id,
             'name'     => $this->name,
+            'parents'  => $this->getIndirectParentIds(),
 
         ];
 

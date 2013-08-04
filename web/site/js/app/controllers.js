@@ -202,6 +202,10 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         },
         pushParent: function (interest) {
             _(this.promises).each(function (promise) {$timeout.cancel(promise);});
+
+            if (this.parents.length && _(interest.parents).indexOf(this.parents[this.parents.length - 1].id) === -1) {
+                this.parents = [];
+            }
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
@@ -638,6 +642,9 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
         pushParent: function (interest) {
             _(this.promises).each(function (promise) {$timeout.cancel(promise);});
 
+            if (this.parents.length && _(interest.parents).indexOf(this.parents[this.parents.length - 1].id) === -1) {
+                this.parents = [];
+            }
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
