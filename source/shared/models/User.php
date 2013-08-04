@@ -101,7 +101,7 @@ class User extends ActiveRecord
             ['info, enabledHints, enabledNotifications', 'safe'],
             ['homepage', 'url'],
 
-            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
+            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true,'message'=>'Недопустимое расширение'],
             ['avatarUpload', 'validImage'],
             ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true,'message'=>'Недопустимый год рождения'],
             ['gender', 'in', 'range' => ['male', 'female']],
