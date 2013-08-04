@@ -32,7 +32,7 @@ class User extends \shared\models\User
             $this->addError(
                 $attribute,
                 \Yii::t(
-                    'inposted', 'Пароль не может начитатся с цифры',
+                    'inposted', 'Логин не может начинатся с цифры',
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
