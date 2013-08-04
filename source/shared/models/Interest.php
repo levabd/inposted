@@ -19,8 +19,8 @@ class Interest extends ActiveRecord
 
     public function rules() {
         return [
-            ['name', 'required'],
-            ['name', 'length', 'max' => '255'],
+            ['name', 'required','message'=>'Введите интерес'],
+            ['name', 'length', 'max' => '255','message'=>'Имя интереса слишком длинное'],
         ];
     }
 
