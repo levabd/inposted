@@ -146,17 +146,7 @@ class User extends \shared\models\User
         }
         return $value ? $this->addFavorite($id) : $this->deleteFavorite($id);
     }
-
-
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels() {
-        return [
-            'newPassword'                   => 'Новый Пароль'
-        ];
-    }
-    
+   
     
     public function getRestAttributes() {
         $errors = [];
