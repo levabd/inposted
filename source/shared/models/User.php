@@ -152,7 +152,8 @@ class User extends ActiveRecord
             'enabledNotifications' => 'Уведомлять о всех новых постах',
             'birthYear' => 'Год рождения',
             'gender' => 'Пол',
-            'info' => 'О себе'
+            'info' => 'О себе',
+            'newPassword' => 'Новый пароль'
         ];
     }
 
