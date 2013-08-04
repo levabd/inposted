@@ -63,7 +63,7 @@ $form = $this->beginWidget(
                         $user, 'Country_id', $countries,
                         [
                         'class'  => 'span12',
-                        'prompt' => 'Select ' . $user->getAttributeLabel('Country_id') . '...'
+                        'prompt' => '' . $user->getAttributeLabel('Country_id') . '...'
                         ]
                     )?>
                     <?=$form->error($user, 'Country_id')?>
