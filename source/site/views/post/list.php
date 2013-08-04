@@ -37,7 +37,7 @@ use site\models\Post;
                         <img alt="{{post.author.firstName}}" class="face" ng-src="{{post.author.avatarUrls[56]}}" title="{{post.author.firstName}}">
                     </a>
                 </div>
-				
+
             </div>
 
 
@@ -54,7 +54,7 @@ use site\models\Post;
                 </b>
                 <i class="float_right">{{post.date | date:'HH:mm dd MMM yyyy'}}</i>
 
-                <p ng-bind-html-unsafe="post.htmlContent"></p>
+                <p ng-bind-html-unsafe="disableCut && post.htmlContent || (post.htmlContent | cut)"></p>
             </div>
 
 
@@ -83,17 +83,17 @@ use site\models\Post;
                     <br/>
                 </div>
                 <div class="adm_butt_right">
-				
-				<a
-                    ng-href="{{post.viewUrl}}"
-                    ng-click="post.visited = true"
-                    class="btn btn-mini"
-                    ng-class="{'btn-warning' : !post.visited}"
-                    ng-hide="settings.page.post"
-                    title="Посмотреть пост"
-                    >
-                    <i class="icon-eye-open"> </i>
-                </a>
+
+                    <a
+                        ng-href="{{post.viewUrl}}"
+                        ng-click="post.visited = true"
+                        class="btn btn-mini"
+                        ng-class="{'btn-warning' : !post.visited}"
+                        ng-hide="settings.page.post"
+                        title="Посмотреть пост"
+                        >
+                        <i class="icon-eye-open"> </i>
+                    </a>
                     <button
                         class="btn btn-mini"
                         ng-click="vote(post, 'like')"

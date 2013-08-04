@@ -3,8 +3,13 @@
 /* Filters */
 
 angular.module('inposted.filters', []).
-  filter('interpolate', ['version', function(version) {
-    return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    }
-  }]);
+    filter('cut', [function () {
+        return function (string) {
+            var result = string.replace(/^(.{0,250})\s.*/, '$1');
+            if (result.length < string.length) {
+                result += '...';
+            }
+
+            return result;
+        }
+    }]);

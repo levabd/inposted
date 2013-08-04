@@ -21,7 +21,6 @@ use site\models\Post;
 
         <h3 id="createPostLabel" class="my_modal3">
             <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
-            <span id="create-post-left">{{<?=Post::MAX_POST_SIZE?> - newPost.content.length}}</span> символов осталось
         </h3>
     </div>
     <div class="modal-body mini_post_ser">

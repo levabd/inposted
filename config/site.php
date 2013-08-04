@@ -2,7 +2,7 @@
 /** @var $name string Name of sub-application */
 
 /**
- * @param string $script
+ * @param string    $script
  * @param null|bool $min
  *
  * @return string
@@ -34,7 +34,10 @@ return [
             'packages' => [
                 'app'                  => [
                     'baseUrl' => 'js/app',
-                    'js'      => ['app.js', 'directives.js', 'services.js', 'controllers.js', 'settings.js?path=' . trim($_SERVER['REQUEST_URI'], '/')],
+                    'js'      => [
+                        'app.js', 'directives.js', 'services.js', 'controllers.js', 'filters.js',
+                        'settings.js?path=' . trim($_SERVER['REQUEST_URI'], '/')
+                    ],
                 ],
 
                 'main'                 => [
@@ -105,15 +108,15 @@ return [
     ],
 
     'params'        => [
-        'oauthadmin'    => false,
+        'oauthadmin' => false,
 
-        'share'    => [
+        'share'      => [
             'url'         => 'http://inposted.com',
             'title'       => 'Inposted',
             'description' => 'Stay in touch with your interests.',
         ],
 
-        'metaTags' => [
+        'metaTags'   => [
             //That's how meta tags may be configured. Use site.local.php for this
             /*
             'site.index.guest' => [

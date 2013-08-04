@@ -116,6 +116,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         if (settings.page.post) {
             pager.disable(false);
             $scope.posts = [new Post(settings.page.post)];
+            $scope.disableCut = true;
         }
         else {
             pager.disable(true);
