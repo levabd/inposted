@@ -17,7 +17,7 @@ class PrivateMessage extends ActiveRecord
 
     public function rules() {
         return [
-            ['body, User_id_from, User_id_to', 'required'],
+            ['body, User_id_from, User_id_to', 'required','message'=>'Введите {attribute}'],
         ];
     }
 
