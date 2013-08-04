@@ -46,7 +46,7 @@
             class="btn btn-2mini"
             ng-click="createInterest(); $event.stopPropagation()"
             ng-show="search.term && search.term.length >= 3 && !existsInterest"
-            title="Create interest"
+            title="Создать Интерес"
             ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
         </button>
         <img src="<?= Yii()->baseUrl ?>/img/search.svg">

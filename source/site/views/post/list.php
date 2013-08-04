@@ -8,17 +8,17 @@ use site\models\Post;
 <div id="posts" in-infinite-posts="loadMorePosts()">
 
     <div class="block_sort" ng-show="posts.length > 1">
-        <b>Sort:</b>
+        <b>Сортировать по:</b>
         <a href="#" class="sort_post"
            ng-class="{active: sort.value == 'date'}"
            ng-click="sort.change('date', $event)"
             >
-            by date</a>,
+            дате</a>,
         <a href="#" class="sort_post"
            ng-class="{active: sort.value == 'votes'}"
            ng-click="sort.change('votes', $event)"
             >
-            by popularity
+            популярности
         </a>
     </div>
 
@@ -90,7 +90,7 @@ use site\models\Post;
                     class="btn btn-mini"
                     ng-class="{'btn-warning' : !post.visited}"
                     ng-hide="settings.page.post"
-                    title="Посмотреть запись"
+                    title="Посмотреть пост"
                     >
                     <i class="icon-eye-open"> </i>
                 </a>

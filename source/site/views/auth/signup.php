@@ -64,7 +64,7 @@ $countries = site\models\Country::model()->listData();
                 ng-click="submit()"
                 ng-disabled="_wait"
                 in-dots="_wait">
-                Next
+                Далее
             </button>
             <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Пропустить</button>
         </div>

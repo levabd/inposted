@@ -138,7 +138,7 @@ class User extends ActiveRecord
     public function attributeLabels() {
         return [
             'id'                   => 'ID',
-            'name'                 => 'Полное имя',
+            'name'                 => 'Полное Имя',
             'email'                => 'E-Mail',
             'password'             => 'Текущий пароль',
             'active'               => 'Активный',
@@ -149,7 +149,10 @@ class User extends ActiveRecord
             'nickname'             => 'Логин',
             'homepage'             => 'Веб-сайт',
             'enabledHints'         => 'Показывать подсказки',
-            'enabledNotifications' => 'Уведомлять о всех новых постах'
+            'enabledNotifications' => 'Уведомлять о всех новых постах',
+            'birthYear' => 'Год рождения',
+            'gender' => 'Пол',
+            'info' => 'О себе'
         ];
     }
 

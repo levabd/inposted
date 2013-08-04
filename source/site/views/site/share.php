@@ -24,7 +24,7 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                 <div class="span1"></div>
                 <div class="span10">
                     <div class="centering">
-                        <p>Поздравляем, Вы - один из первых!</p>
+                        <p>Поздравляем, Вы - один из первых зарегистрировавшихся!</p>
 
                         <p>За Ваше терпение Вы получите дополнительные возможности!</p>
 
@@ -48,10 +48,10 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
 
                             <a
                                 href="<?= $tumblrUrl ?>"
-                                title="Share on Tumblr"
+                                title="Поделится на Tumblr"
                                 style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent; float:left;"
                                 >
-                                Share on Tumblr
+                                Поделится на Tumblr
                             </a>
 
                             <a class="addthis_button_tweet"></a>
@@ -62,7 +62,7 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                     </div>
                     <div style="clear:both;"></div>
                     <div class="well" id="block_share">
-                        Share by e-mail:
+                        Поделится по e-mail:
                         <input
                             type="text"
                             style="margin-left:30px;width:74%;"
@@ -75,17 +75,17 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                         <textarea
                             style="width:97%;"
                             rows="10"
-                            placeholder="ВВедите сообщение"
+                            placeholder="Введите сообщение"
                             ng-model="share.message"
                             ></textarea>
-                        Share link:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
+                        Поделиться ссылкой:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
                         <button class="btn" class="mypre" ng-click="send()">Отправить приглашение</button>
                         <div class="well" style="margin-top: 20px; margin-bottom: 0" ng-show="state">
                             <div class="text-success" ng-show="state == 'success'">
-                                Your invitations was sent.
+                                Ваши приглашения были отосланы.
                             </div>
                             <div class="text-info" ng-show="state == 'pending'">
-                                Sending email...
+                                Письмо отправляется...
                             </div>
                             <div class="text-error" ng-show="state == 'error'">
                                 {{error}}

@@ -9,8 +9,8 @@
             <a href="<?= Yii()->createProfileUrl($user) ?>">
                 <?=$user->name?> (<?=$user->nickname?>)
             </a>
-            <b>Reputation: <?=$user->reputation?></b>
-            <b>Level: <?=$user->level?></b>
+            <b>Репутация: <?=$user->reputation?></b>
+            <b>Уровень: <?=$user->level?></b>
         </div>
         <div class="info_user_left ">
             <div class="avat_big">

@@ -28,7 +28,7 @@ use site\models\Post;
         <div class="row-fluid">
             <div class="span8">
                 <textarea name="create-post-textarea" class="span12" rows="10" ng-model="newPost.content"></textarea>
-                <button class="btn" ng-click="createNewPost()" ng-disabled="!enabled">Добавить</button>
+                <button class="btn" ng-click="createNewPost()" ng-disabled="!enabled">Опубликовать</button>
                 <span class="text-error" ng-show="newPost.error">{{newPost.error}}</span>
             </div>
             <div class="span4">

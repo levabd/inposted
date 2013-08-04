@@ -51,7 +51,7 @@ $form = $this->beginWidget(
     <div class="span12">
         <div class="well mini_post_white">
             <div class="info_title ">
-                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Лтчное</h3></div>
+                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Личное</h3></div>
             <div class="row-fluid">
                 <div class="span6">
                     <?=$form->textField($user, 'email', ['class' => 'span12'])?><br>
@@ -92,7 +92,7 @@ $form = $this->beginWidget(
                     <?=$form->error($user, 'homepage')?>
                     <?=$form->textField($user, 'birthYear', ['class' => 'span6'])?><br>
                     <?=$form->error($user, 'birthYear')?>
-                    <?=$form->dropDownList($user, 'gender', ['male' => 'Male', 'female' => 'Female'], ['class' => 'span6', 'prompt' => 'Your gender...'])?><br>
+                    <?=$form->dropDownList($user, 'gender', ['male' => 'Мужской', 'female' => 'Женский'], ['class' => 'span6', 'prompt' => 'Ваш пол...'])?><br>
                     <?=$form->error($user, 'gender')?>
                     <?//$form->dropDownList(
 //                        $user, 'timezone', $timezoneTable,

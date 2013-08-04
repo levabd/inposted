@@ -10,7 +10,7 @@ $baseUrl = Yii()->baseUrl;
 <div class="well mini_post_white" ng-controller="inposted.controllers.auth">
     <div class="well yellow">
         <span class="ref_main">
-            <b ng-show="state.is('signin')">Зайти</b>
+            <b ng-show="state.is('signin')">Вход</b>
             <b ng-show="state.is('restore')">Отправить новый пароль</b>
         </span>
     </div>
@@ -26,7 +26,7 @@ $baseUrl = Yii()->baseUrl;
                 {{errors.username}}
             </div>
 
-            <input placeholder="Password" style="width:85%;" name="Signin[password]" type="password" ng-model="user.password" auto-fill-sync="#signin-button">
+            <input placeholder="Пароль" style="width:85%;" name="Signin[password]" type="password" ng-model="user.password" auto-fill-sync="#signin-button">
 
             <div class="text-error error-message" ng-show="errors.password">
                 {{errors.password}}
@@ -42,7 +42,7 @@ $baseUrl = Yii()->baseUrl;
                     ng-click="signin()"
                     style="width: 83px; text-align: left; margin-right: 7px;"
                     >
-                    Sign in
+                    Войти
                 </button>
             </div>
 
@@ -64,13 +64,13 @@ $baseUrl = Yii()->baseUrl;
             <? /*<a href=""><img src="<?= $baseUrl ?>/img/h.png"></a> */ ?>
         </span><br/>
         <span class="ref_mess clickable" ng-click="state.set('restore')">
-            Forgot your password?
+            Забыли пароль?
         </span>
         <br/>
 
-        Not registered?
+        Еще не зарегистрированы?
         <span class="clickable ref_mess" ng-click="initSignup()">
-            Join us!
+            Присоединяйтесь!
         </span>
     </div>
 
