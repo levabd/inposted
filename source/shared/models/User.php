@@ -85,16 +85,16 @@ class User extends ActiveRecord
      */
     public function rules() {
         return [
-            ['nickname, email', 'required'],
+            ['nickname, email', 'required','message'=>'Введите {attribute}'],
             [
                 'nickname', 'in', 'not' => true,
                 'range'                 => ['restore', 'register', 'profile', 'settings'],
-                'message'               => '{attribute} not allowed'
+                'message'               => '{attribute} не разрешен'
             ],
 
-            ['email, nickname', 'unique'],
-            ['email', 'email'],
-            ['email, name, nickname', 'length', 'max' => 255],
+            ['email, nickname', 'unique','message'=>'Такой {attribute} уже существует'],
+            ['email', 'email','message'=>'Неправильный формат пароля'],
+            ['email, name, nickname', 'length', 'max' => 255,'message'=>'{attribute} очень длинный'],
             ['homepage', 'length', 'max' => 1024],
             ['Country_id', 'exist', 'className' => $this->ns('Country'), 'attributeName' => 'id'],
             ['timezone', 'numerical', 'min' => -12, 'max' => 12],
@@ -103,7 +103,7 @@ class User extends ActiveRecord
 
             ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
             ['avatarUpload', 'validImage'],
-            ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true],
+            ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true,'message'=>'Недопустимый год рождения'],
             ['gender', 'in', 'range' => ['male', 'female']],
             ['birthYear,gender', 'default', 'setOnEmpty' => true, 'value' => null],
         ];
