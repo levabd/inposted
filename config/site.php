@@ -105,7 +105,7 @@ return [
     ],
 
     'params'        => [
-        'oauthadmin'    => true,
+        'oauthadmin'    => false,
 
         'share'    => [
             'url'         => 'http://inposted.com',
