@@ -67,7 +67,7 @@ class AuthController extends components\WidgetController
      * Declares class-based actions.
      */
     public function actions() {
-        return array(
+        $actions = array(
             'oauth' => array(
                 // the list of additional properties of this action is below
                 'class'             => 'site\components\oauth\OAuthAction',
@@ -107,13 +107,19 @@ class AuthController extends components\WidgetController
                     },
                 ),
             ),
-            // this is an admin action that will help you to configure HybridAuth
-            // (you must delete this action, when you'll be ready with configuration, or
-            // specify rules for admin role. User shouldn't have access to this action!)
-//            'oauthadmin' => array(
-//                'class' => 'ext.hoauth.HOAuthAdminAction',
-//            ),
         );
+
+        // this is an admin action that will help you to configure HybridAuth
+        // (you must delete this action, when you'll be ready with configuration, or
+        // specify rules for admin role. User shouldn't have access to this action!)
+
+        if(Yii()->params->itemAt('oauthadmin')){
+            $actions['oauthadmin'] = array(
+                'class' => 'ext.hoauth.HOAuthAdminAction',
+            );
+        }
+
+        return $actions;
     }
 
     protected function goSignIn() {
