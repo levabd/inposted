@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="span7">
-            Reputation: <?= $user->reputation ?><br>
-            Level: <?= $user->level ?><br>
+            Репутация: <?= $user->reputation ?><br>
+            Уровень: <?= $user->level ?><br>
             <?php if ($user->country): ?>
                 <img
                     class="country"

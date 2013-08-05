@@ -85,25 +85,25 @@ class User extends ActiveRecord
      */
     public function rules() {
         return [
-            ['nickname, email', 'required'],
+            ['nickname, email', 'required','message'=>'Введите {attribute}'],
             [
                 'nickname', 'in', 'not' => true,
                 'range'                 => ['restore', 'register', 'profile', 'settings'],
-                'message'               => '{attribute} not allowed'
+                'message'               => '{attribute} не разрешен'
             ],
 
-            ['email, nickname', 'unique'],
-            ['email', 'email'],
-            ['email, name, nickname', 'length', 'max' => 255],
+            ['email, nickname', 'unique','message'=>'Такой {attribute} уже существует'],
+            ['email', 'email','message'=>'Неправильный формат пароля'],
+            ['email, name, nickname', 'length', 'max' => 255,'message'=>'{attribute} очень длинный'],
             ['homepage', 'length', 'max' => 1024],
             ['Country_id', 'exist', 'className' => $this->ns('Country'), 'attributeName' => 'id'],
             ['timezone', 'numerical', 'min' => -12, 'max' => 12],
             ['info, enabledHints, enabledNotifications', 'safe'],
             ['homepage', 'url'],
 
-            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true],
+            ['avatarUpload', 'file', 'types' => 'jpg, jpeg, gif, png, bmp', 'allowEmpty' => true,'message'=>'Недопустимое расширение'],
             ['avatarUpload', 'validImage'],
-            ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true],
+            ['birthYear', 'numerical', 'integerOnly' => true, 'min' => 1900, 'max' => date('Y'), 'allowEmpty' => true,'message'=>'Недопустимый год рождения'],
             ['gender', 'in', 'range' => ['male', 'female']],
             ['birthYear,gender', 'default', 'setOnEmpty' => true, 'value' => null],
         ];
@@ -114,7 +114,7 @@ class User extends ActiveRecord
             try {
                 new \Imagick($this->$attribute->tempName);
             } catch (\ImagickException $e) {
-                $this->addError($attribute, 'Invalid image file');
+                $this->addError($attribute, 'Неверный файл изображения');
             }
         }
     }
@@ -138,18 +138,22 @@ class User extends ActiveRecord
     public function attributeLabels() {
         return [
             'id'                   => 'ID',
-            'name'                 => 'Full Name',
+            'name'                 => 'Полное Имя',
             'email'                => 'E-Mail',
-            'password'             => 'Current Password',
-            'active'               => 'Active',
-            'dateCreated'          => 'Date Created',
-            'dateAccessed'         => 'Date Accessed',
-            'note'                 => 'Note',
-            'Country_id'           => 'Country',
-            'nickname'             => 'Login',
-            'homepage'             => 'Web-site',
-            'enabledHints'         => 'Show Hints',
-            'enabledNotifications' => 'Notify about all new posts'
+            'password'             => 'Текущий пароль',
+            'active'               => 'Активный',
+            'dateCreated'          => 'Дата создания',
+            'dateAccessed'         => 'Дата захода',
+            'note'                 => 'Запись',
+            'Country_id'           => 'Страна',
+            'nickname'             => 'Логин',
+            'homepage'             => 'Веб-сайт',
+            'enabledHints'         => 'Показывать подсказки',
+            'enabledNotifications' => 'Уведомлять о всех новых постах',
+            'birthYear' => 'Год рождения',
+            'gender' => 'Пол',
+            'info' => 'О себе',
+            'newPassword' => 'Новый пароль'
         ];
     }
 

@@ -16,14 +16,6 @@ class InpostedUser extends \CWebUser
 
     public $loginRequiredAjaxResponse = '401';
 
-    public function init() {
-        parent::init();
-        \Yii::trace($this->getIsGuest() ? 'Guest' : join($this->getRoles(), ', '), 'user.roles');
-        \Yii::trace(print_r($this->getFlashes(false), true), 'user.flashes');
-        \Yii::trace(print_r($_SESSION, true), 'user.session');
-        \Yii::trace($this->getReturnUrl(), 'user.returnUrl');
-    }
-
     /**
      * Redirects the user browser to the login page.
      * Before the redirection, the current URL (if it's not an AJAX url) will be
@@ -60,7 +52,7 @@ class InpostedUser extends \CWebUser
             }
             $request->redirect($url);
         } else {
-            throw new \CHttpException(403, Yii::t('yii', 'Login Required'));
+            throw new \CHttpException(403, Yii::t('yii', 'Требуется логин'));
         }
     }
 
@@ -77,25 +69,11 @@ class InpostedUser extends \CWebUser
     }
 
     public function getHomeUrl() {
-        if ($this->getIsAdmin()) {
-            $home = ['admin:admin/index'];
-        } else {
-            $home = ['site:site/index'];
-        }
-
-        return $this->getState('__homeUrl', $home);
+        return $this->getState('__homeUrl', ['site:site/index']);
     }
 
     public function getReturnUrl($default = ['site:site/index']) {
         return parent::getReturnUrl($default);
-    }
-
-    public function getRoles() {
-        if (!$this->_roles) {
-            $this->_roles = array_keys(Yii()->getAuthManager()->getRoles($this->getId() ? : false));
-        }
-
-        return $this->_roles;
     }
 
     protected function afterLogin($fromCookie) {
@@ -104,49 +82,6 @@ class InpostedUser extends \CWebUser
         $this->getModel()->markAccessed();
 
         parent::afterLogin($fromCookie);
-    }
-
-    public function isA($role) {
-        \Yii::trace("Checking user role \"$role\"", 'user');
-        return in_array($role, $this->getRoles());
-    }
-
-    public function getIsAdmin() {
-        return !$this->isGuest && $this->isA('Admin');
-    }
-
-    public function getWasAdmin() {
-        return $this->getState('i-was-admin');
-    }
-
-    public function setWasAdmin($value = true) {
-        return $this->setState('i-was-admin', $value);
-    }
-
-    public function getIsUser() {
-        return !$this->isGuest && $this->isA('User');
-    }
-
-    public static function makeA($role, $id) {
-        $a = Yii()->authManager;
-
-        try {
-            if (!$a->getAuthAssignment($role, $id)) {
-                $a->assign($role, $id);
-            }
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function makeUser($id) {
-        return self::makeA(self::ROLE_USER, $id);
-    }
-
-    public static function makeAdmin($id) {
-        return self::makeA(self::ROLE_ADMIN, $id);
     }
 
     public function setSuccess($message) {

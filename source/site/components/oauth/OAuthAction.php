@@ -128,7 +128,7 @@ class OAuthAction extends \HOAuthAction
                     }
                 } else {
                     // this social network account is bond to existing local account
-                    Yii::log("Logged in with existing link with '$provider' provider", CLogger::LEVEL_INFO, 'hoauth.' . __CLASS__);
+                    Yii::log("Вошли в систему с помощью существующей ссылки через '$provider'", CLogger::LEVEL_INFO, 'hoauth.' . __CLASS__);
                     $user = call_user_func(array($this->model, 'model'))->findByPk($oAuth->user_id);
                 }
 
@@ -136,11 +136,11 @@ class OAuthAction extends \HOAuthAction
                 $identity = new $this->identityClass($user->email, null);
 
                 if (!Yii::app()->user->login($identity, $this->duration)) {
-                    throw new CException("Can't sign in, something wrong with UserIdentity class.");
+                    throw new CException("Не могу войти, что-то с классом UserIdentity.");
                 }
 
                 if (!$oAuth->bindTo($user->primaryKey)) {
-                    throw new CException("Error, while binding user to provider:\n\n" . \CJSON::encode($oAuth->errors));
+                    throw new CException("Ошибка привязки пользователя к провайдеру:\n\n" . \CJSON::encode($oAuth->errors));
                 }
             }
         } catch (Exception $e) {
@@ -149,38 +149,38 @@ class OAuthAction extends \HOAuthAction
                 $code = 500;
                 switch ($e->getCode()) {
                     case 0 :
-                        $error = "Unspecified error.";
+                        $error = "Неизвестная ошибка.";
                         break;
                     case 1 :
-                        $error = "Hybriauth configuration error.";
+                        $error = "Ошибка конфигурации Hybriauth.";
                         break;
                     case 2 :
-                        $error = "Provider not properly configured.";
+                        $error = "Провайдер неверно сконфигурирован.";
                         break;
                     case 3 :
-                        $error = "Unknown or disabled provider.";
+                        $error = "Неизвестный или заблокированный провайдер.";
                         break;
                     case 4 :
-                        $error = "Missing provider application credentials.";
+                        $error = "Отсутствуют учетные данные.";
                         break;
                     case 5 :
-                        $error = "Authentication failed. The user has canceled the authentication or the provider refused the connection.";
+                        $error = "Ошибка аутентификации. Пользователь отменил аутентификацию или провайдер отменил связь.";
                         $code = 403;
                         break;
                     case 6 :
-                        $error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again.";
+                        $error = "Провалился запрос профиля пользователя. Скорее всего, пользователь не подключен к провайдеру и он должен переподключится.";
                         break;
                     case 7 :
-                        $error = "User not connected to the provider.";
+                        $error = "Пользователь не подключен к провайдеру.";
                         break;
                     case 8 :
-                        $error = "Provider does not support this feature.";
+                        $error = "Провайдер не поддерживает эту функцию.";
                         break;
                     default:
                         $error = '';
                 }
 
-                Yii::log($error . "\n\n<br /><br /><b>Original error message:</b> " . $e->getMessage(), CLogger::LEVEL_WARNING, 'hoauth.' . __CLASS__);
+                Yii::log($error . "\n\n<br /><br /><b>Исходное сообщение об ошибке:</b> " . $e->getMessage(), CLogger::LEVEL_WARNING, 'hoauth.' . __CLASS__);
                 throw new \CHttpException($code, $error);
             }
         }

@@ -66,7 +66,7 @@ class SettingsController extends Controller
 
             echo "angular.module('inposted.services').value('settings',$settings);";
         } catch (\Exception $e) {
-            echo "alert('Page load failed. Please contact support: info@inposted.com')\n";
+            echo "alert('Не удалось загрузить страницу. Пожалуйста, свяжитесь со службой поддержки: info@inposted.com')\n";
             echo "console && console.log('{$e}')";
         }
     }

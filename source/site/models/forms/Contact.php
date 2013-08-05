@@ -14,20 +14,20 @@ class Contact extends \base\FormModel
     public function rules() {
         return array(
             // name, email, subject and body are required
-            array('name, email, subject, body', 'required'),
+            array('name, email, subject, body', 'required','message'=>'Введите {attribute}'),
             // email has to be a valid email address
-            array('email', 'email'),
-            array('url', 'url'),
+            array('email', 'email','message'=>'Неверный формат email'),
+            array('url', 'url','message'=>'Неверная ссылка'),
             array('skipVerify', 'safe'),
             // verifyCode needs to be entered correctly
-            array('verifyCode', 'captcha', 'allowEmpty' => !\CCaptcha::checkRequirements() || Yii()->getRequest()->getPost('skipVerify')),
+            array('verifyCode', 'captcha', 'allowEmpty' => !\CCaptcha::checkRequirements() || Yii()->getRequest()->getPost('skipVerify'),'message'=>'Неверный код'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'url' => 'Your website',
-            'verifyCode' => 'Verification Code',
+            'url' => 'Ваш веб-сайт',
+            'verifyCode' => 'Код подтверждения',
         );
     }
 

@@ -3,11 +3,11 @@
         <strong><?=$model->email?></strong>
     </p>
 
-    <p>If your email is mistyped, <a href="<?=$this->contactUrl?>">please go back to correct it</a>.</p>
+    <p>Если Ваше письмо неверно набрано, <a href="<?=$this->contactUrl?>">пожалуйста, вернитесь и исправьте</a>.</p>
 
     <p>
-        Time now: <b><?=date('g:ia')?></b> <?=date('(T)')?><br/>
-        Working hours (Mon-Fri): <b>9:00am - 5:00pm</b> (GMT)<br/>
-        Expected reply time: within <b><?=Contact::getAverageReplyTime()?> hours</b>
+        Сейчас: <b><?=date('g:ia')?></b> <?=date('(T)')?><br/>
+        Рабочие часы (Пон-Пят): <b>9:00am - 5:00pm</b> (GMT)<br/>
+        Среднее время ответа: в течении <b><?=Contact::getAverageReplyTime()?> часов</b>
     </p>
 </div>

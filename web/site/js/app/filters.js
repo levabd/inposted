@@ -3,8 +3,20 @@
 /* Filters */
 
 angular.module('inposted.filters', []).
-  filter('interpolate', ['version', function(version) {
-    return function(text) {
-      return String(text).replace(/\%VERSION\%/mg, version);
-    }
-  }]);
+    filter('cut', [function () {
+        return function (string) {
+            if(string.length > 250){
+                var result = string.replace(/^(.{0,250})\s.*/, '$1');
+
+                //TODO: prevent html link break
+
+                if (result.length < string.length) {
+                    result += '...';
+                }
+
+                return result;
+            }
+
+            return string;
+        }
+    }]);

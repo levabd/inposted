@@ -37,7 +37,7 @@ class AuthController extends components\WidgetController
         return array(
             array(
                 'allow',
-                'roles' => array('User')
+                'users' => array('@')
             ),
             array(
                 'deny',
@@ -67,7 +67,7 @@ class AuthController extends components\WidgetController
      * Declares class-based actions.
      */
     public function actions() {
-        return array(
+        $actions = array(
             'oauth' => array(
                 // the list of additional properties of this action is below
                 'class'             => 'site\components\oauth\OAuthAction',
@@ -107,13 +107,19 @@ class AuthController extends components\WidgetController
                     },
                 ),
             ),
-            // this is an admin action that will help you to configure HybridAuth
-            // (you must delete this action, when you'll be ready with configuration, or
-            // specify rules for admin role. User shouldn't have access to this action!)
-//            'oauthadmin' => array(
-//                'class' => 'ext.hoauth.HOAuthAdminAction',
-//            ),
         );
+
+        // this is an admin action that will help you to configure HybridAuth
+        // (you must delete this action, when you'll be ready with configuration, or
+        // specify rules for admin role. User shouldn't have access to this action!)
+
+        if(Yii()->params->itemAt('oauthadmin')){
+            $actions['oauthadmin'] = array(
+                'class' => 'ext.hoauth.HOAuthAdminAction',
+            );
+        }
+
+        return $actions;
     }
 
     protected function goSignIn() {
@@ -133,7 +139,6 @@ class AuthController extends components\WidgetController
         $model = new models\User('signup');
 
         if (($model->attributes = $this->getJson()) && $model->save()) {
-            InpostedUser::makeUser($model->id);
             $this->sendVerificationLink($model);
             User()->login(new \shared\components\UserIdentity($model));
         }
@@ -164,13 +169,13 @@ class AuthController extends components\WidgetController
             $email = array_path($params, 'email');
 
             if (time() - $time > 1800) {
-                $user->setError('Unable to verify email. Signature expired');
+                $user->setError('Не удалось подтвердить e-mail. Истек ключ.');
             } else {
                 if ($email != $userModel->email) {
-                    $user->setError('Unable to verify email. Emails don\'t match.');
+                    $user->setError('Не удалось подтвердить e-mail. Элетронные адреса не совпадают.');
                 } else {
                     $userModel->markVerified();
-                    $user->setSuccess('Your email was successfully verified.');
+                    $user->setSuccess('Ваш элетронный адрес был успешно подтвержден.');
                 }
             }
             $this->goHome();
@@ -233,7 +238,7 @@ class AuthController extends components\WidgetController
         } else {
             $policy = $this->decryptPolicy($policy);
             if (!$policy) {
-                throw new CHttpException(403, 'Invalid signature');
+                throw new CHttpException(403, 'Неверный ключ');
             }
 
             list(, $params, $time) = $policy;
@@ -241,7 +246,7 @@ class AuthController extends components\WidgetController
             $username = array_path($params, 'username');
 
             if (time() - $time > 900) {
-                throw new CHttpException(403, 'Signature expired');
+                throw new CHttpException(403, 'Ключ истек');
             }
 
             $model = new Restore('set-password');
@@ -260,7 +265,7 @@ class AuthController extends components\WidgetController
             $user->resetPassword($form->password);
             $user->save();
 
-            User()->setSuccess('Your password was successfully changed');
+            User()->setSuccess('Ваш пароль был успешно изменен.');
             User()->login(new \shared\components\UserIdentity($user));
             $this->goHome();
         }
@@ -305,6 +310,6 @@ class AuthController extends components\WidgetController
             )
         );
 
-        $this->renderJson(['success' => "Password restore link was sent to {$form->username}"]);
+        $this->renderJson(['success' => "Ссылка на восстановление пароля была отправлена {$form->username}"]);
     }
 }

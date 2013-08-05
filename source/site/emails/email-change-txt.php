@@ -1,10 +1,10 @@
-Dear <?=$firstName?>,
+Уважаемый <?=$firstName?>,
 
-Please click this link to confirm your new email address of <?=$email?>:
+Пожалуйста, перейдите по этой ссылке чтобы подтвердить Ваш новый электронный адрес <?=$email?>:
 
 <?=$link?>
 
 
-Thanks,
+Спасибо,
 
-- The Inposted Team
+- Команда Inposted

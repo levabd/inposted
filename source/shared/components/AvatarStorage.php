@@ -109,7 +109,7 @@ class AvatarStorage extends \CApplicationComponent
         $gender = $gender ?: 'male';
 
         if(!isset($this->_defaultAvatars[$gender])){
-            throw new \CException("Avatar for gender $gender is not configured");
+            throw new \CException("Аватар для пола $gender не настроен");
         }
         return $this->_defaultAvatars[$gender];
     }

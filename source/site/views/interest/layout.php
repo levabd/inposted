@@ -4,7 +4,7 @@
 ?>
 <div class="well mini_post_white">
     <div class="well yellow" >
-        <span class="ref_main"><b>Interests</b></span>
+        <span class="ref_main"><b>Интересы</b></span>
     </div>
     <br>
     <?=$content?>

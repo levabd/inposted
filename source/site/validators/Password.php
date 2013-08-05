@@ -23,7 +23,7 @@ class Password extends \CValidator
         $error = null;
 
         if (mb_strtolower($password, $encoding) == $password || mb_strtoupper($password, $encoding) == $password) {
-            $error = '{attribute} should contain letters in different case';
+            $error = '{attribute} должен содержать буквы разного регистра';
         } else {
             $charCounts = [];
             for ($i = 0; $i < $length; $i++) {
@@ -33,7 +33,7 @@ class Password extends \CValidator
                 } else {
                     $charCounts[$char]++;
                     if ($charCounts[$char] > $this->maxSameChars) {
-                        $error = '{attribute} can not contain more than {num} same characters.';
+                        $error = '{attribute} не может содержать более {num} одинаковых символов.';
                         break;
                     }
                 }

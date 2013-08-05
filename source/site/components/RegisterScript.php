@@ -58,7 +58,7 @@ class RegisterScript extends \CWidget
             Yii()->clientScript->registerScript(__CLASS__ . "#js#$this->id", $data, $this->position);
         }
         else {
-            throw new \CException(__CLASS__ . ": Unknown script type $type.");
+            throw new \CException(__CLASS__ . ": Неизвестный тип скрипта $type.");
         }
     }
 

@@ -28,13 +28,13 @@ class Signin extends \base\FormModel
     public function rules() {
         return array(
             // username and password are required
-            array('username', 'required'),
-            array('password', 'required', 'on' => 'login'),
+            array('username', 'required','message'=>'Введите логин/email'),
+            array('password', 'required', 'on' => 'login','message'=>'Введите пароль'),
             // password needs to be authenticated
             array('password', 'authenticate', 'on' => 'login'),
             // rememberMe needs to be a boolean
             array('rememberMe', 'boolean'),
-            array('username', 'exist', 'className' => 'site\models\User', 'attributeName' => 'email', 'message' => 'Account doesn\'t exist', 'on' => 'restore'),
+            array('username', 'exist', 'className' => 'site\models\User', 'attributeName' => 'email', 'message' => 'Аккаунт не существует', 'on' => 'restore'),
         );
     }
 
@@ -43,9 +43,9 @@ class Signin extends \base\FormModel
      */
     public function attributeLabels() {
         return array(
-            'username' => 'E-Mail',
-            'password' => 'Password',
-            'rememberMe' => 'Remember me',
+            'username' => 'Логин',
+            'password' => 'Пароль',
+            'rememberMe' => 'Запомнить',
         );
     }
 
@@ -55,7 +55,7 @@ class Signin extends \base\FormModel
      */
     public function authenticate($attribute, $params) {
         if (!$this->hasErrors() && !$this->identity->isAuthenticated) {
-            $this->addError('password', 'Incorrect username or password.');
+            $this->addError('password', 'Неверный логин или пароль.');
         }
     }
 

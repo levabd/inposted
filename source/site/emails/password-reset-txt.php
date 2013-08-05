@@ -1,10 +1,10 @@
-Dear <?=$firstName?>,
+Уважаемый <?=$firstName?>,
 
-Please click this link to choose your new Inposted password:
+Пожалуйста, кликните ссылку для выбора нового пароля на Inposted:
 
 <?=$link?>
 
 
-Thanks,
+Спасибо,
 
-- The Inposted Team
+- Команда Inposted

@@ -75,9 +75,9 @@ class UserInfoForm extends \CFormModel
 
     public function attributeLabels() {
         return array(
-            'email'    => OAuthAction::t('Email'),
-            'username' => OAuthAction::t('Nickname'),
-            'password' => OAuthAction::t('Password'),
+            'email'    => OAuthAction::t('E-mail'),
+            'username' => OAuthAction::t('Логин'),
+            'password' => OAuthAction::t('Пароль'),
         );
     }
 
@@ -96,7 +96,7 @@ class UserInfoForm extends \CFormModel
         /** @var $user \site\models\User */
         $user = $this->model->findByEmail($this->email);
         if (!$user->validatePassword($this->password)) {
-            $this->addError('password', OAuthAction::t('Sorry, but password is incorrect'));
+            $this->addError('password', OAuthAction::t('Извините, но пароль неверный'));
         } else {
             // setting up the current model, to use it later in OAuthAction
             if ($this->nameAtt && !isset($this->getPost()['username'])) {
@@ -148,7 +148,7 @@ class UserInfoForm extends \CFormModel
                      'buttons'    => array(
                          'submit' => array(
                              'type'  => 'submit',
-                             'label' => OAuthAction::t('Submit'),
+                             'label' => OAuthAction::t('Отправить'),
                          ),
                          '</div>',
                      ),
@@ -221,7 +221,7 @@ class UserInfoForm extends \CFormModel
                         if ($attribute == $emailAtt) {
                             $this->addError(
                                 'email', OAuthAction::t(
-                                    "This $attribute is taken by another user. If this is your account, enter password in field below or change $attribute and leave password blank."
+                                    "Этот $attribute занят другим пользователем. Если это Ваш аккаунт - введите пароль в поле внизу или измените $attribute и оставьте поле пароля пустым."
                                 )
                             );
                             $passwordRequired = true;
@@ -295,15 +295,15 @@ class UserInfoForm extends \CFormModel
         switch ($this->scenario) {
             case 'both':
             case 'both_pass':
-                $header = OAuthAction::t('Please specify your nickname and email to end with registration.');
+                $header = OAuthAction::t('Пожалуйста, укажите логин и e-mail, чтобы завершить регистрацию.');
                 break;
             case 'username':
             case 'username_pass':
-                $header = OAuthAction::t('Please specify your nickname to end with registration.');
+                $header = OAuthAction::t('Пожалуйста, укажите логин, чтобы завершить регистрацию.');
                 break;
             case 'email':
             case 'email_pass':
-                $header = OAuthAction::t('Please specify your email to end with registration.');
+                $header = OAuthAction::t('Пожалуйста, укажите e-mail, чтобы завершить регистрацию.');
                 break;
             default:
                 $header = null;

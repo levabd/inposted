@@ -18,19 +18,19 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
     <div class="span10">
         <div class="well" class="mini_post_white">
             <div class="info_title ">
-                <h3 id="myModalLabel" class="my_modal3"><img src="<?= Yii()->baseUrl ?>/img/logo_icon.png"> And finally...</h3>
+                <h3 id="myModalLabel" class="my_modal3"><img src="<?= Yii()->baseUrl ?>/img/logo_icon.png"> И наконец...</h3>
             </div>
             <div class="row-fluid">
                 <div class="span1"></div>
                 <div class="span10">
                     <div class="centering">
-                        <p>Congratulations, you're among the first registered!</p>
+                        <p>Поздравляем, Вы - один из первых зарегистрировавшихся!</p>
 
-                        <p>In exchange for your patience while waiting for the site you will get extra features!</p>
+                        <p>За Ваше терпение Вы получите дополнительные возможности!</p>
 
-                        <p>For now you can invite your friends to visit this site. </p>
+                        <p>Сейчас Вы можете пригласить друзей на этот сайт. </p>
 
-                        <p>And follow the news on our <a href="http://inposted.info/" class="ref_mess">blog</a></p>
+                        <p>И следите за новостями на нашем <a href="http://inposted.info/" class="ref_mess">блоге</a></p>
 
                         <p>
 
@@ -48,10 +48,10 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
 
                             <a
                                 href="<?= $tumblrUrl ?>"
-                                title="Share on Tumblr"
+                                title="Поделится на Tumblr"
                                 style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent; float:left;"
                                 >
-                                Share on Tumblr
+                                Поделится на Tumblr
                             </a>
 
                             <a class="addthis_button_tweet"></a>
@@ -62,12 +62,12 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                     </div>
                     <div style="clear:both;"></div>
                     <div class="well" id="block_share">
-                        Share by e-mail:
+                        Поделится по e-mail:
                         <input
                             type="text"
                             style="margin-left:30px;width:74%;"
                             class="input"
-                            placeholder="Enter e-mails (comma separated)"
+                            placeholder="Введите e-mail адреса (разделенные запятыми)"
                             ng-model="share.emails"
                             required
                             >
@@ -75,22 +75,22 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                         <textarea
                             style="width:97%;"
                             rows="10"
-                            placeholder="Enter your message"
+                            placeholder="Введите сообщение"
                             ng-model="share.message"
                             ></textarea>
-                        Share link:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
-                        <button class="btn" class="mypre" ng-click="send()">Send invite</button>
+                        Поделиться ссылкой:<span style="margin-left:30px;width:50%; margin-bottom: 0" class="uneditable-input input"><?= $link ?></span>
+                        <button class="btn" class="mypre" ng-click="send()">Отправить приглашение</button>
                         <div class="well" style="margin-top: 20px; margin-bottom: 0" ng-show="state">
                             <div class="text-success" ng-show="state == 'success'">
-                                Your invitations was sent.
+                                Ваши приглашения были отосланы.
                             </div>
                             <div class="text-info" ng-show="state == 'pending'">
-                                Sending email...
+                                Письмо отправляется...
                             </div>
                             <div class="text-error" ng-show="state == 'error'">
                                 {{error}}
                                 <div ng-show="errorsLength()">
-                                    There was some error while sending your invites
+                                    Произошла ошибка во время отправки приглашений
                                     <div ng-repeat="(email, error) in errors">
                                         {{email}}: {{error}}
                                     </div>

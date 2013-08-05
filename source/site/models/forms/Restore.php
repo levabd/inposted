@@ -17,14 +17,14 @@ class Restore extends \base\FormModel
      */
     public function rules() {
         return [
-            ['username', 'required'],
+            ['username', 'required','message'=>'Введите e-mail'],
             ['username', 'validateUser'],
             ['username', 'unsafe', 'on' => 'set-password'],
 
-            ['password', 'required', 'on' => 'set-password'],
-            ['password', 'length', 'min' => 6, 'on' => 'set-password'],
-            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'username', 'on' => 'set-password'],
-            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname', 'on' => 'set-password'],
+            ['password', 'required', 'on' => 'set-password','message'=>'Введите пароль'],
+            ['password', 'length', 'min' => 6, 'on' => 'set-password','message'=>'Пароль слишком короткий (минимум 6 символов)'],
+            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'username', 'on' => 'set-password','message'=>'Пароль не может быть таким же как e-mail'],
+            ['password', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname', 'on' => 'set-password','message'=>'Пароль не может быть таким же как логин']],
             ['password', 'site\validators\Password', 'on' => 'set-password'],
         ];
     }
@@ -35,7 +35,8 @@ class Restore extends \base\FormModel
     public function attributeLabels() {
         return array(
             'username' => 'E-Mail',
-            'password' => 'Password',
+            'password' => 'Пароль',
+            'nickname' => 'Логин',
         );
     }
 
@@ -46,7 +47,7 @@ class Restore extends \base\FormModel
         }
         $this->user = $user;
         if (!$user) {
-            $this->addError($attribute, "Account doesn't exist");
+            $this->addError($attribute, "Аккаунт не существует");
         }
         else{
             $this->nickname = $user->nickname;

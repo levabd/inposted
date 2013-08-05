@@ -25,7 +25,7 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionIndex() {
-        $this->pageTitle = Yii()->user->isGuest ? [] : ['Home'];
+        $this->pageTitle = Yii()->user->isGuest ? [] : ['Домашняя страница'];
         $this->attachMetaTags(Yii()->user->isGuest ? 'site.index.guest' : 'site.index.user');
 
         $this->render('//post/list');
@@ -55,13 +55,13 @@ class SiteController extends \site\components\Controller
 
                 try {
                     Messenger()->getMailer()->send($msg);
-                    User()->setSuccess("Thank you for contacting us");
+                    User()->setSuccess("Спасибо за то что связались с нами");
 
                     User()->setFlash($successFlashName, \CJSON::encode($model));
                     $this->goBack();
                 } catch (Exception $e) {
-                    User()->setError("Message was not sent. We were notified about this error.");
-                    $logmsg = "Couldn't send contact message:\n"
+                    User()->setError("Сообщение не было отослано. Мы уведомлены об этой ошибке.");
+                    $logmsg = "Невозможно отправить сообщение:\n"
                         . "From    = $name <$from>\n"
                         . "Subject = $subject\n"
                         . "Body    = $body\n"
@@ -95,15 +95,15 @@ class SiteController extends \site\components\Controller
         if ($emails) {
             $mailer = Yii()->mailer;
 
-            $title = 'Invitation to Inposted.com';
-            $body = ($message ? : 'Check this out:') . "\n\n" . $link;
+            $title = 'Приглашение посетить Inposted.com';
+            $body = ($message ? : 'Перейдите по этой ссылке:') . "\n\n" . $link;
 
             $errors = (object)[];
             foreach (array_unique(preg_split('/[,\s]+/', $emails)) as $email) {
                 try {
                     $message = $mailer->create($title, $body, 'text/plain', Yii()->charset)->setTo($email);
                     if (!$mailer->send($message, $failures)) {
-                        $errors->$email = 'Failed to send message';
+                        $errors->$email = 'Не удалось отправить сообщение';
                     }
                 } catch (Exception $e) {
                     $errors->$email = $e->getMessage();
@@ -111,7 +111,7 @@ class SiteController extends \site\components\Controller
             }
             $this->renderJson($errors);
         } else {
-            $this->pageTitle = ['Share'];
+            $this->pageTitle = ['Поделиться'];
             $this->attachMetaTags('site.share');
             $this->render('share', compact('link'));
         }

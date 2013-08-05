@@ -6,3 +6,4 @@ DevController.php
 DevCommand.php
 
 *.local
+/.dropbox

@@ -25,7 +25,7 @@ class Fs extends \CApplicationComponent
             $realLocation = $location[0] != '/' ? \Yii::getPathOfAlias($location) : $location;
 
             if (!$realpath = realpath($realLocation)) {
-                throw new FSException(__METHOD__ . ": Unable to resolve $location to real path.");
+                throw new FSException(__METHOD__ . ": Невозможно привязать $location к реальному пути.");
             }
 
             $preparedLocations[] = $realpath;
@@ -80,7 +80,7 @@ class Fs extends \CApplicationComponent
      */
     public function dir($target) {
         $this->checkPathSafety($target);
-        $this->log("Ensuring directory <$target> exists and is accessible");
+        $this->log("Убеждаюсь, что директория <$target> существует и доступна");
 
         if (file_exists($target)) {
             $this->checkPaths($target, array('is_dir', 'is_writable', 'is_readable', 'is_executable'));
@@ -98,7 +98,7 @@ class Fs extends \CApplicationComponent
         try {
             $this->checkPaths($path, array('is_dir', 'is_writable', 'is_executable'));
         } catch (FSException $e) {
-            throw new FSException("Can not proceed for <$target> because it's base path {$e->getMessage()}");
+            throw new FSException("Не могу продолжать с <$target> потому что это базовый путь {$e->getMessage()}");
         }
         foreach (array_reverse($stack) as $item) {
             $path .= DIRECTORY_SEPARATOR . $item;
@@ -106,7 +106,7 @@ class Fs extends \CApplicationComponent
                 mkdir($path, 0777);
             } catch (ErrorException $e) {
                 if (!is_dir($path)) {
-                    throw new FSException("Failed to create <$target> on stage <$path> because of: {$e->getMessage()}", 0, $e);
+                    throw new FSException("Не удалось создать <$target> на этапе <$path> из-за: {$e->getMessage()}", 0, $e);
                 }
             }
         }
@@ -120,7 +120,7 @@ class Fs extends \CApplicationComponent
      * @param $destination
      */
     public function rename($source, $destination) {
-        $this->log("Renaming $source -> $destination");
+        $this->log("Переименовываю $source -> $destination");
         $this->checkPathSafety($source, $destination);
 
         if (is_dir($source)) {
@@ -160,7 +160,7 @@ class Fs extends \CApplicationComponent
      * @param null $suffix
      */
     public function hide($source, $suffix = null) {
-        $this->log("Hiding $source");
+        $this->log("Прячу $source");
         $dirname = dirname($source);
         $basename = basename($source);
         $to = "{$dirname}/.{$basename}" . ($suffix ? ".$suffix" : null);
@@ -176,7 +176,7 @@ class Fs extends \CApplicationComponent
      * @return bool
      */
     public function remove($source) {
-        $this->log("Removing $source");
+        $this->log("Удаляю $source");
         $this->checkPathSafety($source);
 
         if (is_dir($source)) {
@@ -242,7 +242,7 @@ class Fs extends \CApplicationComponent
         foreach ($paths as $file) {
             foreach ($callbacks as $callback) {
                 if (!call_user_func($callback, $file)) {
-                    throw new FSException("$file did not pass {$this->stringifyCallable($callback)} check");
+                    throw new FSException("$file не прошел проверку {$this->stringifyCallable($callback)}");
                 }
             }
         }

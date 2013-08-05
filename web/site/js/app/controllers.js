@@ -116,6 +116,7 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         if (settings.page.post) {
             pager.disable(false);
             $scope.posts = [new Post(settings.page.post)];
+            $scope.disableCut = true;
         }
         else {
             pager.disable(true);
@@ -202,6 +203,10 @@ app.controller('inposted.controllers.main', function ($scope, $timeout, Interest
         },
         pushParent: function (interest) {
             _(this.promises).each(function (promise) {$timeout.cancel(promise);});
+
+            if (this.parents.length && _(interest.parents).indexOf(this.parents[this.parents.length - 1].id) === -1) {
+                this.parents = [];
+            }
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;
@@ -478,8 +483,12 @@ app.controller('inposted.controllers.hints', function ($scope, dialog, User, Hin
         var i;
         var index = 0;
         if (!hints.length) {
-            dialog.close();
+            hints = [
+                {id: null, content: 'Sorry, but there are no hints for now. Check it later'}
+            ];
         }
+
+        $scope.showNavigation = hints.length > 1;
 
         if (settings.user.lastHint) {
             for (i = 0; i < hints.length; i++) {
@@ -634,6 +643,9 @@ app.controller('inposted.controllers.newPost', function ($scope, Interest, Post,
         pushParent: function (interest) {
             _(this.promises).each(function (promise) {$timeout.cancel(promise);});
 
+            if (this.parents.length && _(interest.parents).indexOf(this.parents[this.parents.length - 1].id) === -1) {
+                this.parents = [];
+            }
             this.parents.push(interest);
             if (_(this.main).indexOf(interest) !== -1) {
                 this.main = this.additional;

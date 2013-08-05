@@ -51,7 +51,7 @@ $form = $this->beginWidget(
     <div class="span12">
         <div class="well mini_post_white">
             <div class="info_title ">
-                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Personal</h3></div>
+                <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Личное</h3></div>
             <div class="row-fluid">
                 <div class="span6">
                     <?=$form->textField($user, 'email', ['class' => 'span12'])?><br>
@@ -63,7 +63,7 @@ $form = $this->beginWidget(
                         $user, 'Country_id', $countries,
                         [
                         'class'  => 'span12',
-                        'prompt' => 'Select ' . $user->getAttributeLabel('Country_id') . '...'
+                        'prompt' => '' . $user->getAttributeLabel('Country_id') . '...'
                         ]
                     )?>
                     <?=$form->error($user, 'Country_id')?>
@@ -82,7 +82,7 @@ $form = $this->beginWidget(
                     <?=$form->error($user, 'password')?>
                     <br>
                     <?=$form->passwordField($user, 'newPassword', ['class' => 'span6'])?>
-                    <?=CHtml::submitButton('Confirm', ['class' => 'but_conf'])?>
+                    <?=CHtml::submitButton('Подтвердить', ['class' => 'but_conf'])?>
                     <?=$form->error($user, 'newPassword')?>
                 </div>
                 <div class="span6">
@@ -92,7 +92,7 @@ $form = $this->beginWidget(
                     <?=$form->error($user, 'homepage')?>
                     <?=$form->textField($user, 'birthYear', ['class' => 'span6'])?><br>
                     <?=$form->error($user, 'birthYear')?>
-                    <?=$form->dropDownList($user, 'gender', ['male' => 'Male', 'female' => 'Female'], ['class' => 'span6', 'prompt' => 'Your gender...'])?><br>
+                    <?=$form->dropDownList($user, 'gender', ['male' => 'Мужской', 'female' => 'Женский'], ['class' => 'span6', 'prompt' => 'Ваш пол...'])?><br>
                     <?=$form->error($user, 'gender')?>
                     <?//$form->dropDownList(
 //                        $user, 'timezone', $timezoneTable,
@@ -107,7 +107,7 @@ $form = $this->beginWidget(
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledHints')?> <?=$user->getAttributeLabel('enabledHints')?>
                     </label>
-                    <?=CHtml::submitButton('Apply', ['class' => 'but_apl'])?>
+                    <?=CHtml::submitButton('Применить', ['class' => 'but_apl'])?>
                 </div>
             </div>
         </div>
@@ -117,9 +117,9 @@ $form = $this->beginWidget(
             <div class="span6">
                 <div class="well mini_post_white">
                     <div class="info_title">
-                        <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> E-mail notifications</h3>
+                        <h3 class="my_modal3"><img src="<?=Yii()->baseUrl?>/img/logo_icon.png"> Уведомления по e-mail</h3>
                     </div>
-                    <?=CHtml::submitButton('Apply', ['class' => 'btn mypre'])?>
+                    <?=CHtml::submitButton('Применить', ['class' => 'btn mypre'])?>
                     <label class="checkbox">
                         <?=$form->checkBox($user, 'enabledNotifications')?> <?=$user->getAttributeLabel('enabledNotifications')?>
                     </label>

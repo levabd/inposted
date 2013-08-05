@@ -30,17 +30,6 @@ class Controller extends \shared\components\Controller
 
     protected $restActions = [];
 
-    public function init() {
-        parent::init();
-        if (Yii()->baseUrl) {
-            Yii()->clientScript->registerScript(
-                'baseUrl',
-                sprintf('Inposted.baseUrl = "%s";', Yii()->baseUrl),
-                \CClientScript::POS_HEAD
-            );
-        }
-    }
-
     public function getStaticUrl() {
         return Yii()->getBaseUrl() . '/static';
     }
@@ -62,7 +51,7 @@ class Controller extends \shared\components\Controller
                     $message = array_values($status)[0];
                 } else {
                     $code = $status;
-                    $message = $this->getHttpHeader($code, 'Error');
+                    $message = $this->getHttpHeader($code, '������');
                 }
                 header("HTTP/1.0 $code $message");
             }

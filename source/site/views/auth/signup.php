@@ -14,13 +14,22 @@ $countries = site\models\Country::model()->listData();
         <button type="button" class="close my_modal2" ng-click="close()" aria-hidden="true">x</button>
         <h3 id="signupModalLabel" class="my_modal3">
             <img src="<?= Yii()->baseUrl ?>/img/logo_icon.png">
-            <span ng-show="step == 1">Join us</span>
-            <span ng-show="step == 2">A little more...</span>
+            <span ng-show="step == 1">Присоединиться</span>
+            <span ng-show="step == 2">Немножко больше о себе...</span>
         </h3>
     </div>
     <div class="modal-body mini_post_ser">
         <div class="join_us">
             <div ng-show="step == 1">
+				<input
+                    type="text"
+                    name="nickname"
+                    ng-model="user.nickname"
+                    in-blur="validate('nickname')"
+                    placeholder="<?= $model->getAttributeLabel('nickname') ?>"
+                    />
+                <div class="text-error error-message" ng-show="user.errors.nickname">{{user.errors.nickname}}</div>
+				
                 <input
                     type="text"
                     name="email"
@@ -38,15 +47,6 @@ $countries = site\models\Country::model()->listData();
                     placeholder="<?= $model->getAttributeLabel('newPassword') ?>"
                     />
                 <div class="text-error error-message" ng-show="user.errors.newPassword">{{user.errors.newPassword}}</div>
-
-                <input
-                    type="text"
-                    name="nickname"
-                    ng-model="user.nickname"
-                    in-blur="validate('nickname')"
-                    placeholder="<?= $model->getAttributeLabel('nickname') ?>"
-                    />
-                <div class="text-error error-message" ng-show="user.errors.nickname">{{user.errors.nickname}}</div>
             </div>
             <div ng-show="step == 2">
                 <input type="text" name="name" ng-model="user.name" placeholder="<?= $model->getAttributeLabel('name') ?>"/>
@@ -64,9 +64,9 @@ $countries = site\models\Country::model()->listData();
                 ng-click="submit()"
                 ng-disabled="_wait"
                 in-dots="_wait">
-                Next
+                Далее
             </button>
-            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Skip</button>
+            <button class="btn mypre" ng-show="step==2" ng-click="close()" ng-disabled="_wait">Пропустить</button>
         </div>
     </div>
 </div>

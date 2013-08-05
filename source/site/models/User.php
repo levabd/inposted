@@ -14,10 +14,10 @@ class User extends \shared\models\User
             parent::rules(),
             [
             ['nickname', 'validateNickname'],
-            ['newPassword', 'required', 'on' => 'signup'],
-            ['newPassword', 'length', 'min' => 6],
-            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email'],
-            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname'],
+            ['newPassword', 'required', 'on' => 'signup','message'=>'Введите новый пароль'],
+            ['newPassword', 'length', 'min' => 6,'message'=>'Новый пароль слишком короткий (минимум 6 символов)'],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'email','message'=>'Пароль не может быть таким же как e-mail'],
+            ['newPassword', 'compare', 'operator' => '!=', 'compareAttribute' => 'nickname','message'=>'Пароль не может быть таким же как логин'],
             ['newPassword', 'site\validators\Password'],
 
             //            ['password', 'required', 'on' => 'settings'],
@@ -32,7 +32,7 @@ class User extends \shared\models\User
             $this->addError(
                 $attribute,
                 \Yii::t(
-                    'inposted', '{attribute} can not start with digit',
+                    'inposted', 'Логин не может начинатся с цифры',
                     ['{attribute}' => \Yii::t('inposted', $this->getAttributeLabel($attribute))]
                 )
             );
@@ -40,7 +40,7 @@ class User extends \shared\models\User
     }
 
     public function checkPassword($attribute, $params = []) {
-        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Invalid password', 'skipEmpty' => true], $params));
+        extract(array_merge(['passwordAttribute' => 'password', 'message' => 'Неверный пароль', 'skipEmpty' => true], $params));
         /** @var $passwordAttribute string */
         /** @var $message string */
         /** @var $skipEmpty bool */
@@ -146,7 +146,8 @@ class User extends \shared\models\User
         }
         return $value ? $this->addFavorite($id) : $this->deleteFavorite($id);
     }
-
+   
+    
     public function getRestAttributes() {
         $errors = [];
         foreach ($this->errors as $attribute => $error) {
@@ -156,6 +157,7 @@ class User extends \shared\models\User
         return [
             'id'           => $this->id,
             'name'         => $this->name,
+            'email'        => $this->email,
             'firstName'    => $this->firstName,
             'nickname'     => $this->nickname,
             'url'          => Yii()->createUrl('/user/view', ['nickname' => $this->nickname]),

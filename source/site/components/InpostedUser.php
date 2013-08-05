@@ -13,6 +13,6 @@ class InpostedUser extends \shared\components\InpostedUser
     }
 
     public function getGeoipCountry(){
-        return Country::model()->getByGeoip() ?: Country::model()->sort()->find();
+        return Country::model()->getByGeoip() ?: (Country::model()->sort()->find() ? : new Country());
     }
 }

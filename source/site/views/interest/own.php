@@ -13,7 +13,7 @@
     <button
         class="btn btn-1mini"
         ng-click="detachInterest(interest); $event.stopPropagation()"
-        title="Delete interest"
+        title="Удалить интерес"
         >
         <img src="<?= Yii()->baseUrl ?>/img/x.svg">
     </button>
@@ -46,10 +46,10 @@
             class="btn btn-2mini"
             ng-click="createInterest(); $event.stopPropagation()"
             ng-show="search.term && search.term.length >= 3 && !existsInterest"
-            title="Create interest"
+            title="Создать интерес"
             ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
         </button>
-        <img src="/img/search.svg">
+        <img src="<?= Yii()->baseUrl ?>/img/search.svg">
     </span>
 
     <div class="result_search" ng-show="suggestions.main.length">
@@ -67,7 +67,7 @@
                     class="btn btn-2mini"
                     ng-hide="hasInterest(interest)"
                     ng-click="attachInterest(interest); $event.stopPropagation()"
-                    title="Add interest"
+                    title="Добавить интерес"
                     ><img src="<?= Yii()->baseUrl ?>/img/plus.svg">
                 </button>
                 {{interest.name}}
@@ -75,7 +75,7 @@
                     class="btn btn-3mini"
                     class="but_sear"
                     ng-click="showAdditionalSuggestions(interest); $event.stopPropagation()"
-                    title="Show additional suggestions"
+                    title="Показать дополнительные предложения"
                     >
                     <img src="<?= Yii()->baseUrl ?>/img/sear.svg">
                 </button>
@@ -93,4 +93,4 @@
             </li>
         </ul>
     </div>
-</div><!--конец форма поиска-->
+</div><!--РєРѕРЅРµС† С„РѕСЂРјР° РїРѕРёСЃРєР°-->
