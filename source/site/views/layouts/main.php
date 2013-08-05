@@ -117,6 +117,8 @@ if (!Yii()->user->isGuest) {
         document.getElementsByTagName('head')[0].appendChild(script);
     })();
 </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://feedback.inposted.com">Oтзывы и предложения для Inposted</a></noscript>
-
+<?$this->widget('ext.widgets.googleAnalytics.EGoogleAnalyticsWidget',
+        array('account'=>'UA-36904603-1','domainName'=>'inposted.com')
+);?>
 </body>
 </html>
