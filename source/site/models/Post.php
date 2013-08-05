@@ -160,7 +160,7 @@ class Post extends \shared\models\Post
                     }
                 }
 
-                $htmlContent = preg_replace('%(/go/\w+)%', '<a href="$1">link</a>', $htmlContent);
+                $htmlContent = preg_replace('%(/go/\w+)%', '<a href="$1">Источник</a>', $htmlContent);
 
                 $shorten = Yii()->urlShorten;
                 foreach (array_unique($matches[2]) as $url) {
