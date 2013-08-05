@@ -125,8 +125,8 @@ return [
         'db'             => [
             'behaviors'          => ['shared\behaviors\MysqlDb'],
             'connectionString'   => sprintf('mysql:host=%s;dbname=%s', 'localhost', 'inposted'),
-            'username'           => 'inposted.com',
-            'password'           => 'inposted',
+            'username'           => 'inposted',
+            'password'           => 'zee4wd23TsF7Tsvy',
             'charset'            => 'utf8',
             'enableParamLogging' => YII_DEBUG,
         ],

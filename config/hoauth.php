@@ -14,7 +14,7 @@
 return
     CMap::mergeArray(
         array(
-             "base_url"   => "http://isp.inposted.info/auth/oauth/",
+             "base_url"   => "http://inposted.com/auth/oauth/",
 
              "providers"  => array(
                  // openid providers

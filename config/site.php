@@ -14,6 +14,7 @@ $js = function ($script, $min = null) {
 
 return [
     'name'          => 'Inposted',
+    'language' => 'ru',
 
     'controllerMap' => [
         'go' => 'site\components\urlShorten\Controller',
@@ -113,7 +114,7 @@ return [
         'share'      => [
             'url'         => 'http://inposted.com',
             'title'       => 'Inposted',
-            'description' => 'Stay in touch with your interests.',
+            'description' => 'Читай только интересное.',
         ],
 
         'metaTags'   => [
