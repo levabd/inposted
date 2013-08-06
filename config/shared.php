@@ -5,7 +5,7 @@ Yii::setPathOfAlias('application.config', __DIR__);
 
 /** @var string $keyPrefix Needed for sharing components data between sub-applications (session, cache) */
 $keyPrefix = '412d9d2ff7f70f893dd67cfa940c8275';
-$cookieDomain = '*.inposted.com';
+$cookieDomain = '.inposted.com';
 
 return [
     'basePath'    => path(ROOT, 'source', $name),
