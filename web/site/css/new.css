@@ -34,7 +34,7 @@ body {
 }
 
 .head_left  ul li {
-    font-size: 18px;
+    font-size: 14px !important;
     font-weight: bold;
     float: left;
     display: block;
@@ -45,7 +45,7 @@ body {
 }
 
 .head_left  ul li a {
-    padding: 9px 18px 8px 18px;
+    padding: 9px 18px 10px 18px;
     text-decoration: underline;
     color: #ffffff !important;
 }
@@ -63,7 +63,7 @@ body {
     height: 23px;
     width: 60px;
     padding-left: 25px;
-    margin-top: -5px;
+    margin-top: -7px;
     padding-top: 8px;
     text-decoration: underline;
 }
@@ -73,7 +73,7 @@ body {
     height: 23px;
     width: 60px;
     padding-left: 25px;
-    margin-top: -5px;
+    margin-top: -7px;
     padding-top: 8px;
     text-decoration: underline;
 }
@@ -573,7 +573,8 @@ a.sort_post:hover, a.sort_post.active {
 }
 
 .result_search  li {
-    height: 25px;
+    min-height: 25px;
+	height:100%;
     padding-top: 5px;
 	padding-left:5px;
 }
@@ -581,7 +582,7 @@ a.sort_post:hover, a.sort_post.active {
 .result_search li.suggestion:hover {
     background-color: #ffffc8;
     cursor: pointer;
-
+	height:100%;
 }
 
 li.fixing_res {
@@ -595,7 +596,7 @@ li.fixing_res {
 
 li.fixing_res {
     height: 80% !important;
-    max-height: 20px !important;
+    min-height: 20px !important;
 }
 
 .btn-2mini {
