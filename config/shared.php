@@ -73,7 +73,7 @@ return [
             'useMemcached' => true,
             'servers'      => [
                 'one' => [
-                    'host' => 'localhost',
+                    'host' => '127.0.0.1',
                 ]
             ],
             'keyPrefix'    => $keyPrefix,
