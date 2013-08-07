@@ -171,7 +171,7 @@ class Post extends \shared\models\Post
                     }
                     $shortUrl = $shorten($realUrl);
                     $content = str_replace($url, $shortUrl, $content);
-                    $htmlContent = str_replace($url, \CHtml::link('link', $shortUrl), $htmlContent);
+                    $htmlContent = str_replace($url, \CHtml::link('Источник', $shortUrl), $htmlContent);
                 }
             }
 
