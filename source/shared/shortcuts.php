@@ -67,6 +67,22 @@ function mb_ucfirst($string, $charset = null){
     return mb_strtoupper(mb_substr($string, 0, 1, $charset)) . mb_substr($string, 1, mb_strlen($string, $charset), $charset);
 }
 
+function mb_ucwords( $text, $charset = null) 
+{
+	if(!$charset){
+        $charset = Yii()->charset;
+    }
+
+	$text = explode( ' ', $text );
+	$t = '';
+	foreach ( $text as &$o ) {
+		if ( ($lng = mb_strlen( $o, $charset )) > 1 ) {
+			$t .= ' ' . mb_strtoupper( mb_substr( $o, 0, 1, $charset ), $charset ) . mb_strtolower( mb_substr( $o, 1, $lng-1, $charset ), $charset );
+		} else $t .= ' ' . mb_strtoupper( $o, $charset );
+	} unset ( $o );
+	return ltrim( $t );
+}
+
 function array_path($array, $path, $default = null, $delimiter = '.') {
     // fail if the path is empty
     if (null === $path) {

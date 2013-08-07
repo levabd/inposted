@@ -64,10 +64,12 @@ class Interest extends ActiveRecord
     }
 
     protected function prepareName($name) {
-        $name = str_replace(' ', '-', strip_tags(trim($name)));
-	$name = preg_replace('/[^\w\-А-Яа-я]/u', '', $name);
+        //$name = str_replace(' ', '-', strip_tags(trim($name)));
+	$name = strip_tags(trim($name));
+	$name = preg_replace('/[^\w\s\-А-Яа-я]/u', '', $name);
 	$name = mb_strtolower($name, Yii()->charset);
-	$name = mb_ucfirst($name);
+	//$name = mb_ucfirst($name);
+	$name = mb_ucwords($name);
 	return $name;
     }
 
