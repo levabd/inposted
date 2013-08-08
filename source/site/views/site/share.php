@@ -25,38 +25,13 @@ $tumblrUrl = 'http://www.tumblr.com/share/link?url=' . urlencode($config['url'])
                 <div class="span10">
                     <div class="centering">
                         <p>Поздравляем, Вы - один из первых зарегистрировавшихся!</p>
-
                         <p>За Ваше терпение Вы получите дополнительные возможности!</p>
-
                         <p>Сейчас Вы можете пригласить друзей на этот сайт. </p>
-
                         <p>И следите за новостями на нашем <a href="http://inposted.info/" class="ref_mess">блоге</a></p>
 
                         <p>
-
-                        <div class="span2"></div>
-                        <!-- AddThis Button BEGIN -->
-                        <div
-                            class="addthis_toolbox addthis_default_style "
-                            addthis:url="<?= $config['url'] ?>"
-                            addthis:title="<?= $config['title'] ?>"
-                            addthis:description="<?= $config['description'] ?>"
-                            >
-                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-                            <a class="addthis_button_facebook_send"></a>
-                            <a class="addthis_button_linkedin_counter"></a>
-
-                            <a
-                                href="<?= $tumblrUrl ?>"
-                                title="Поделится на Tumblr"
-                                style="display:inline-block; text-indent:-9999px; overflow:hidden; width:81px; height:20px; background:url('http://platform.tumblr.com/v1/share_1.png') top left no-repeat transparent; float:left;"
-                                >
-                                Поделится на Tumblr
-                            </a>
-
-                            <a class="addthis_button_tweet"></a>
-                        </div>
-                        <!-- AddThis Button END -->
+						<div class="share42init" data-url="<?= $config['url'] ?>" data-title="<?= $config['title'] ?>" data-description="<?= $config['description'] ?>" data-image="<?= Yii()->baseUrl ?>/img/Inposted(120x60).png" data-path="http://inposted.dev.fordot.ru/img/"></div>
+						<script type="text/javascript" src="<?= Yii()->baseUrl ?>/js/share42.js"></script>
                         </p>
 
                     </div>

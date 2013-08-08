@@ -91,7 +91,7 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionShare($emails = null, $message = null) {
-        $link = 'http://lnc.hr/q8dz';
+        $link = 'http://inposted.com';
         if ($emails) {
             $mailer = Yii()->mailer;
 
