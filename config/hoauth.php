@@ -33,17 +33,17 @@ return
 
                  "Google"     => array(
                      "enabled" => true,
-                     "keys"    => array("id" => "780779053189.apps.googleusercontent.com", "secret" => "xNa6k4ZqKlFp4m_EkRkk8gW9")
+                     "keys"    => array("id" => "295123070667.apps.googleusercontent.com", "secret" => "hWZD347CuV9S6Ao_HQ2D3Dx0")
                  ),
 
                  "Facebook"   => array(
                      "enabled" => true,
-                     "keys"    => array("id" => "394118874019792", "secret" => "02e988c289bcba3f22e6f432009996d7")
+                     "keys"    => array("id" => "650404308317403", "secret" => "f562085f0fab38bb44a768742c68fe2c")
                  ),
 
                  "Twitter"    => array(
                      "enabled" => true,
-                     "keys"    => array("key" => "yStdhQ4BPfKKqgKfLL7Sw", "secret" => "Yn6olXASLBkX16s6r22oqSXNxeyJScrnDgYARYy7rs")
+                     "keys"    => array("key" => "kmPqhFaQBQjTSfLLPCxQ", "secret" => "6MGujECIuk7YhiMjcOi2j40zMyqTTJkrOm1jP3KRlA")
                  ),
 
                  // windows live
