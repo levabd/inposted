@@ -5,14 +5,16 @@
 Yii()->clientScript->registerPackage('main');
 ?>
 <!DOCTYPE html>
-<html lang="en" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#" ng-controller="inposted.controllers.main">
+<html lang="ru" ng-app="inposted" xmlns:fb="http://ogp.me/ns/fb#" ng-controller="inposted.controllers.main">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="copyright" content="Fordot http://fordot.com.ua/"/>
     <meta name="keywords" content="интересы, актуальность, мировоззрение, короткие сообщения, поиск нужной информации, короткие по интересам, по интересам">
     <meta name="description" content="Вы не можете найти всех людей, которые, дадут вам качественный контент. На Inposted, следуя интересам вы увидите все интересные сообщения. Выбирайте и добавляйте интересы, когда и как вы хотите">
-    <title><?= $this->pageTitle ?></title>
+    <link rel="stylesheet" type="text/css" href="./css/slyder-content.css" />
+	<link rel="stylesheet" type="text/css" href="./css/slyder-style.css" />
+	<title><?= $this->pageTitle ?></title>
     <style
         type="text/css">embed[type*="application/x-shockwave-flash"], embed[src*=".swf"], object[type*="application/x-shockwave-flash"], object[codetype*="application/x-shockwave-flash"], object[src*=".swf"], object[codebase*="swflash.cab"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"], object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"], object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"] {
             display: none !important;
@@ -86,9 +88,7 @@ Yii()->clientScript->registerPackage('main');
             <?php endif;#(!Yii()->user->isGuest)?>
         </div>
     </div>
-
     <div class="empty_block"></div>
-
     <?= $content ?>
 </div>
 

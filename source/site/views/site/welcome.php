@@ -1,0 +1,103 @@
+<?php
+$this->pageTitle=Yii::app()->name . ' - Тут только интересное';
+?>
+<div class="textlongs" > Размещайте важные вещи. Оставайтесь на связи с вашими интересами.</div>
+ <script language="javascript" type="text/javascript" src="./js/jquery.flow.1.2.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#topArticleController").jFlow({
+                    slides: "#slides",
+                    controller: ".jFlowControl", // must be class, use . sign
+                    slideWrapper: "#jFlowSlide", // must be id, use # sign
+                    selectedWrapper: "jFlowSelected", // just pure text, no sign
+                    auto: true, //auto change slide, default true
+                    width: "680px",
+                    height: "330px",
+                    duration: 500,
+                    delay: 5, //x1000 (seconds)
+                    prev: ".jFlowPrev", // must be class, use . sign
+                    next: ".jFlowNext" // must be class, use . sign
+                });
+            });
+        </script>
+
+   <div class="inpostedslides" >
+ <div class="jflow-content-slider roto-1">
+            <div id="slides" class="list-roto">
+                <div class="slide-wrapper">                                  
+                            <span class="textinposted">
+                                <img class="artillustr" src="./img/present_00.gif" />
+								
+                          	</span>                          
+                      
+                   
+                </div>
+				  <div class="slide-wrapper">
+                                     
+                             <span class="textinposted">
+                                <img class="artillustr" src="./img/present_05.gif" />
+								<span class="textinp">Находите подходящую информацию</span>
+                            </span>                              
+                     
+                   
+                </div>
+				  <div class="slide-wrapper">
+                                      
+                             <span class="textinposted">
+                                <img class="artillustr" src="./img/present_01.gif" />
+								<span class="textinp">Формируйте мировоззрение других</span>
+                            </span>                              
+                     
+                    
+                </div>
+		<div class="slide-wrapper">
+                                     
+                            <span class="textinposted">
+                                <img class="artillustr" src="./img/present_02.gif" />
+                            </span>                              
+                   
+                </div>
+		<div class="slide-wrapper">
+                                   
+                           <span class="textinposted">
+                                <img class="artillustr" src="./img/present_06.gif" />
+                            </span>                              
+                     
+                   
+                </div>
+				  <div class="slide-wrapper">
+                                    
+                            <span class="textinposted">
+                                <img class="artillustr" src="./img/present_03.gif" />
+								
+                            </span>                              
+                     
+                   
+                </div>
+				  <div class="slide-wrapper">
+                                      
+                             <span class="textinposted">
+                                <img class="artillustr" src="./img/present_04.gif" />
+								<span class="textinp">Соберите свою коллекцию сообщений</span>
+                            </span>                              
+                     
+                   
+                </div>
+                      
+            </div>
+			</div> 
+            <div id="topArticleController" class="slider_switch" >	
+                <span class="arrow_left jFlowPrev"></span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+				<span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="circle jFlowControl">&nbsp;&nbsp;&nbsp;</span>
+                <span class="arrow_right jFlowNext"></span>
+
+            </div>
+        </div> 
+ 
+

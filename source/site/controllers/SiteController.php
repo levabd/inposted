@@ -25,10 +25,9 @@ class SiteController extends \site\components\Controller
     }
 
     public function actionIndex() {
-        $this->pageTitle = Yii()->user->isGuest ? [] : ['Домашняя страница'];
+        $this->pageTitle = Yii()->user->isGuest ? ['Тут только интересное'] : ['Домашняя страница'];
         $this->attachMetaTags(Yii()->user->isGuest ? 'site.index.guest' : 'site.index.user');
-
-        $this->render('//post/list');
+        $this->render(Yii()->user->isGuest ? '//site/welcome' : '//post/list');
     }
 
     public function actionContact() {
